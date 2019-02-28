@@ -13,9 +13,10 @@ class ctrl_aadhaar {
         this.checkAadhaar = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             var aadhaar_no = req.query.aadhaar_no;
             console.log(aadhaar_no);
-            var model_aadhaar_object = new model_aadhaar(req.connection);
-            var data = yield model_aadhaar_object.checkAadhaar(req, res, next, aadhaar_no);
-            MasterFunctions4.logacesstoFbase(req, res, next, 200, aadhaar_no, this.hrtime, 0, 0);
+            //var model_aadhaar_object=new model_aadhaar(req.connection)
+            //var data=await model_aadhaar_object.checkAadhaar(req,res,next,aadhaar_no)
+            var data = { "status": "true" };
+            MasterFunctions4.logacesstoFbase(req, res, next, 200, data, this.hrtime, 0, 0);
         });
         this.insertAadhaarDetails = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             var aadhaar_no = req.query.aadhaar_no;

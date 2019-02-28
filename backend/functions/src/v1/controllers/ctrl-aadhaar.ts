@@ -10,9 +10,10 @@ class ctrl_aadhaar{
     public checkAadhaar=async(req,res,next)=>{
         var aadhaar_no=req.query.aadhaar_no;
         console.log(aadhaar_no)
-        var model_aadhaar_object=new model_aadhaar(req.connection)
-        var data=await model_aadhaar_object.checkAadhaar(req,res,next,aadhaar_no)
-        MasterFunctions4.logacesstoFbase(req,res,next,200,aadhaar_no,this.hrtime,0,0)        
+        //var model_aadhaar_object=new model_aadhaar(req.connection)
+        //var data=await model_aadhaar_object.checkAadhaar(req,res,next,aadhaar_no)
+        var data={"status":"true"}
+        MasterFunctions4.logacesstoFbase(req,res,next,200,data,this.hrtime,0,0)        
     }
 
     public insertAadhaarDetails=async(req,res,next)=>{

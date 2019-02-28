@@ -18,6 +18,12 @@
                 top:10px;
                 left: 250px;
             }
+            .col.s12 > .btn {
+                width: 100%;
+            }
+            .datepicker{
+                width: 50%;
+            }
         </style>
     </head>
     <body class="body">
@@ -78,6 +84,42 @@
                                         <input type="number" id="aadhaar_no" maxlength="12" onkeyup="limitText(this,12)">                                          
                                         <label for="aadhaar_no">Aadhaar Number</label>
                                     </div>
+                                    <div class="input-field col s12">
+                                        <button class="btn" id="btnCheckAadhaar">Check Aadhaar Number</button>
+                                    </div>
+                                    <div style="display:none" id="fields">
+                                        <div class="input-field col s12">
+                                            <input type="text" id="name" >
+                                            <label for="name">Full Name</label>                                            
+                                        </div>
+                                        <div class="input-field col s12">
+                                                <input type="text" id="address">
+                                                <label for="address">Address</label>                                            
+                                        </div>
+                                        <div class="input-field col s12">
+                                                <input type="text" id="city">
+                                                <label for="city">City</label>                                            
+                                        </div>
+                                        <div class="input-field col s12">
+                                                <input type="text" id="state">
+                                                <label for="state">State</label>
+                                        </div>
+                                        <div class="input-field col s12">
+                                                <input type="text" id="pincode">
+                                                <label for="pincode">PIN Code</label>
+                                        </div>
+                                        <div class="input-field col s12">
+                                                <select id="gender" >
+                                                        <option value="0" disabled selected>Select Gender</option>
+                                                        <option value="male">Male</option>
+                                                        <option value="female">Female</option>
+                                                </select>
+                                        </div>
+                                        <div class="input-field col s12">
+                                                <input type="text" class="datepicker" id="dob">
+                                                <label for="dob">Birth Date</label>
+                                        </div>
+                                    </div>
                                </div>
                     </div>
                 </div>
@@ -96,6 +138,18 @@
 <script src="../js/functions/lib/general.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('select');
+    var instances = M.FormSelect.init(elems);
+  });
+
+var minDate=new Date(1950,1,1);
+var maxDate=new Date(2000,12,31);
+
+document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.datepicker');
+    var instances = M.Datepicker.init(elems);
+  });
+document.addEventListener('DOMContentLoaded', function() {
     var elems = document.querySelectorAll('.collapsible');
     var instances = M.Collapsible.init(elems);
   });
@@ -104,7 +158,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var instances = M.Modal.init(elems);
   });
 
-  document.getElementById("aadhaar_no").addEventListener("change",function(event){
+  document.getElementById("btnCheckAadhaar").addEventListener("click",function(event){
     event.preventDefault();
     if(document.getElementById("aadhaar_no").value.length==12)
     {
@@ -116,7 +170,7 @@ document.addEventListener('DOMContentLoaded', function() {
             url:`${globalpath}controllers/ctrl-aadhaar/`,
             params:params
         }).then(function(response){
-            if(response.data.status=="false")
+            if(response.data.status=="true")
             {
                 document.getElementById("fields").style.display="inline";
             }
