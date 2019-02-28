@@ -1,0 +1,122 @@
+<html>
+    <head>
+        <title>Home</title>
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <style>
+            .post{
+                background-color: #6666ff;
+                color: white;
+                border-radius: 4px;
+                border: 1px solid #6666ff; 
+            }
+            #head{
+                position: relative;
+                top: 0px;
+                width: 100%;
+                height: 70px;
+                background-color: #6666ff;
+                overflow: hidden;
+                padding: 20px;
+                font-family: 'Times New Roman', Times, serif;
+                font-size: 20px;
+                color:grey;
+                font-weight: bold;
+                vertical-align:sub
+            }
+            #formbody{
+                width:400px;
+
+            }
+        </style>
+    </head>
+    <body class="body">
+            <div id="head">
+                <div id="searchBar">DocCall&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="text" id="search" placeholder="Search Colleagues"><button id="searchBtn"><i class="glyphicon glyphicon-search"></i></button>
+                </div>     
+            </div>
+            <div id="profileBar">
+                    <img id="profileImage" src="img.jpg"><button id="username" data-toggle="popover" data-popover-content="#open" data-placement="bottom">Username</button>
+            </div>
+            <div class="hidden" id="open">
+                <div class="popover-content">
+                        <button id="profile">Profile</button>
+                        <button id="logout" onclick="logout()">Log out</button>
+                </div>
+            </div>
+            <div>
+                
+                <form id="formbody">
+                    <div>Prescription Details</div>
+                    <input  type="text" id="pid" placeholder="Patient ID"><p><br>
+                    <input  type="text" id="pname" placeholder="Patient Full Name"><p>
+                    <input  type="text" id="medicine" placeholder="Medicine Name"><p>
+                    <input  type="text" id="symptom1" placeholder="symptoms 1"><p>
+                    <input  type="text" id="symptom2" placeholder="symptoms 2"><p>
+                    <input  type="text" id="symptom3" placeholder="symptoms 3"><p>                    
+                    <label>Begin Date of Prescription</label>
+                    <input  id="start_date" type="date" placeholder="Begin Date of Prescription"><p>
+                    <label>End Date of Prescription</label>
+                    <input  id="end_date" type="date" placeholder="End Date of Prescription"><p>
+                    <input id="nottbt" type="number" placeholder="Enter number of times to be taken"><p>
+                    <button class="post">Assign Prescription</button>
+                </form>
+            </div>
+            <div id="sidebar">
+                    <button class="functions" id="home">Home</button><p>
+                    <button id="gpr" class="functions">Get Patient Reports</button><p>
+                    <button id="sm" class="functions">Search Medicine</button><p>
+                    <button id="ass" class="functions">Assign Prescription</button>
+                </div>
+    </body>
+</html>
+<script>
+$(document).ready(function(){
+    $('[data-toggle="popover"]').popover({
+        html:true,
+        content:function(){
+            var content=$(this).attr("data-popover-content")
+            return $(content).children(".popover-content").html();
+        }
+    });
+})
+document.getElementById("ass").addEventListener("click",function(event){
+    event.preventDefault();
+    window.location="AP.html"
+})
+document.getElementById("nottbt").addEventListener("change",function(event){
+    event.preventDefault();
+    if($("#formbody .main_div").length!=0)
+    {
+        $("#formbody .main_div").remove();
+    }
+        var div=document.createElement("div");
+        div.setAttribute("class","main_div")
+        var nottbt=document.getElementById("nottbt").value;
+        for(var i=0;i<nottbt;i++)
+        {
+            var id=Math.floor((Math.random() * 100) + 1)
+            var input=document.createElement("input");
+            input.setAttribute("type","time");
+            input.setAttribute("id","time"+id);
+            input.setAttribute("class","timings");
+            div.appendChild(input);
+        }
+        document.getElementById("formbody").appendChild(div);   
+})
+document.getElementById("home").addEventListener("click",function(event){
+    event.preventDefault();
+    window.location="homepage.html";
+})
+document.getElementById("sm").addEventListener("click",function(event){
+    event.preventDefault();
+    window.location="sm.html";
+})
+document.getElementById("gpr").addEventListener("click",function(event){
+    event.preventDefault();
+    window.location="gpr.html";
+})
+</script>

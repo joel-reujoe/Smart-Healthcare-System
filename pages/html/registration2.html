@@ -1,0 +1,66 @@
+<html>
+    <head>
+        <title>
+            Registration Step2
+        </title>
+        <link  rel="stylesheet" type="text/css"  href="style.css">
+        
+    </head>
+    </head>
+    <body class="body">
+            <div id="header">DocCall</div>
+            <div id="formbody">
+                    <div id="title">DocCall Registration</div><p>
+                    <div id="alert_msg"></div>
+                    <form id="form">
+                        <span id="username1_error"></span>
+                        <input type="text" id="username1" placeholder="Username"><p>
+                        <span id="password_error"></span>                        
+                        <input type="password" id="password" placeholder="Password"><p>
+                        <span id="cpassword_error"></span>                                                
+                        <input type="password" id="cpassword" placeholder="Confirm Password"><p>
+                        <span id="email_error"></span>                                                
+                        <input type="email" id="email" placeholder="Email"><p>
+                        <span id="phone_error"></span>                                                
+                        <input type="number" id="phone" placeholder="Phone No."><p></p>
+                        <button class="btn-default" id="back">Back</button><button class="btn-default" id="submit">Submit</button>
+                    </form>
+             </div>
+    </body>
+</html>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="./functions/lib/authenticate/register2.js"></script>
+<script src="./functions/lib/general.js"></script>
+<script>
+document.getElementById("back").addEventListener("click",function(event){
+    event.preventDefault();
+    window.location="registration1.html";
+})
+
+document.getElementById("submit").addEventListener("click",function(event){
+    event.preventDefault();
+    var params=gatherDocDetails()
+    if(params!=null)
+    {
+        axios({
+            method:'get',
+            url:`${globalpath}controllers/ctrl-generalized/`,
+            params:params
+        }).then(function(response){
+            if(response.data.status=="true")
+            {
+                document.getElementById("alert_msg").innerHTML=`${response.data.message}`
+                window.location="login.html"
+            }
+            else{
+                document.getElementById("alert_msg").innerHTML=`${response.data.message}`
+            }
+        }).catch(function(error){
+            console.log(error)
+        })
+    }
+    else{
+        console.log("no params")
+    }
+})
+</script>

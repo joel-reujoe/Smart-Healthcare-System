@@ -1,0 +1,189 @@
+<html>
+    <head>
+        <title>Home</title>
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <style>
+            .post{
+                background-color: #6666ff;
+                color: white;
+                border-radius: 4px;
+                border: 1px solid #6666ff; 
+            }
+            #head{
+                position: relative;
+                top: 0px;
+                width: 100%;
+                height: 70px;
+                background-color: #6666ff;
+                overflow: hidden;
+                padding: 20px;
+                font-family: 'Times New Roman', Times, serif;
+                font-size: 20px;
+                color:grey;
+                font-weight: bold;
+                vertical-align:sub
+            }
+            
+        </style>
+    </head>
+    <body class="body" id="body">
+            <div id="head">
+                <div id="searchBar">DocCall&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="text" id="search" placeholder="Search Colleagues"><button id="searchBtn"><i class="glyphicon glyphicon-search"></i></button>
+                </div>     
+            </div>
+            <div id="profileBar">
+                    <img id="profileImage" src="img.jpg"><button id="username" data-toggle="popover" data-popover-content="#open" data-placement="bottom">Username</button>
+            </div>
+            <div class="hidden" id="open">
+                <div class="popover-content">
+                        <button id="profile">Profile</button>
+                        <button id="logout" onclick="logout()">Log out</button>
+                </div>
+            </div>
+            <p>
+            <div id="post">
+                <textarea cols="50" rows="4" id="postArea">
+                </textarea>
+                <br>
+                <button id="postButton" class="post" >Post</button>
+                <input id='imageFile' type='file' name='imageFile' class="hidden"/>
+                <button id="uploadimage" class="post">Upload Image</button>
+            </div>
+            <p>
+            <div class="posts">
+                <div id="name">Joel Dsouza</div>
+                <div id="content">Hi there this is joel dsouza. Employee at Carwale.com</div>
+                <div id="image">
+                    <img id="imgContent" src="img-1.jpeg" class="imgContent">
+                </div>
+                <p>
+                <div id="like" class="like">
+                    <button id="likeCount">Like</button>
+                </div>
+            </div>
+            <div id="sidebar">
+                <button id="gpr" class="functions">Get Patient Reports</button><p>
+                <button id="sm" class="functions">Search Medicine</button><p>
+                <button id="ass" class="functions">Assign Prescription</button>
+            </div>
+    </body>
+</html>
+<script src="https://www.gstatic.com/firebasejs/5.5.0/firebase.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="./functions/lib/general.js"></script>
+<script src="./functions/lib/post/post.js"></script>
+<script>
+var config = {
+    apiKey: "AIzaSyB0ga6ikjDvGADhhd80r2Xeiaep3K22H-M",
+    authDomain: "smarthealthcare-160f0.firebaseapp.com",
+    databaseURL: "https://smarthealthcare-160f0.firebaseio.com",
+    projectId: "smarthealthcare-160f0",
+    storageBucket: "smarthealthcare-160f0.appspot.com",
+    messagingSenderId: "488465131798"
+  };
+firebase.initializeApp(config);
+var starCountRef = firebase.database().ref().child('posts');
+starCountRef.on('child_added',snapshot=>{
+    var div=document.createElement('div')
+    div.setAttribute("class","posts")
+    console.log(snapshot.val())
+        if(snapshot.val().imageUrl!="image_url"){
+            div.innerHTML=`<div id="name">${snapshot.val().name}</div>
+                <div id="content">${snapshot.val().post}</div>
+                <div id="image">
+                    <img id="imgContent" src="${snapshot.val().imageUrl}" class="imgContent">
+                </div>
+                <p>
+                <div id="like" class="like">
+                    <button id="likeCount">Like</button>
+                </div>`
+        }
+        else{
+            div.innerHTML=`<div id="name">${snapshot.val().name}</div>
+                <div id="content">${snapshot.val().post}</div>
+                <p>
+                <div id="like" class="like">
+                    <button id="likeCount">Like</button>
+                </div>`
+        }
+        document.getElementById("body").appendChild(div)
+    })
+</script>
+<script>
+$('document').ready(function()
+{
+    $('textarea').each(function(){
+            $(this).val($(this).val().trim());
+        }
+    );
+});
+document.getElementById("postButton").style.backgroundColor="grey"
+document.getElementById("postButton").disabled=true
+document.getElementById("postArea").addEventListener("change",function(event){
+    if(document.getElementById("postArea").value!="")
+    {
+        document.getElementById("postButton").disabled=false
+        document.getElementById("postButton").style.backgroundColor="#6666ff"
+    }
+    else{
+        document.getElementById("postButton").style.backgroundColor="grey"
+        document.getElementById("postButton").disabled=true
+    }
+})
+document.getElementById("postButton").addEventListener("click",function(event){
+    var param=getPost()
+    if(param!=null)
+    {
+        axios({
+            method:'post',
+            url:`${globalpath}controllers/ctrl-doctor`,
+            params:param
+        }).then(function(response){
+            console.log(response)
+        }).catch(function(error){
+            console.log(error)
+        })
+    }
+})
+</script>
+<script>
+$(document).ready(function(){
+    $('[data-toggle="popover"]').popover({
+        html:true,
+        content:function(){
+            var content=$(this).attr("data-popover-content")
+            return $(content).children(".popover-content").html();
+        }
+    });
+})
+document.getElementById("ass").addEventListener("click",function(event){
+    event.preventDefault();
+    window.location="AP.html"
+})
+document.getElementById("sm").addEventListener("click",function(event){
+    event.preventDefault();
+    window.location="sm.html";
+})
+document.getElementById("gpr").addEventListener("click",function(event){
+    event.preventDefault();
+    window.location="gpr.html";
+})
+document.getElementById("postButton").addEventListener("click",function(event){
+    event.preventDefault();
+    
+})
+document.getElementById("uploadimage").addEventListener("click",function(event){
+    event.preventDefault();
+    document.getElementById("imageFile").click();
+})
+
+function logout()
+{
+    window.location="login.html";
+}
+</script>

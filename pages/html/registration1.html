@@ -1,0 +1,97 @@
+<html>
+    <head>
+        <title>Registration Step1</title>
+        <link  rel="stylesheet" type="text/css"  href="style.css">
+        
+    </head>
+    <body class="body">
+            <div id="header">DocCall</div>
+            <div id="formbody">
+                    <div id="title">DocCall Registration</div><p>
+                    <div id="alert_msg"></div>
+                    <form id="form">
+                        <input type="number" id="aadhaar_no" placeholder="Aadhaar Number" maxlength="12" onkeyup="limitText(this,12)"><p>
+                        <div style="display:none" id="fields">
+                        <span id="name_error"></span>
+                        <input type="text" id="name" placeholder="Full Name"><p>
+                        <span id="address_error"></span>                        
+                        <input type="text" id="address" placeholder="Address" ><p>
+                        <span id="city_error"></span>                        
+                        <input type="text" id="city" placeholder="City" ><p>
+                        <span id="state_error"></span>                        
+                        <input type="text" id="state" placeholder="State" ><p>
+                        <span id="pin_error"></span>                        
+                        <input type="number" id="pincode" placeholder="Pin Code" onkeyup="limitText(this,6)"><p>
+                        <span id="gender_error"></span>                        
+                        <select id="gender" >
+                            <option selected value="notSelected">Select Gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select><p>
+                        <span id="dob_error"></span>                        
+                        <input type="date" id="dob" >
+                        <p>
+                        Choose Aadhaar Photo<input type="file" id="aadhaar_photo">
+                        <p>
+                        Choose Certificate Photo<input type="file" id="certificate_photo">
+                        <button id="submit" class="btn btn-info">Next</button>
+                    </div>
+                    </form>
+                    <div id="signUptext">Have an account? <a href="login.html">Sign In here</a></div>
+                </div>
+    </body>
+</html>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="./functions/lib/general.js"></script>
+<script src="./functions/lib/authenticate/register1.js"></script>
+<script>
+document.getElementById("aadhaar_no").addEventListener("change",function(event){
+    event.preventDefault()
+    
+    if(document.getElementById("aadhaar_no").value.length==12)
+    {
+        var params=new URLSearchParams()
+        params.append("action","checkAadhaar")
+        params.append("type","doctor")
+        params.append("aadhaar_no",document.getElementById("aadhaar_no").value)
+        axios({
+            method:'get',
+            url:`${globalpath}controllers/ctrl-aadhaar/`,
+            params:params
+        }).then(function(response){
+            if(response.data.status=="false")
+            {
+                document.getElementById("fields").style.display="inline";
+            }
+            else
+            {
+                document.getElementById("alert_msg").innerHTML=`<div class="alert alert-success alert-dismissable"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><strong>${response.data.message} else enter proper password</strong></div>`
+            }
+        }).catch(function(error){
+            console.log(error)
+        })
+    }
+})
+document.getElementById("address").addEventListener("keypress",checkForComma)
+document.getElementById("submit").addEventListener("click",function(event){
+    event.preventDefault();
+    var params=gatherAadhaarDetails();
+    if(params!=null)
+    {
+        axios({
+            method:'get',
+            url:`${globalpath}controllers/ctrl-aadhaar/`,
+            params:params
+        }).then(function(response){
+            console.log(response)
+            if(response.data.status=="true")
+            {
+                localStorage.setItem("userId",response.data.data)
+                window.location="registration2.html"
+            }
+        }).catch(function(error){
+            console.log(error)
+        })
+    }
+})
+</script>

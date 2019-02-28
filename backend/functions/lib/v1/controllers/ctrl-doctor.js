@@ -1,0 +1,35 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+const model_doctor = require('../models/model-doctor');
+const MasterFunctions1 = require('../dependencies/masterfunctions');
+class ctrl_doctor {
+    constructor() {
+        this.insertUserAuth = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+            var model_doctor_object = new model_doctor(req.connection);
+            var type = req.query.type;
+            var username = req.query.name;
+            var email = req.query.email;
+            var password = req.query.password;
+            var data = yield model_doctor_object.insertUserAuth(req, res, next, type, username, email, password);
+            MasterFunctions.logacesstoFbase(req, res, next, 200, data, this.hrtime, 0, 0);
+        });
+        this.postAPost = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+            var model_doctor_object = new model_doctor(req.connection);
+            var uid = req.query.uid;
+            var user_id = req.query.user_id;
+            var post = req.query.post;
+            var image_url = "image_url";
+            var data = yield model_doctor_object.postAPost(req, res, next, uid, user_id, post, image_url);
+            MasterFunctions1.logacesstoFbase(req, res, next, 200, data, this.hrtime, 0, 0);
+        });
+        this.hrtime = process.hrtime();
+    }
+}
+module.exports = ctrl_doctor;
+//# sourceMappingURL=ctrl-doctor.js.map

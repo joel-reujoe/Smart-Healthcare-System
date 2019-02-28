@@ -1,0 +1,225 @@
+#formbody{
+    position: relative;
+    top:150px;
+    left: 450px;
+    width:300px;
+    padding: 50px;
+    border: 1px solid #808080;
+    text-align: center;
+    background-color: white;
+}
+
+#signUptext{
+    color: gray;
+}
+#header{
+    overflow: hidden;
+    position: fixed;
+    top: 0px;
+    width: 100%;
+    height: 100px;
+    background-color: #6666ff;
+    overflow: hidden;
+    padding: 20px;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 50px;
+    color:grey;
+    font-weight: bold
+}
+#title{
+    font-size: 30px;
+    color: grey;
+    font-weight: bold; 
+}
+select{
+    border-radius: 5px;
+    width: 300px;
+    height: 30px;
+}
+input{
+    border-radius: 5px;
+    width: 300px;
+    height: 30px;
+}
+.body{
+    overflow-x: hidden;
+    margin: 0px;
+    background-color:#C8C8C8
+}
+.btn-default{
+    height: 30px;
+    border-radius: 4px;
+    width: 30%;
+    background-color: #6666ff;
+    color: white;
+}
+#search{
+    border-radius: 0px;
+    height: 40px;
+    width: 250px;
+    font-size: 15px;
+    color: #999;
+    padding-left: 5px;
+    vertical-align: bottom
+}
+#searchBtn{
+    border: solid 1px #CCC;
+    height: 38px;
+}
+.btn{
+    height: 30px;
+    border-radius: 4px;
+    margin: auto;
+    width: 100%;
+    display: block;
+}
+.btn-info{
+    padding: 4px;
+    color: azure;
+    background-color:#6666ff
+}
+#profileImage{
+    width:40px;
+    height: 32px;;
+}
+#profileBar{
+    position: absolute;
+    top:20px;
+    right: 300px;
+}
+#username1{
+    background-color: #fff;
+}
+#username{
+    background-color: #6666ff;
+    color: white;
+    border: 0px;
+}
+
+#profile{
+    background-color: white;
+    border: 0px;
+}
+#logout{
+    background-color: white;
+    border: 0px;
+}
+#post{
+    margin-top: 30px;
+    margin-bottom: 30px;
+    position: relative;
+    top:40px;
+    left:470px;
+}
+.posts{
+    box-shadow: 1px 2px  gray;
+    border-radius: 5px;
+    padding: 10px;
+    position: relative;
+    top:40px;
+    left:470px;
+    width: 450px;
+    background-color: white;
+}
+.imgContent{
+    width: 430px;
+    height: 300px;
+}
+#likeCount{
+    background-color: beige;
+    border:0px;
+}
+.like{
+    padding: 5px;
+    height: 30px;
+    width: 430px;
+    background-color:beige;
+}
+#sidebar{
+    height: 100%;
+    position: absolute;
+    top: 100px;
+    left: 50px;
+    width:300px;
+    padding: 10px;
+    background-color: aliceblue;
+}
+.functions{
+    color: gray;
+    background-color: aliceblue;
+    border: 0px;
+    padding: 10px;
+}
+.functions:hover{
+    color:black;
+    border: 0px;
+    padding: 10px;
+    transition-duration: 1000ms;
+    transition-delay: 0ms;
+    transition-property: color;
+}
+
+#searchBar1{
+    position: relative;
+    top:30px;
+    left:400px;
+}
+#searchBtn1{
+    background-color: #6666ff;
+    color: white;
+    height: 30px;
+    border: 0px;
+    border-radius: 4px;
+}
+
+.report{
+   
+    padding: 10px;
+    position: relative;
+    top:50px;
+    left:400px;
+    width:800px;
+    border: 0px;
+    border-radius: 4px;
+    background-color: white;
+}
+.report_date{
+    position: relative;
+    left:650px;
+    display: inline;
+    vertical-align: text-top
+}
+.med{
+    padding: 20px;
+    position: relative;
+    top:50px;
+    left:400px;
+    width:800px;
+    border: 0px;
+    border-radius: 4px;
+    background-color: white;
+}
+.rated_by{
+    padding: 3px;
+    display: inline;
+    position: relative;
+    bottom:2px;
+    left:600px;
+    background-color: #808080;
+    color:#C8C8C8;
+}
+.rating{
+    padding: 3px;
+    background-color: #808080;
+    color:#C8C8C8;
+    width:800px;
+    position: relative;
+    top:20px;
+    right:20px;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+.rating_details{
+    position: relative;
+    top:20px;
+}

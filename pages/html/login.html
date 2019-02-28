@@ -1,0 +1,171 @@
+<html>
+    <head>
+        <title>Login Page</title>
+        <!-- <link  rel="stylesheet" type="text/css"  href="/pages/css/materialize-v1.0.0/materialize/css/materialize.min.css"> -->
+        <!-- <script type="javascript" src="/pages/css/materialize-v1.0.0/materialize/js/materialize.min.js"></script> -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <style>
+            .footer{
+                position: fixed;
+                bottom: 0px;
+                width: 100%;
+            }
+            .form-body{
+                position: relative;
+                top:10px;
+                left: 250px;
+            }
+        </style>
+    </head>
+    <body class="body">
+        <nav>
+            <div class="nav-wrapper teal">
+                    <a href="#" class="brand-logo center">DocCall</a>
+            </div>
+        </nav>
+        <div class="container form-body">
+                <div class="row">
+                        <form class="col s12 m6">
+                            <div class="card white">
+                                <div class="card-content">
+                                        <div class="container">
+                                                <div class="row">
+                                                    <div class="col s12">
+                                                        <span class="card-title"><strong>Login</strong></span>
+                                                    </div>
+                                                </div>
+                                                    <div class="row">
+                                                            <div class="input-field col s12">
+                                                                    <input type="text" id="email">
+                                                                    <label for="email">Email</label>    
+                                                            </div>
+                                                    </div>
+                                                    <div class="row">
+                                                            <div class="input-field col s12">
+                                                                    <input type="password" id="password">
+                                                                    <label for="password">Password</label>    
+                                                            </div>
+                                                    </div>
+                                                    <div class="row">
+                                                            <div class="input-field col s12">
+                                                                <button class="btn btn-flat teal white-text">Login</button>   
+                                                            </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col s6">
+                                                                <a href="#signup" class="modal-trigger">Create Account</a>
+                                                        </div>
+                                                    </div>
+                                            </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+        </div>
+        <div id="signup" class="modal">
+                <div class="modal-content">
+                    <div class="container">
+                            <div class="row">
+                                    <div class="col s12">
+                                        <span class="card-title"><strong>Sign Up</strong></span>
+                                    </div>
+                                </div>
+                            <div class="row">
+                                    <div class=" input-field col s12">
+                                        <input type="number" id="aadhaar_no" maxlength="12" onkeyup="limitText(this,12)">                                          
+                                        <label for="aadhaar_no">Aadhaar Number</label>
+                                    </div>
+                               </div>
+                    </div>
+                </div>
+        </div>
+        
+        <footer class="page-footer teal footer">
+            <div class="footer-copyright center">
+                <div class="container">
+                &copy;DocCall-India
+                </div>
+            </div>
+        </footer>
+    </body>
+</html>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="../js/functions/lib/general.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.collapsible');
+    var instances = M.Collapsible.init(elems);
+  });
+  document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.modal');
+    var instances = M.Modal.init(elems);
+  });
+
+  document.getElementById("aadhaar_no").addEventListener("change",function(event){
+    event.preventDefault();
+    if(document.getElementById("aadhaar_no").value.length==12)
+    {
+        var params=new URLSearchParams()
+        params.append("action","checkAadhaar")
+        params.append("aadhaar_no",document.getElementById("aadhaar_no").value)
+        axios({
+            method:'get',
+            url:`${globalpath}controllers/ctrl-aadhaar/`,
+            params:params
+        }).then(function(response){
+            if(response.data.status=="false")
+            {
+                document.getElementById("fields").style.display="inline";
+            }
+        }).catch(function(error){
+            console.log(error)
+        })
+    }
+
+  })
+</script>
+
+<!-- <div id="formbody">
+            <div id="title">DocCall Login</div><p>
+            <div id="alert_msg"></div>
+            <form id="form">
+                <span id="username1_error"></span>
+                <input type="text" id="username1" name="username" placeholder="Username"><p>
+                <span id="password_error"></span>
+                <input type="password" id="password" name="password" placeholder="Password"><p>
+                <button id="submit" class="btn btn-info">Login</button>
+            </form>
+            <div id="signUptext">Don't have an account? <a href="registration1.html">Sign Up here</a></div><p>
+            <div id="forgotPassword"><a href="forgotPassword.html">Forgot Password?</a></div>
+        </div>-->
+<!-- 
+<script src="./functions/lib/authenticate/login.js"></script>
+<script>
+document.getElementById("submit").addEventListener("click",function(event){
+    event.preventDefault();
+    var param=getLoginDetails()
+    if(param!=null)
+    {
+        axios({
+            method:'get',
+            url:`${globalpath}controllers/ctrl-generalized/`,
+            params:param
+        }).then(function(response){
+            console.log(response)
+            if(response.data.status=="true")
+            {
+                localStorage.setItem("uid",response.data.data.uid)
+                localStorage.setItem("user_id",response.data.data.user_id)
+                window.location="homepage.html"
+            }else{
+                document.getElementById("alert_msg").innerHTML=response.data.message
+            }
+        }).catch(function(error){
+            console.log(error)
+        })
+    }
+})
+</script> -->

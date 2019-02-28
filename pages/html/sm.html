@@ -1,0 +1,102 @@
+<html>
+    <head>
+        <title>
+            SM
+        </title>
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <style>
+            .post{
+                background-color: #6666ff;
+                color: white;
+                border-radius: 4px;
+                border: 1px solid #6666ff; 
+            }
+            #head{
+                position: relative;
+                top: 0px;
+                width: 100%;
+                height: 70px;
+                background-color: #6666ff;
+                overflow: hidden;
+                padding: 20px;
+                font-family: 'Times New Roman', Times, serif;
+                font-size: 20px;
+                color:grey;
+                font-weight: bold;
+                vertical-align:sub
+            }
+            
+        </style>
+    </head>
+    <body class="body">
+        <div id="head">
+            <div id="searchBar">DocCall&nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="text" id="search" placeholder="Search Colleagues"><button id="searchBtn"><i class="glyphicon glyphicon-search"></i></button>
+            </div>
+        </div>
+        <div id="profileBar">
+                <img id="profileImage" src="img.jpg"><button id="username" data-toggle="popover" data-popover-content="#open" data-placement="bottom">Username</button>
+        </div>
+        <div class="hidden" id="open">
+                <div class="popover-content">
+                        <button id="profile">Profile</button>
+                        <button id="logout" onclick="logout()">Log out</button>
+                </div>
+        </div>
+        <div id="searchBar1">
+                <input type="text" placeholder="Enter Symptoms"><button id="searchBtn1"><i class="glyphicon glyphicon-search"></i></button>
+        </div>
+        <div class="med">
+            <div class="rating_details">
+                Name:
+                <div id="SymptomsList">
+                    For Symptoms: Cough,Cold etc.
+                </div>
+                <div class="rating">
+                    Rating:5.0
+                </div>
+                <div class="rated_by">Rated by</div>
+            </div>
+        </div>
+        <div id="sidebar">
+                <button class="functions" id="home">Home</button><p>
+                <button id="gpr" class="functions">Get Patient Reports</button><p>
+                <button id="sm" class="functions">Search Medicine</button><p>
+                <button id="ass" class="functions">Assign Prescription</button>
+        </div>
+    </body>
+</html>  
+<script>
+$(document).ready(function(){
+    $('[data-toggle="popover"]').popover({
+        html:true,
+        content:function(){
+            var content=$(this).attr("data-popover-content")
+            return $(content).children(".popover-content").html();
+        }
+    });
+})
+document.getElementById("ass").addEventListener("click",function(event){
+    event.preventDefault();
+    window.location="AP.html"
+})
+document.getElementById("home").addEventListener("click",function(event){
+    event.preventDefault();
+    window.location="homepage.html"
+})
+document.getElementById("sm").addEventListener("click",function(event){
+    event.preventDefault();
+    window.location="sm.html";
+})
+document.getElementById("gpr").addEventListener("click",function(event){
+    event.preventDefault();
+    window.location="gpr.html";
+})
+function logout()
+{
+    window.location="login.html"
+}
+</script>   
