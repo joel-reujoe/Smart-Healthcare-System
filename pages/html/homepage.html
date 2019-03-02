@@ -1,83 +1,114 @@
 <html>
     <head>
         <title>Home</title>
-        <link rel="stylesheet" type="text/css" href="style.css">
+        <!-- <link rel="stylesheet" type="text/css" href="style.css"> -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Compiled and minified JavaScript -->
+        <script src="../js/image-compressor/dist/image-compressor.min.js"></script>
+        <script src="../js/image-compressor/dist/image-compressor.js"></script>
+
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/cropper/4.0.0/cropper.min.css" rel="stylesheet"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/cropper/4.0.0/cropper.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
         <style>
-            .post{
-                background-color: #6666ff;
-                color: white;
-                border-radius: 4px;
-                border: 1px solid #6666ff; 
-            }
-            #head{
-                position: relative;
-                top: 0px;
+        .col.s12 > .btn {
                 width: 100%;
-                height: 70px;
-                background-color: #6666ff;
-                overflow: hidden;
-                padding: 20px;
-                font-family: 'Times New Roman', Times, serif;
-                font-size: 20px;
-                color:grey;
-                font-weight: bold;
-                vertical-align:sub
             }
-            
+            i.icon-teal {
+            color:teal;
+        }
         </style>
     </head>
     <body class="body" id="body">
-            <div id="head">
-                <div id="searchBar">DocCall&nbsp;&nbsp;&nbsp;&nbsp;
-                    <input type="text" id="search" placeholder="Search Colleagues"><button id="searchBtn"><i class="glyphicon glyphicon-search"></i></button>
-                </div>     
-            </div>
-            <div id="profileBar">
-                    <img id="profileImage" src="img.jpg"><button id="username" data-toggle="popover" data-popover-content="#open" data-placement="bottom">Username</button>
-            </div>
-            <div class="hidden" id="open">
-                <div class="popover-content">
-                        <button id="profile">Profile</button>
-                        <button id="logout" onclick="logout()">Log out</button>
+        <nav>
+            <div class="nav-wrapper teal">
+                <a href="#" class="brand-logo center">DocCall</a> 
+                <ul id="slide-out" class="sidenav">
+                <li><div class="user-view">
+                        <div class="background">
+                          <img src="images/img.jpg">
+                        </div>
+                        <a href="#user"><img class="circle" src="images/img-1.jpeg"></a>
+                        <a href="#name"><span class="white-text name">John Doe</span></a>
+                        <a href="#email"><span class="white-text email">jdandturk@gmail.com</span></a>
+                      </div></li>
+            <li><a href="#!">Something</a></li>
+            <li><a href="#!">Something</a></li>
+          </ul>
+          <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>               
+        </div>
+        </nav>
+            <div class="section">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col s12 m6">
+                                    <div class="input-field col s12">
+                                            <textarea id="txtareaPost" rows="10" cols="50" class="materialize-textarea" placeholder="Write Something..."></textarea>
+                                    </div>
+                                    <div class="input-field col s12">
+                                            <div class = "file-field input-field">
+                                                    <div class = "btn">
+                                                            <span>Browse</span>
+                                                            <input type = "file" id="txtFile"/>
+                                                    </div>
+                                                    <div class = "file-path-wrapper">
+                                                        <input class = "file-path validate" type = "text"
+                                                            placeholder = "Upload Photo" />
+                                                    </div>
+                                            </div>
+                                    </div>
+                                    <div class="input-field col s12">
+                                        <button class="btn" id="btnPost">Post</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <p>
-            <div id="post">
-                <textarea cols="50" rows="4" id="postArea">
-                </textarea>
-                <br>
-                <button id="postButton" class="post" >Post</button>
-                <input id='imageFile' type='file' name='imageFile' class="hidden"/>
-                <button id="uploadimage" class="post">Upload Image</button>
-            </div>
-            <p>
-            <div class="posts">
-                <div id="name">Joel Dsouza</div>
-                <div id="content">Hi there this is joel dsouza. Employee at Carwale.com</div>
-                <div id="image">
-                    <img id="imgContent" src="img-1.jpeg" class="imgContent">
+            <div class="section">
+                <div class="container">
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="row">
+                                <div class="col s6">
+                                    Joel Dsouza
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col s12">
+                                        I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col s12">
+                                    <img src="./images/img-1.jpeg" width="500" height="500">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-action">
+                            <a href="#" class="teal-text"><i class="material-icons icon-teal">thumb_up</i></a>
+                            <a href="#" class="teal-text"><i class="material-icons icon-teal">text_sms</i></a>
+                        </div>
+                    </div>
                 </div>
-                <p>
-                <div id="like" class="like">
-                    <button id="likeCount">Like</button>
-                </div>
             </div>
-            <div id="sidebar">
-                <button id="gpr" class="functions">Get Patient Reports</button><p>
-                <button id="sm" class="functions">Search Medicine</button><p>
-                <button id="ass" class="functions">Assign Prescription</button>
-            </div>
-    </body>
+        </body>
 </html>
 <script src="https://www.gstatic.com/firebasejs/5.5.0/firebase.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-<script src="./functions/lib/general.js"></script>
-<script src="./functions/lib/post/post.js"></script>
+<!-- <script src="./js/functions/lib/general.js"></script>
+<script src="./js/functions/lib/post/post.js"></script> -->
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.sidenav');
+    var instances = M.Sidenav.init(elems);
+  });
 var config = {
     apiKey: "AIzaSyB0ga6ikjDvGADhhd80r2Xeiaep3K22H-M",
     authDomain: "smarthealthcare-160f0.firebaseapp.com",
@@ -90,100 +121,137 @@ firebase.initializeApp(config);
 var starCountRef = firebase.database().ref().child('posts');
 starCountRef.on('child_added',snapshot=>{
     var div=document.createElement('div')
-    div.setAttribute("class","posts")
-    console.log(snapshot.val())
-        if(snapshot.val().imageUrl!="image_url"){
-            div.innerHTML=`<div id="name">${snapshot.val().name}</div>
-                <div id="content">${snapshot.val().post}</div>
-                <div id="image">
-                    <img id="imgContent" src="${snapshot.val().imageUrl}" class="imgContent">
-                </div>
-                <p>
-                <div id="like" class="like">
-                    <button id="likeCount">Like</button>
-                </div>`
-        }
-        else{
-            div.innerHTML=`<div id="name">${snapshot.val().name}</div>
-                <div id="content">${snapshot.val().post}</div>
-                <p>
-                <div id="like" class="like">
-                    <button id="likeCount">Like</button>
-                </div>`
-        }
-        document.getElementById("body").appendChild(div)
+        div.setAttribute("class","container")
+        div.innerHTML=``
     })
-</script>
-<script>
-$('document').ready(function()
+document.getElementById('btnPost').addEventListener('click', (e) => {
+console.log("hi")
+  const file = document.getElementById("txtFile").files[0];
+  var postText=document.getElementById("txtareaPost").value;
+    
+if(postText!="")
 {
-    $('textarea').each(function(){
-            $(this).val($(this).val().trim());
-        }
-    );
-});
-document.getElementById("postButton").style.backgroundColor="grey"
-document.getElementById("postButton").disabled=true
-document.getElementById("postArea").addEventListener("change",function(event){
-    if(document.getElementById("postArea").value!="")
-    {
-        document.getElementById("postButton").disabled=false
-        document.getElementById("postButton").style.backgroundColor="#6666ff"
+  if(file)
+  {
+    var urlGlobal="";
+    new ImageCompressor(file, {
+        quality: .6,
+        success(result) {
+            console.log(result)
+            storageRef = firebase.storage().ref("files/" + result.name);
+            uploadTask = storageRef.put(result);
+            uploadTask.on('state_changed', function(snapshot){
+                var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                console.log('Upload is ' + progress + '% done');
+        switch (snapshot.state) {
+            case firebase.storage.TaskState.PAUSED: // or 'paused'
+                console.log('Upload is paused');
+                break;
+            case firebase.storage.TaskState.RUNNING: // or 'running'
+                console.log('Upload is running');
+                break;
+            }
+        },
+            function(error) {
+            console.log(error)
+            },  
+            function() {
+                uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+                firebase.database().ref('post/').push({
+                    poster: "joel",
+                    postText:postText,
+                    image:true,
+                    imageUrl:downloadURL
+                });
+                })
+            })
+        }, 
+        error(e) {
+        console.log(e.message);
+        },
+    });
     }
     else{
-        document.getElementById("postButton").style.backgroundColor="grey"
-        document.getElementById("postButton").disabled=true
+        firebase.database().ref('post/').push({
+            poster: "joel",
+            postText:postText,
+            image:false
+            });
     }
-})
-document.getElementById("postButton").addEventListener("click",function(event){
-    var param=getPost()
-    if(param!=null)
-    {
-        axios({
-            method:'post',
-            url:`${globalpath}controllers/ctrl-doctor`,
-            params:param
-        }).then(function(response){
-            console.log(response)
-        }).catch(function(error){
-            console.log(error)
-        })
-    }
-})
+}
+  
+});
 </script>
 <script>
-$(document).ready(function(){
-    $('[data-toggle="popover"]').popover({
-        html:true,
-        content:function(){
-            var content=$(this).attr("data-popover-content")
-            return $(content).children(".popover-content").html();
-        }
-    });
-})
-document.getElementById("ass").addEventListener("click",function(event){
-    event.preventDefault();
-    window.location="AP.html"
-})
-document.getElementById("sm").addEventListener("click",function(event){
-    event.preventDefault();
-    window.location="sm.html";
-})
-document.getElementById("gpr").addEventListener("click",function(event){
-    event.preventDefault();
-    window.location="gpr.html";
-})
-document.getElementById("postButton").addEventListener("click",function(event){
-    event.preventDefault();
+// $('document').ready(function()
+// {
+//     $('textarea').each(function(){
+//             $(this).val($(this).val().trim());
+//         }
+//     );
+// });
+// document.getElementById("postButton").style.backgroundColor="grey"
+// document.getElementById("postButton").disabled=true
+// document.getElementById("postArea").addEventListener("change",function(event){
+//     if(document.getElementById("postArea").value!="")
+//     {
+//         document.getElementById("postButton").disabled=false
+//         document.getElementById("postButton").style.backgroundColor="#6666ff"
+//     }
+//     else{
+//         document.getElementById("postButton").style.backgroundColor="grey"
+//         document.getElementById("postButton").disabled=true
+//     }
+// })
+// document.getElementById("postButton").addEventListener("click",function(event){
+//     var param=getPost()
+//     if(param!=null)
+//     {
+//         axios({
+//             method:'post',
+//             url:`${globalpath}controllers/ctrl-doctor`,
+//             params:param
+//         }).then(function(response){
+//             console.log(response)
+//         }).catch(function(error){
+//             console.log(error)
+//         })
+//     }
+// })
+// </script>
+<script>
+// $(document).ready(function(){
+//     $('[data-toggle="popover"]').popover({
+//         html:true,
+//         content:function(){
+//             var content=$(this).attr("data-popover-content")
+//             return $(content).children(".popover-content").html();
+//         }
+//     });
+// })
+// document.getElementById("ass").addEventListener("click",function(event){
+//     event.preventDefault();
+//     window.location="AP.html"
+// })
+// document.getElementById("sm").addEventListener("click",function(event){
+//     event.preventDefault();
+//     window.location="sm.html";
+// })
+// document.getElementById("gpr").addEventListener("click",function(event){
+//     event.preventDefault();
+//     window.location="gpr.html";
+// })
+// document.getElementById("postButton").addEventListener("click",function(event){
+//     event.preventDefault();
     
-})
-document.getElementById("uploadimage").addEventListener("click",function(event){
-    event.preventDefault();
-    document.getElementById("imageFile").click();
-})
+// })
+// document.getElementById("uploadimage").addEventListener("click",function(event){
+//     event.preventDefault();
+//     document.getElementById("imageFile").click();
+// })
 
-function logout()
-{
-    window.location="login.html";
-}
+// function logout()
+// {
+//     window.location="login.html";
+// }
 </script>
