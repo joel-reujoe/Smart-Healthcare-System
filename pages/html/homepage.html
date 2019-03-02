@@ -71,33 +71,10 @@
                     </div>
                 </div>
             </div>
-            <div class="section">
-                <div class="container">
-                    <div class="card">
-                        <div class="card-content">
-                            <div class="row">
-                                <div class="col s6">
-                                    Joel Dsouza
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col s12">
-                                        I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col s12">
-                                    <img src="./images/img-1.jpeg" width="500" height="500">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-action">
-                            <a href="#" class="teal-text"><i class="material-icons icon-teal">thumb_up</i></a>
-                            <a href="#" class="teal-text"><i class="material-icons icon-teal">text_sms</i></a>
-                        </div>
-                    </div>
-                </div>
+            <div class="container" id="divPostContents">
+                
             </div>
+        
         </body>
 </html>
 <script src="https://www.gstatic.com/firebasejs/5.5.0/firebase.js"></script>
@@ -105,6 +82,7 @@
 <!-- <script src="./js/functions/lib/general.js"></script>
 <script src="./js/functions/lib/post/post.js"></script> -->
 <script>
+    
     document.addEventListener('DOMContentLoaded', function() {
     var elems = document.querySelectorAll('.sidenav');
     var instances = M.Sidenav.init(elems);
@@ -117,12 +95,73 @@ var config = {
     storageBucket: "smarthealthcare-160f0.appspot.com",
     messagingSenderId: "488465131798"
   };
+
+
+
 firebase.initializeApp(config);
-var starCountRef = firebase.database().ref().child('posts');
+var starCountRef = firebase.database().ref().child('post');
 starCountRef.on('child_added',snapshot=>{
+if(snapshot.val().image)
+{
     var div=document.createElement('div')
-        div.setAttribute("class","container")
-        div.innerHTML=``
+        div.innerHTML=`<div class="section" >
+                <div class="container">
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="row">
+                                <div class="col s6">
+                                    <a href="#!" data-userid=${snapshot.val().poster_id}><strong>${snapshot.val().poster}</strong></a>                                    
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col s12">
+                                 ${snapshot.val().postText}       
+                                </div>
+                            </div>
+            
+                            <div class="row">
+                                <div class="col s12">
+                                    <img src="${snapshot.val().imageUrl}" width="300" height="300">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-action">
+                            <button href="#" class="teal-text white likeClass" data-likekey=${snapshot.key}><i class="material-icons icon-teal">thumb_up_alt</i>${snapshot.val().likes}</button>
+                            <button href="#" class="teal-text white commentClass" data-commentkey=${snapshot.key}><i class="material-icons icon-teal">text_sms</i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>`
+    document.getElementById("divPostContents").appendChild(div)
+}
+else{
+    var div=document.createElement('div')
+        div.innerHTML=`
+            <div class="section">
+                <div class="container">
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="row">
+                                <div class="col s6">
+                                    <a href="#!"><strong>${snapshot.val().poster}</strong></a>                                    
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col s12">
+                                 ${snapshot.val().postText}       
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-action">
+                            <button  class="btn-flat teal-text white likeClass"><i class="material-icons icon-teal">thumb_up</i></button>
+                            <button  class="btn-flat teal-text white commentClass"><i class="material-icons icon-teal">text_sms</i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>`
+    document.getElementById("divPostContents").appendChild(div)
+}
+    
     })
 document.getElementById('btnPost').addEventListener('click', (e) => {
 console.log("hi")
@@ -158,10 +197,12 @@ if(postText!="")
             function() {
                 uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
                 firebase.database().ref('post/').push({
+                    poster_id:"1",
                     poster: "joel",
                     postText:postText,
                     image:true,
-                    imageUrl:downloadURL
+                    imageUrl:downloadURL,
+                    likes:0
                 });
                 })
             })
@@ -181,6 +222,8 @@ if(postText!="")
 }
   
 });
+
+
 </script>
 <script>
 // $('document').ready(function()
