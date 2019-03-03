@@ -106,7 +106,7 @@ if(snapshot.val().image)
     var div=document.createElement('div')
         div.innerHTML=`<div class="section" >
                 <div class="container">
-                    <div class="card">
+                    <div class="card" id=card${snapshot.key}>
                         <div class="card-content">
                             <div class="row">
                                 <div class="col s6">
@@ -154,6 +154,24 @@ if(snapshot.val().image)
                 document.getElementById("commentSection"+snapshot.key).style.display="none"
             }
     })
+    firebase.database().ref('post/'+snapshot.key+'/comments').on("value",function(snapshotChild){
+        snapshotChild.forEach(function(childSnapshot){
+            var div=document.createElement("div")
+            div.innerHTML=`<div class="container">
+                <div class="row">
+                    <div class="col s12">
+                        ${childSnapshot.val().commentBy}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12">
+                        ${childSnapshot.val().commentText}
+                    </div>
+                </div>
+            </div>`
+            document.getElementById("card"+snapshot.key).appendChild(div)
+        })
+    })
     document.getElementById("commentbutton"+snapshot.key).addEventListener("click",function(event){
         var commentText=document.getElementById("comment"+snapshot.key).value;
         firebase.database().ref('post/'+snapshot.key+'/comments').push({
@@ -167,7 +185,7 @@ else{
         div.innerHTML=`
             <div class="section">
                 <div class="container">
-                    <div class="card">
+                    <div class="card" id=card${snapshot.key}>
                         <div class="card-content">
                             <div class="row">
                                 <div class="col s6">
@@ -199,6 +217,25 @@ else{
                 </div>
             </div>`
     document.getElementById("divPostContents").appendChild(div)
+    firebase.database().ref('post/'+snapshot.key+'/comments').on("value",function(snapshotChild){
+        snapshotChild.forEach(function(childSnapshot){
+            var div=document.createElement("div")
+            div.innerHTML=`<div class="container">
+                <div class="row">
+                    <div class="col s12">
+                        ${childSnapshot.val().commentBy}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12">
+                        ${childSnapshot.val().commentText}
+                    </div>
+                </div>
+            </div>`
+            document.getElementById("card"+snapshot.key).appendChild(div)
+        })
+    })
+   
     document.getElementById(snapshot.key).addEventListener("click",function(event){
         event.preventDefault();
         this.dataset.status=true
