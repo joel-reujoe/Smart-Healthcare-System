@@ -126,13 +126,41 @@ if(snapshot.val().image)
                             </div>
                         </div>
                         <div class="card-action">
-                            <button href="#" class="teal-text white likeClass" data-likekey=${snapshot.key}><i class="material-icons icon-teal">thumb_up_alt</i>${snapshot.val().likes}</button>
-                            <button href="#" class="teal-text white commentClass" data-commentkey=${snapshot.key}><i class="material-icons icon-teal">text_sms</i></button>
+                            <button  class="btn-flat teal-text white likeClass" data-likekey=${snapshot.key}><i class="material-icons icon-white">thumb_up_alt</i>${snapshot.val().likes}</button>
+                            <button  class="btn-flat teal-text white" id="${snapshot.key}" data-commentkey=${snapshot.key}><i class="material-icons icon-white">text_sms</i></button>
+                        </div>
+                        <div class="container" id="commentSection${snapshot.key}" style="display:none">
+                            <div class="row">
+                            <div class="input-field col s12">
+                                <input type="text" class="commentBox" id="comment${snapshot.key}">
+                                <label for="comment${snapshot.key}">Comment</label>
+                            </div>
+                            <div class="input-field col s12">
+                                <button class="btn btn-flat teal white-text" id="commentbutton${snapshot.key}">Comment</button>
+                            </div>    
                         </div>
                     </div>
                 </div>
             </div>`
     document.getElementById("divPostContents").appendChild(div)
+    document.getElementById(snapshot.key).addEventListener("click",function(event){
+        event.preventDefault();
+        this.dataset.status=true
+        if(this.dataset.status){
+                this.dataset.status=false;
+                document.getElementById("commentSection"+snapshot.key).style.display="block"
+            }else{
+                this.dataset.status=true;
+                document.getElementById("commentSection"+snapshot.key).style.display="none"
+            }
+    })
+    document.getElementById("commentbutton"+snapshot.key).addEventListener("click",function(event){
+        var commentText=document.getElementById("comment"+snapshot.key).value;
+        firebase.database().ref('post/'+snapshot.key+'/comments').push({
+                commentBy:"2",
+                commentText:commentText
+        })  
+    })
 }
 else{
     var div=document.createElement('div')
@@ -153,16 +181,94 @@ else{
                             </div>
                         </div>
                         <div class="card-action">
-                            <button  class="btn-flat teal-text white likeClass"><i class="material-icons icon-teal">thumb_up</i></button>
-                            <button  class="btn-flat teal-text white commentClass"><i class="material-icons icon-teal">text_sms</i></button>
+                            <button  class="btn-flat teal-text white likeClass" data-likekey=${snapshot.key}><i class="material-icons icon-white">thumb_up_alt</i>${snapshot.val().likes}</button>
+                            <button  class="btn-flat teal-text white commentClass" id=${snapshot.key} data-commentkey=${snapshot.key}><i class="material-icons icon-white">text_sms</i></button>
                         </div>
+                        <div class="container" id="commentSection${snapshot.key}" style="display:none">
+                            <div class="row">
+                            <div class="input-field col s12">
+                                <input type="text" class="commentBox" id="comment${snapshot.key}">
+                                <label for="comment${snapshot.key}">Comment</label>
+                            </div>
+                            <div class="input-field col s12">
+                                <button class="btn btn-flat teal white-text" id="commentbutton${snapshot.key}">Comment</button>
+                            </div>    
+                        </div>
+                    </div>
                     </div>
                 </div>
             </div>`
     document.getElementById("divPostContents").appendChild(div)
-}
-    
+    document.getElementById(snapshot.key).addEventListener("click",function(event){
+        event.preventDefault();
+        this.dataset.status=true
+        if(this.dataset.status){
+            this.dataset.status=false                
+                document.getElementById("commentSection"+snapshot.key).style.display="block"
+            }else{
+            this.dataset.status=true                
+                document.getElementById("commentSection"+snapshot.key).style.display="none"
+            }
     })
+    document.getElementById("commentbutton"+snapshot.key).addEventListener("click",function(event){
+        var commentText=document.getElementById("comment"+snapshot.key).value;
+        firebase.database().ref('post/'+snapshot.key+'/comments').push({
+                commentBy:"2",
+                commentText:commentText
+        })  
+    })
+}
+
+var likeButton=document.getElementsByClassName("likeClass")
+
+for(var i=0;i<likeButton.length;i++)
+{
+    likeButton[i].addEventListener("click",function(event){
+        event.preventDefault()
+        updateLike(this)
+    })
+}
+
+var commentButton=document.getElementsByClassName("commentClass")
+    
+    
+})
+
+updateLike=function(elem)
+{
+    console.log(elem)
+    var starCountRef = firebase.database().ref().child('post').child(elem.dataset.likekey)
+        starCountRef.once("value",snapshot=>{
+            if(elem.childNodes[0].getAttribute("class")=="material-icons icon-white")
+            {
+                var likeCount=snapshot.val().likes;
+                likeCount=likeCount+1;
+                elem.childNodes[1].nodeValue=likeCount
+                elem.childNodes[0].setAttribute("class","material-icons icon-teal");
+                firebase.database().ref('post/'+elem.dataset.likekey).update({
+                    likes:likeCount
+                })
+                firebase.database().ref('post/'+elem.dataset.likekey+'/likedBy').push({
+                    userId:"2"
+                })
+            }
+            else{
+                var likeCount=snapshot.val().likes;
+                likeCount=likeCount-1;
+                elem.childNodes[1].nodeValue=likeCount
+                elem.childNodes[0].setAttribute("class","material-icons icon-white");
+                firebase.database().ref('post/'+elem.dataset.likekey).update({
+                    likes:likeCount
+                })
+                firebase.database().ref('post/'+elem.dataset.likekey+'/likedBy').orderByChild("userId").equalTo("2").once("value").then(function(snapshot){
+                    snapshot.forEach(function(childSnapshot){
+                        firebase.database().ref('post/'+elem.dataset.likekey+'/likedBy').child(childSnapshot.key).remove() 
+                    })
+                })
+            }
+        })
+}
+
 document.getElementById('btnPost').addEventListener('click', (e) => {
 console.log("hi")
   const file = document.getElementById("txtFile").files[0];
@@ -214,14 +320,17 @@ if(postText!="")
     }
     else{
         firebase.database().ref('post/').push({
+            poster_id:"1",
             poster: "joel",
             postText:postText,
-            image:false
+            image:false,
+            likes:0
             });
     }
 }
   
 });
+
 
 
 </script>
