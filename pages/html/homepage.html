@@ -38,6 +38,7 @@
             <li><a href="#!">Something</a></li>
             <li><a href="#!">Something</a></li>
           </ul>
+          
           <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>               
         </div>
         </nav>
@@ -100,7 +101,7 @@ var config = {
 
 firebase.initializeApp(config);
 var starCountRef = firebase.database().ref().child('post');
-starCountRef.on('child_added',snapshot=>{
+starCountRef.orderByChild("timestamp").on('child_added',snapshot=>{
 if(snapshot.val().image)
 {
     var div=document.createElement('div')
@@ -142,7 +143,7 @@ if(snapshot.val().image)
                     </div>
                 </div>
             </div>`
-    document.getElementById("divPostContents").appendChild(div)
+            document.getElementById("divPostContents").insertBefore(div,document.getElementById("divPostContents").firstChild)
     document.getElementById(snapshot.key).addEventListener("click",function(event){
         event.preventDefault();
         this.dataset.status=true
@@ -169,7 +170,7 @@ if(snapshot.val().image)
                     </div>
                 </div>
             </div>`
-            document.getElementById("card"+snapshot.key).appendChild(div)
+            document.getElementById("commentSection"+snapshot.key).appendChild(div)            
         })
     })
     document.getElementById("commentbutton"+snapshot.key).addEventListener("click",function(event){
@@ -216,10 +217,22 @@ else{
                     </div>
                 </div>
             </div>`
-    document.getElementById("divPostContents").appendChild(div)
+            document.getElementById("divPostContents").insertBefore(div,document.getElementById("divPostContents").firstChild)
+    
+    document.getElementById(snapshot.key).addEventListener("click",function(event){
+        event.preventDefault();
+        this.dataset.status=true
+        if(this.dataset.status){
+            this.dataset.status=false                
+                document.getElementById("commentSection"+snapshot.key).style.display="block"
+            }else{
+            this.dataset.status=true                
+                document.getElementById("commentSection"+snapshot.key).style.display="none"
+            }
+    })
     firebase.database().ref('post/'+snapshot.key+'/comments').on("value",function(snapshotChild){
+        var div=document.createElement("div")
         snapshotChild.forEach(function(childSnapshot){
-            var div=document.createElement("div")
             div.innerHTML=`<div class="container">
                 <div class="row">
                     <div class="col s12">
@@ -232,20 +245,8 @@ else{
                     </div>
                 </div>
             </div>`
-            document.getElementById("card"+snapshot.key).appendChild(div)
+            document.getElementById("commentSection"+snapshot.key).appendChild(div)
         })
-    })
-   
-    document.getElementById(snapshot.key).addEventListener("click",function(event){
-        event.preventDefault();
-        this.dataset.status=true
-        if(this.dataset.status){
-            this.dataset.status=false                
-                document.getElementById("commentSection"+snapshot.key).style.display="block"
-            }else{
-            this.dataset.status=true                
-                document.getElementById("commentSection"+snapshot.key).style.display="none"
-            }
     })
     document.getElementById("commentbutton"+snapshot.key).addEventListener("click",function(event){
         var commentText=document.getElementById("comment"+snapshot.key).value;
@@ -307,7 +308,7 @@ updateLike=function(elem)
 }
 
 document.getElementById('btnPost').addEventListener('click', (e) => {
-console.log("hi")
+
   const file = document.getElementById("txtFile").files[0];
   var postText=document.getElementById("txtareaPost").value;
     
@@ -345,7 +346,8 @@ if(postText!="")
                     postText:postText,
                     image:true,
                     imageUrl:downloadURL,
-                    likes:0
+                    likes:0,
+                    timestamp:Date.now()
                 });
                 })
             })
@@ -361,7 +363,8 @@ if(postText!="")
             poster: "joel",
             postText:postText,
             image:false,
-            likes:0
+            likes:0,
+            timestamp:Date.now()
             });
     }
 }
