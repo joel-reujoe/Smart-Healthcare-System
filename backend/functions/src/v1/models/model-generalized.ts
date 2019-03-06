@@ -2,6 +2,7 @@ var MasterFunctions=require('../dependencies/masterfunctions')
 var firebase=require('firebase')
 var admin=require('firebase-admin')
 var mailer=require('nodemailer')
+var smtpTransport = require('nodemailer-smtp-transport');
 var config=require('../enviroment/config')
 firebase.initializeApp(config)
 class model_generalized{
@@ -38,32 +39,31 @@ class model_generalized{
             }
         })
     }
-    public sendMail=async(req,res,next,email)=>{
+    public sendMail=async(req,res,next,contextObject,context)=>{
         return new Promise(async(resolve,reject)=>{
             try{
                 var transporter = mailer.createTransport({
-                    service:"gmail",
+                    service: 'gmail',
                     host: 'smtp.gmail.com',
-                    port: 465,
-                    secure: true,
                     auth: {
-                      user: 'joel.rdsouza28@gmail.com',
-                      pass: 'Athira9/'
+                        user: 'joel.rdsouza28@gmail.com',
+                        pass: 'Athira9/'
                     }
-                  });
-                  
-                var mailOptions = {
-                    from: 'joel.reujoe@gmail.com',
-                    to: req.query.email,
-                    subject: 'Sending Email using Node.js',
-                    text: `Hi Joel Here From DocCall. We are glad that you are ready to join and contribute to the community.
-                    Please click the link below to verify the account
-                    
-                    
-                
-                    `,
-                    html: '<p><a href="localhost/DoctorUI/pages/login.html">Verify Your Mail by Clicking Here</a></p>'
-                  };
+                })
+                 var mailOptions={}
+                  switch(context)
+                  {
+                      case 1:
+
+                      mailOptions = {
+                        from: 'joel.rdsouza28@gmail.com',
+                        to: `${contextObject.data.data[0].email}`,
+                        subject: 'Request for Sign Up',
+                        text: `Dear admin This is Dr. ${contextObject.data.data[0].name} Below are my details Name:${contextObject.data.data[0].name} Aadhaar Number:${contextObject.data.data[0].aadhaarNumber} Aadhaar Link: ${contextObject.data.data[0].aadhaar_link}, Qualification Link: ${contextObject.data.data[0].qualification_link}, Date of Birth:${contextObject.data.data[0].dob}, Gender: ${contextObject.data.data[0].gender}, Phone Number:${contextObject.data.data[0].phone_number}`
+                      };
+                      break;
+                  }
+                  console.log(mailOptions)
                   transporter.sendMail(mailOptions, function(error, info){
                     if (error) {
                       console.log(error);

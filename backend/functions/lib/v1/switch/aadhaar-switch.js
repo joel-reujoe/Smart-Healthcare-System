@@ -17,8 +17,8 @@ class aadhaar_switch {
                 case "checkAadhaar":
                     ctrl_aadhaar_object.checkAadhaar(req, res, next);
                     break;
-                case "insertAadhaarDetails":
-                    ctrl_aadhaar_object.insertAadhaarDetails(req, res, next);
+                case "insertRegistrationRequest":
+                    ctrl_aadhaar_object.insertRegistrationRequest(req, res, next);
                     break;
                 default:
                     console.log("nothing found");

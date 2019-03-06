@@ -89,11 +89,11 @@
                                     </div>
                                     <div style="display:none" id="fields">
                                         <div class="input-field col s12">
-                                            <input type="text" id="email" >
+                                            <input type="text" id="email_signup" >
                                             <label for="email">Email</label>                                            
                                         </div>
                                         <div class="input-field col s12">
-                                            <input type="text" id="password" >
+                                            <input type="text" id="password_signup" >
                                             <label for="password">Password</label>                                            
                                         </div>
                                         <div class="input-field col s12">
@@ -117,6 +117,10 @@
                                                 <label for="pincode">PIN Code</label>
                                         </div>
                                         <div class="input-field col s12">
+                                            <input type="number" id="phone_number">
+                                            <label for="phone_number">Phone Number</label>
+                                        </div>
+                                        <div class="input-field col s12">
                                                 <select id="gender" >
                                                         <option value="0" disabled selected>Select Gender</option>
                                                         <option value="male">Male</option>
@@ -132,7 +136,7 @@
                                             <div class = "file-field input-field">
                                                <div class = "btn">
                                                   <span>Browse</span>
-                                                  <input type = "file" />
+                                                  <input type = "file" id="aadhaar_file" />
                                                </div>
                                                
                                                <div class = "file-path-wrapper">
@@ -146,7 +150,7 @@
                                             <div class = "file-field input-field">
                                                <div class = "btn">
                                                   <span>Browse</span>
-                                                  <input type = "file" />
+                                                  <input type = "file" id="qualification_file" />
                                                </div>
                                                
                                                <div class = "file-path-wrapper">
@@ -173,9 +177,23 @@
         </footer>
     </body>
 </html>
+
+<script src="https://www.gstatic.com/firebasejs/5.5.0/firebase.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="../js/functions/lib/general.js"></script>
 <script>
+
+var config = {
+    apiKey: "AIzaSyB0ga6ikjDvGADhhd80r2Xeiaep3K22H-M",
+    authDomain: "smarthealthcare-160f0.firebaseapp.com",
+    databaseURL: "https://smarthealthcare-160f0.firebaseio.com",
+    projectId: "smarthealthcare-160f0",
+    storageBucket: "smarthealthcare-160f0.appspot.com",
+    messagingSenderId: "488465131798"
+  };
+firebase.initializeApp(config);
+
+
 document.addEventListener('DOMContentLoaded', function() {
     var elems = document.querySelectorAll('select');
     var instances = M.FormSelect.init(elems);
@@ -209,9 +227,12 @@ document.addEventListener('DOMContentLoaded', function() {
             url:`${globalpath}controllers/ctrl-aadhaar/`,
             params:params
         }).then(function(response){
-            if(response.data.status=="true")
+            if(response.data.status=="false")
             {
                 document.getElementById("fields").style.display="inline";
+            }
+            else{
+                Materialize.toast("Aadhaar Number Exists",3000)
             }
         }).catch(function(error){
             console.log(error)
@@ -219,6 +240,80 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
   })
+  var aadhaarUrl=""
+  var qualification_url=""
+  document.getElementById("btnSubmitDetails").addEventListener("click",function(event){
+      event.preventDefault()
+      const aadhaar_file = document.getElementById("aadhaar_file").files[0];
+      storageRef = firebase.storage().ref("aadhaar_photos/" + aadhaar_file.name);
+            uploadTask = storageRef.put(aadhaar_file);
+            uploadTask.on('state_changed', function(snapshot){
+                var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                console.log('Upload is ' + progress + '% done');
+        switch (snapshot.state) {
+            case firebase.storage.TaskState.PAUSED: // or 'paused'
+                console.log('Upload is paused');
+                break;
+            case firebase.storage.TaskState.RUNNING: // or 'running'
+                console.log('Upload is running');
+                break;
+            }
+    uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+        aadhaarUrl=downloadURL
+            })
+        })
+        const qualification_file = document.getElementById("qualification_file").files[0];
+        storageRef = firebase.storage().ref("qualifcation_photos/" + qualification_file.name);
+            uploadTask = storageRef.put(qualification_file);
+            uploadTask.on('state_changed', function(snapshot){
+                var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                console.log('Upload is ' + progress + '% done');
+                switch (snapshot.state) {
+                    case firebase.storage.TaskState.PAUSED: // or 'paused'
+                        console.log('Upload is paused');
+                        break;
+                    case firebase.storage.TaskState.RUNNING: // or 'running'
+                        console.log('Upload is running');
+                        break;
+                    }
+            uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+                    qualification_url=downloadURL      
+                    var params=new URLSearchParams()
+                    params.append("action","insertRegistrationRequest")
+                    params.append("email",document.getElementById("email_signup").value)
+                    params.append("password",document.getElementById("password_signup").value)
+                    params.append("name",document.getElementById("name").value)
+                    params.append("address",document.getElementById("address").value)
+                    params.append("city",document.getElementById("city").value)
+                    params.append("state",document.getElementById("state").value)
+                    params.append("pincode",document.getElementById("pincode").value)
+                    params.append("phone_number",document.getElementById("phone_number").value)
+                    params.append("gender",document.getElementById("gender").value)
+                    params.append("dob",document.getElementById("dob").value)
+                    params.append("aadhaar_link",aadhaarUrl);
+                    params.append("qualification_link",qualification_url);
+                    params.append("aadhaarNumber",document.getElementById("aadhaar_no").value)
+
+                    axios({
+                        method:'get',
+                        url:`${globalpath}controllers/ctrl-aadhaar/`,
+                        params:params
+                    }).then(function(response){
+                        console.log(response)
+                        if(response.data.status=="true")
+                        {
+                           M.toast({html:"Request sent successfully"})
+                        }
+                        else{
+                            M.toast({html:"Could not request"})
+                        }
+                    }).catch(function(error){
+                        console.log(error)
+                    
+                    })          
+                })  
+    })
+})
 </script>
 
 <!-- <div id="formbody">
