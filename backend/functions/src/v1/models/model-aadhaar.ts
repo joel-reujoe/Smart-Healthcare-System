@@ -20,7 +20,8 @@ class model_aadhaar_class{
                     resolve(data)
                 }
                 else{
-                    var data=MasterFunction.formatResponse("","true","");
+                    var data=MasterFunctions.formatResponse("","true","");
+                    resolve(data)
                 }
             }catch(e){
                 next(e)

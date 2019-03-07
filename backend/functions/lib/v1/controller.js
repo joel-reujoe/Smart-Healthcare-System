@@ -17,6 +17,7 @@ var dbservice = require('./dependencies/db');
 var doctor_router = require('./routers/doctor-router');
 var generalized_router = require('./routers/generalized-router');
 var aadhaar_router = require('./routers/aadhaar-router');
+var admin_router = require('./routers/admin-router');
 //app config
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -45,6 +46,7 @@ app.use((req, res, next) => __awaiter(this, void 0, void 0, function* () {
 app.use('/controllers/ctrl-doctor/', doctor_router);
 app.use('/controllers/ctrl-generalized/', generalized_router);
 app.use('/controllers/ctrl-aadhaar/', aadhaar_router);
+app.use('/controllers/ctrl-admin/', admin_router);
 app.get('*', (req, res, next) => {
     // console.log("We couldn't find anything you are looking for")
     res.send("We couldn't find anything you are looking for");

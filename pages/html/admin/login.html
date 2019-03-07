@@ -1,0 +1,78 @@
+<html>
+    <head>
+        <title>Login Page</title>
+        <!-- <link  rel="stylesheet" type="text/css"  href="/pages/css/materialize-v1.0.0/materialize/css/materialize.min.css"> -->
+        <!-- <script type="javascript" src="/pages/css/materialize-v1.0.0/materialize/js/materialize.min.js"></script> -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <style>
+            .footer{
+                position: fixed;
+                bottom: 0px;
+                width: 100%;
+            }
+            .form-body{
+                position: relative;
+                top:10px;
+                left: 250px;
+            }
+            .col.s12 > .btn {
+                width: 100%;
+            }
+            .datepicker{
+                width: 50%;
+            }
+        </style>
+
+    </head>
+    <body>
+        <nav>
+            <div class="nav-wrapper pink lighten-2">
+                    <a href="#" class="brand-logo center">AdminCall</a>
+            </div>
+        </nav>
+        <div class="container form-body">
+            <div class="row">
+                    <form class="col s12 m6">
+                        <div class="card white">
+                            <div class="card-content">
+                                    <div class="container">
+                                            <div class="row">
+                                                <div class="col s12">
+                                                    <span class="card-title"><strong>Login</strong></span>
+                                                </div>
+                                            </div>
+                                                <div class="row">
+                                                        <div class="input-field col s12">
+                                                                <input type="text" id="email">
+                                                                <label for="email">Email</label>    
+                                                        </div>
+                                                </div>
+                                                <div class="row">
+                                                        <div class="input-field col s12">
+                                                                <input type="password" id="password">
+                                                                <label for="password">Password</label>    
+                                                        </div>
+                                                </div>
+                                                <div class="row">
+                                                        <div class="input-field col s12">
+                                                            <button class="btn btn-flat pink lighten-2 white-text" id="btnLogin">Login</button>   
+                                                        </div>
+                                                </div>
+                                        </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+    </body>
+</html>
+<script src="../../js/functions/lib/general.js"></script>
+<script>
+    document.getElementById("btnLogin").addEventListener("click",function(event){
+        window.location=`${globalpath}doctorui-/pages/html/admin/homepage.html`
+    })
+
+
+</script>

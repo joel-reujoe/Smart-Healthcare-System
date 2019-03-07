@@ -12,6 +12,7 @@ var admin = require('firebase-admin');
 var mailer = require('nodemailer');
 var smtpTransport = require('nodemailer-smtp-transport');
 var config = require('../enviroment/config');
+var moment = require('moment');
 firebase.initializeApp(config);
 class model_generalized {
     constructor(connection) {
@@ -58,7 +59,15 @@ class model_generalized {
                                 from: 'joel.rdsouza28@gmail.com',
                                 to: `${contextObject.data.data[0].email}`,
                                 subject: 'Request for Sign Up',
-                                text: `Dear admin This is Dr. ${contextObject.data.data[0].name} Below are my details Name:${contextObject.data.data[0].name} Aadhaar Number:${contextObject.data.data[0].aadhaarNumber} Aadhaar Link: ${contextObject.data.data[0].aadhaar_link}, Qualification Link: ${contextObject.data.data[0].qualification_link}, Date of Birth:${contextObject.data.data[0].dob}, Gender: ${contextObject.data.data[0].gender}, Phone Number:${contextObject.data.data[0].phone_number}`
+                                text: `Dear admin 
+                        This is Dr. ${contextObject.data.data[0].name} Below are my details 
+                        Name:${contextObject.data.data[0].name} 
+                        Aadhaar Number:${contextObject.data.data[0].aadhaarNumber} 
+                        Aadhaar Link: ${contextObject.data.data[0].aadhaar_link}, 
+                        Qualification Link: ${contextObject.data.data[0].qualification_link}, 
+                        Date of Birth:${contextObject.data.data[0].dob}, 
+                        Gender: ${contextObject.data.data[0].gender}, 
+                        Phone Number:${contextObject.data.data[0].phone_number}`
                             };
                             break;
                     }
@@ -76,6 +85,30 @@ class model_generalized {
                 }
                 catch (e) {
                     reject(e);
+                }
+            }));
+        });
+        this.setNotification = (req, res, next, contextObject, context) => __awaiter(this, void 0, void 0, function* () {
+            return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
+                try {
+                    switch (context) {
+                        case 1:
+                            var sql = `INSERT INTO notification VALUES(0,${0},${1},'${contextObject.data.data[0].name} has requested to register as a doctor','${moment().format('DD/MM/YYYY')}','${moment().format('hh:mm a')}','unread')`;
+                            var data = {};
+                            var result = yield MasterFunctions.sqlProcess(sql, this.connection, "setNotification", next);
+                            if (result.insertId > 0) {
+                                data = MasterFunctions.formatResponse("", "true", "");
+                                resolve(data);
+                            }
+                            else {
+                                data = MasterFunctions.formatResponse("", "false", "");
+                                resolve(data);
+                            }
+                            break;
+                    }
+                }
+                catch (e) {
+                    next(e);
                 }
             }));
         });

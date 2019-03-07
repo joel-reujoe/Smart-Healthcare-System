@@ -180,7 +180,7 @@
 
 <script src="https://www.gstatic.com/firebasejs/5.5.0/firebase.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-<script src="../js/functions/lib/general.js"></script>
+<script src="../../js/functions/lib/general.js"></script>
 <script>
 
 var config = {
@@ -203,8 +203,9 @@ var minDate=new Date(1950,1,1);
 var maxDate=new Date(2000,12,31);
 
 document.addEventListener('DOMContentLoaded', function() {
+    option={format:"dd/mm/yyyy"}
     var elems = document.querySelectorAll('.datepicker');
-    var instances = M.Datepicker.init(elems);
+    var instances = M.Datepicker.init(elems,option);
   });
 document.addEventListener('DOMContentLoaded', function() {
     var elems = document.querySelectorAll('.collapsible');
