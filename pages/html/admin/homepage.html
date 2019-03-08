@@ -28,8 +28,8 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col s12 grey lighten-3">
-                        <table>
+                    <div class="col s12">
+                        <table class="highlight z-depth-3 centered">
                             <thead>
                                     <tr>
                                         <th>
@@ -57,6 +57,57 @@
                 </div>
             </div>
         </div>
+        <div class="modal modal-fixed-footer" id="detailsModal">
+            <div class="modal-content">
+                <div class="row">
+                    <div class="col s12" id="name">
+                    </div>
+                </div>
+                <div class="row">
+                        <div class="col s12" id="aadhaarNumber">
+                        </div>
+                </div>
+                <div class="row">
+                        <div class="col s12" id="address">
+                        </div>
+                </div>
+                <div class="row">
+                        <div class="col s12" id="city">
+                        </div>
+                </div>
+                <div class="row">
+                        <div class="col s12" id="state">
+                        </div>
+                </div>
+                <div class="row">
+                        <div class="col s12" id="email">
+                        </div>
+                </div>
+                <div class="row">
+                        <div class="col s12" id="dob">
+                        </div>
+                </div>
+                <div class="row">
+                        <div class="col s12" id="gender">
+                        </div>
+                </div>
+                <div class="row">
+                        <div class="col s12" >
+                            <div><strong>Aadhaar Image</strong></div>
+                            <img width="300" height="400" id="aadhaar_link">
+                        </div>
+                </div>
+                <div class="row">
+                        <div class="col s12" >
+                                <div><strong>Qualification Proof</strong></div>
+                                <img width="300" height="400" id="qualification_link">
+                        </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                    <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+            </div>
+        </div>
     </body>
 </html>
 
@@ -74,12 +125,22 @@ axios({
 }).then(function(response){
     if(response.data.status=="true"){
         console.log(response.data.data)
-        for(var i=0;i<response.data.data.length/2;i++){
+        for(var i=0;i<response.data.data.length;i++){
             var tr=document.createElement("tr");
+            tr.dataset.name=response.data.data[i].name
+            tr.dataset.aadhaarNumber=response.data.data[i].aadhaarNumber
+            tr.dataset.address=response.data.data[i].address
+            tr.dataset.city=response.data.data[i].city
+            tr.dataset.state=response.data.data[i].state
+            tr.dataset.email=response.data.data[i].email
+            tr.dataset.dob=response.data.data[i].dob
+            tr.dataset.gender=response.data.data[i].gender
+            tr.dataset.aadhaar_link=response.data.data[i].aadhaar_link
+            tr.dataset.qualification_link=response.data.data[i].qualification_link
             tr.innerHTML=`<td>${response.data.data[i].name}</td>
                 <td>${response.data.data[i].time} ${response.data.data[i].date}</td>
                 <td>${response.data.data[i].notification_description}</td>
-                <td><a href="!#"><i class="material-icon icons-green">add</i></a></td>
+                <td><a href="#detailsModal" class="modal-trigger" onclick=setData(this)><i class="material-icons icon-green">add</i></a></td>
                 <td>
                 <div class="container">
                     <div class="row">
@@ -96,9 +157,65 @@ axios({
                 </td>`
             document.getElementById("tblNotification").appendChild(tr)
             }
+            var approveButtons=document.getElementsByClassName("approve")
+            for(var i=0;i<approveButtons.length;i++)
+            {
+                approveButtons[i].addEventListener("click",function(event){
+                    var params1=new URLSearchParams()
+                    params1.append("action","approveDoctor")
+                    params1.append("request_id",this.dataset.requestid)
+                    axios({
+                        method:'get',
+                        url:`${globalpath}controllers/ctrl-admin/`,
+                        params:params1
+                    }).then(function(response){
+                        console.log(response)
+                    }).catch(function(error){
+                        console.log(error)
+                    })
+                })
+            }
+            var disapproveButtons=document.getElementsByClassName("disapprove")
+            for(var i=0;i<disapproveButtons.length;i++){
+                disapproveButtons[i].addEventListener("click",function(event){
+                    var params2=new URLSearchParams()
+                    params2.append("action","disapproveDoctor")
+                    params2.append("request_id", this.dataset.requestid);
+                    axios({
+                        method:'get',
+                        url:`${globalpath}controllers/ctrl-admin/`,
+                        params:params2
+                    }).then(function(response){
+                        console.log(response)
+                    }).catch(function(error){
+                        console.log(error)
+                    })
+                })
+            }
     }
 }).catch(function(error){
     console.log(error)
 })
+
+setData=function(elem){
+    var element=elem.parentNode.parentNode
+    document.getElementById("name").innerHTML="<strong>Name:</strong> "+element.dataset.name
+    document.getElementById("aadhaarNumber").innerHTML="<strong>Aadhaar Number:</strong> "+element.dataset.aadhaarNumber
+    document.getElementById("address").innerHTML="<strong>Address:</strong> "+element.dataset.address
+    document.getElementById("city").innerHTML="<strong>City:</strong> "+element.dataset.city
+    document.getElementById("state").innerHTML="<strong>State:</strong> "+element.dataset.state
+    document.getElementById("email").innerHTML="<strong>Email:</strong> "+element.dataset.email
+    document.getElementById("dob").innerHTML="<strong>Date of Birth:</strong> "+element.dataset.dob
+    document.getElementById("gender").innerHTML="<strong>Gender:</strong> "+element.dataset.gender
+    document.getElementById("aadhaar_link").src=element.dataset.aadhaar_link
+    document.getElementById("qualification_link").src=element.dataset.qualification_link
+}
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.modal');
+    var instances = M.Modal.init(elems);
+  });
 
 </script>

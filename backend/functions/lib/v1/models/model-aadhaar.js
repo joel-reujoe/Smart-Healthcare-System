@@ -35,13 +35,20 @@ class model_aadhaar_class {
         this.insertRegistrationRequest = (req, res, next, email, password, name, address, city, state, phone_number, pincode, gender, dob, aadhaar_link, qualification_link, aadhaarNumber) => __awaiter(this, void 0, void 0, function* () {
             return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
                 try {
-                    var sql = `INSERT INTO registration_request VALUES(0,'${email}','${password}','${name}','${address}','${city}','${state}',${phone_number},${pincode},'${gender}','${dob}','${aadhaar_link}','${qualification_link}','${aadhaarNumber}','pending')`;
-                    console.log(sql);
-                    var result = yield MasterFunctions.sqlProcess(sql, this.connection, "insertRegistrationRequest", next);
-                    if (result.insertId > 0) {
-                        var data = yield this.getFromRegistrationRequestById(req, res, next, result.insertId);
-                        var dataToSend = MasterFunctions.formatResponse(data, "true", "");
-                        resolve(dataToSend);
+                    var sql1 = `SELECT registration.email FROM registration WHERE email='${email}' `;
+                    var result1 = yield MasterFunctions.sqlProcess(sql1, this.connection, "insertRegistrationRequest", next);
+                    if (result1.length == 0) {
+                        var sql = `INSERT INTO registration_request VALUES(0,'${email}','${password}','${name}','${address}','${city}','${state}',${phone_number},${pincode},'${gender}','${dob}','${aadhaar_link}','${qualification_link}','${aadhaarNumber}','pending')`;
+                        var result = yield MasterFunctions.sqlProcess(sql, this.connection, "insertRegistrationRequest", next);
+                        if (result.insertId > 0) {
+                            var data = yield this.getFromRegistrationRequestById(req, res, next, result.insertId);
+                            var dataToSend = MasterFunctions.formatResponse(data, "true", "");
+                            resolve(dataToSend);
+                        }
+                        else {
+                            data = MasterFunctions.formatResponse("", "false", "");
+                            resolve(data);
+                        }
                     }
                     else {
                         data = MasterFunctions.formatResponse("", "false", "");

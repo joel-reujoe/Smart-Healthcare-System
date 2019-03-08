@@ -70,6 +70,27 @@ class model_generalized {
                         Phone Number:${contextObject.data.data[0].phone_number}`
                             };
                             break;
+                        case 2:
+                            mailOptions = {
+                                from: 'joel.rdsouza28@gmail.com',
+                                to: `${contextObject.data}`,
+                                subject: 'Response Approved',
+                                text: `Dear Doctor
+                        Your application has been carefully observed and taken into consideration
+                        You are recieving this mail to inform you that your application has been approved by the admin and therefore you can now login into our portal using your credentials`
+                            };
+                            break;
+                        case 3:
+                            console.log(contextObject);
+                            mailOptions = {
+                                from: 'joel.rdsouza28@gmail.com',
+                                to: `${contextObject.data[0].email}`,
+                                subject: 'Response Approved',
+                                text: `Dear Doctor
+                        Your application has been carefully observed and taken into consideration
+                        You are recieving this mail to inform you that your application has been rejected by the admin. To know more please contact to 7709776820 or reply back to this mail`
+                            };
+                            break;
                     }
                     console.log(mailOptions);
                     transporter.sendMail(mailOptions, function (error, info) {
@@ -93,7 +114,7 @@ class model_generalized {
                 try {
                     switch (context) {
                         case 1:
-                            var sql = `INSERT INTO notification VALUES(0,${0},${1},'${contextObject.data.data[0].name} has requested to register as a doctor','${moment().format('DD/MM/YYYY')}','${moment().format('hh:mm a')}','unread')`;
+                            var sql = `INSERT INTO notification VALUES(0,${0},'doctor',${1},'admin','${contextObject.data.data[0].name} has requested to register as a doctor','${moment().format('DD/MM/YYYY')}','${moment().format('hh:mm a')}','unread')`;
                             var data = {};
                             var result = yield MasterFunctions.sqlProcess(sql, this.connection, "setNotification", next);
                             if (result.insertId > 0) {
@@ -103,6 +124,23 @@ class model_generalized {
                             else {
                                 data = MasterFunctions.formatResponse("", "false", "");
                                 resolve(data);
+                            }
+                            break;
+                        case 2:
+                            console.log(contextObject);
+                            var sql1 = `SELECT user_id FROM registration WHERE email='${contextObject.data}'`;
+                            var result = yield MasterFunctions.sqlProcess(sql1, this.connection, "setNotifcation", next);
+                            if (result.length > 0) {
+                                var sql2 = `INSERT INTO notification VALUES(0,${1},'admin',${result[0].user_id},'doctor','Welcome Dear User','${moment().format('DD/MM/YYYY')}','${moment().format('hh:mm a')}','unread')`;
+                                var result = yield MasterFunctions.sqlProcess(sql, this.connection, "setNotification", next);
+                                if (result.insertId > 0) {
+                                    data = MasterFunctions.formatResponse("", "true", "");
+                                    resolve(data);
+                                }
+                                else {
+                                    data = MasterFunctions.formatResponse("", "false", "");
+                                    resolve(data);
+                                }
                             }
                             break;
                     }

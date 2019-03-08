@@ -32,13 +32,14 @@ class ctrl_aadhaar {
             var aadhaar_link = req.query.aadhaar_link;
             var qualification_link = req.query.qualification_link;
             var aadhaarNumber = req.query.aadhaarNumber;
-            console.log(email, password, name, address, city, state, phone_number, pincode, gender, dob, aadhaar_link, qualification_link, aadhaarNumber);
             var model_aadhaar_object = new model_aadhaar(req.connection);
             var contextObj = yield model_aadhaar_object.insertRegistrationRequest(req, res, next, email, password, name, address, city, state, phone_number, pincode, gender, dob, aadhaar_link, qualification_link, aadhaarNumber);
             var model_generalized_object = new model_generalized1(req.connection);
-            var data = yield model_generalized_object.sendMail(req, res, next, contextObj, 1);
-            var data = yield model_generalized_object.setNotification(req, res, next, contextObj, 1);
-            MasterFunctions4.logacesstoFbase(req, res, next, 200, data, this.hrtime, 0, 0);
+            if (contextObj.status == "true") {
+                var data = yield model_generalized_object.sendMail(req, res, next, contextObj, 1);
+                var data = yield model_generalized_object.setNotification(req, res, next, contextObj, 1);
+            }
+            MasterFunctions4.logacesstoFbase(req, res, next, 200, contextObj, this.hrtime, 0, 0);
         });
         this.hrtime = process.hrtime();
     }

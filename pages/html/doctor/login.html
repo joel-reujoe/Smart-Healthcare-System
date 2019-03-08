@@ -160,7 +160,7 @@
                                             </div>
                                         </div>
                                         <div class="input-field col s12">
-                                            <button class="btn" id="btnSubmitDetails">Submit Details</button>
+                                            <button class="btn modal-close" id="btnSubmitDetails">Submit Details</button>
                                         </div>
                                     </div>
                                </div>
@@ -246,7 +246,7 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById("btnSubmitDetails").addEventListener("click",function(event){
       event.preventDefault()
       const aadhaar_file = document.getElementById("aadhaar_file").files[0];
-      storageRef = firebase.storage().ref("aadhaar_photos/" + aadhaar_file.name);
+      storageRef = firebase.storage().ref("aadhaar_photos/" + aadhaar_file.name.trim().toLowerCase());
             uploadTask = storageRef.put(aadhaar_file);
             uploadTask.on('state_changed', function(snapshot){
                 var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
@@ -264,7 +264,7 @@ document.addEventListener('DOMContentLoaded', function() {
             })
         })
         const qualification_file = document.getElementById("qualification_file").files[0];
-        storageRef = firebase.storage().ref("qualifcation_photos/" + qualification_file.name);
+        storageRef = firebase.storage().ref("qualifcation_photos/" + qualification_file.name.trim().toLowerCase());
             uploadTask = storageRef.put(qualification_file);
             uploadTask.on('state_changed', function(snapshot){
                 var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
@@ -306,7 +306,7 @@ document.addEventListener('DOMContentLoaded', function() {
                            M.toast({html:"Request sent successfully"})
                         }
                         else{
-                            M.toast({html:"Could not request"})
+                            M.toast({html:"Email is in use"})
                         }
                     }).catch(function(error){
                         console.log(error)

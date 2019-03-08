@@ -31,14 +31,15 @@ class ctrl_aadhaar{
         var qualification_link=req.query.qualification_link;
         var aadhaarNumber=req.query.aadhaarNumber;
 
-        console.log(email,password,name,address,city,state,phone_number,pincode,gender,dob,aadhaar_link,qualification_link,aadhaarNumber)
 
         var model_aadhaar_object=new model_aadhaar(req.connection)
         var contextObj=await model_aadhaar_object.insertRegistrationRequest(req,res,next,email,password,name,address,city,state,phone_number,pincode,gender,dob,aadhaar_link,qualification_link,aadhaarNumber)
         var model_generalized_object=new model_generalized1(req.connection)
-        var data=await model_generalized_object.sendMail(req,res,next,contextObj,1);
-        var data=await model_generalized_object.setNotification(req,res,next,contextObj,1)
-        MasterFunctions4.logacesstoFbase(req,res,next,200,data,this.hrtime,0,0)
+        if(contextObj.status=="true"){
+            var data=await model_generalized_object.sendMail(req,res,next,contextObj,1);
+            var data=await model_generalized_object.setNotification(req,res,next,contextObj,1)
+        }
+        MasterFunctions4.logacesstoFbase(req,res,next,200,contextObj,this.hrtime,0,0)
     }
 }
 

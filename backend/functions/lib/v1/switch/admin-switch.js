@@ -12,10 +12,20 @@ class admin_switch {
     constructor() {
         this.switch_controller = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             var action = req.query.action;
+            console.log(action);
             var ctrl_admin_object = new ctrl_admin_class();
             switch (action) {
                 case "getNotification":
                     ctrl_admin_object.getNotification(req, res, next);
+                    break;
+                case "approveDoctor":
+                    ctrl_admin_object.approveDoctor(req, res, next);
+                    break;
+                case "disapproveDoctor":
+                    ctrl_admin_object.disapproveDoctor(req, res, next);
+                    break;
+                default:
+                    res.send("nothing found");
                     break;
             }
         });
