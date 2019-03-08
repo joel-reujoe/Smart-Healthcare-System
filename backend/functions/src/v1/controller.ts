@@ -10,7 +10,7 @@ var doctor_router=require('./routers/doctor-router');
 var generalized_router=require('./routers/generalized-router')
 var aadhaar_router=require('./routers/aadhaar-router')
 var admin_router=require('./routers/admin-router')
-
+var patient_router=require('./routers/patient-router')
 //app config
 const app=express()
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -38,6 +38,8 @@ app.use('/controllers/ctrl-doctor/',doctor_router)
 app.use('/controllers/ctrl-generalized/',generalized_router)
 app.use('/controllers/ctrl-aadhaar/',aadhaar_router)
 app.use('/controllers/ctrl-admin/',admin_router)
+app.use('/controllers/ctrl-patient/',patient_router)
+
 
 app.get('*',(req,res,next)=>{
     // console.log("We couldn't find anything you are looking for")
