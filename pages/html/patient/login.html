@@ -1,0 +1,379 @@
+<html>
+    <head>
+        <title>Login Page</title>
+        <!-- <link  rel="stylesheet" type="text/css"  href="/pages/css/materialize-v1.0.0/materialize/css/materialize.min.css"> -->
+        <!-- <script type="javascript" src="/pages/css/materialize-v1.0.0/materialize/js/materialize.min.js"></script> -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <style>
+            .footer{
+                position: fixed;
+                bottom: 0px;
+                width: 100%;
+            }
+            .form-body{
+                position: relative;
+                top:10px;
+                left: 250px;
+            }
+            .col.s12 > .btn {
+                width: 100%;
+            }
+            .datepicker{
+                width: 50%;
+            }
+        </style>
+    </head>
+    <body class="body">
+        <nav>
+            <div class="nav-wrapper blue darken-2">
+                    <a href="#" class="brand-logo center">PatCall</a>
+            </div>
+        </nav>
+        <div class="container form-body">
+                <div class="row">
+                        <form class="col s12 m6">
+                            <div class="card white">
+                                <div class="card-content">
+                                        <div class="container">
+                                                <div class="row">
+                                                    <div class="col s12">
+                                                        <span class="card-title"><strong>Login</strong></span>
+                                                    </div>
+                                                </div>
+                                                    <div class="row">
+                                                            <div class="input-field col s12">
+                                                                    <input type="text" id="email">
+                                                                    <label for="email">Email</label>    
+                                                            </div>
+                                                    </div>
+                                                    <div class="row">
+                                                            <div class="input-field col s12">
+                                                                    <input type="password" id="password">
+                                                                    <label for="password">Password</label>    
+                                                            </div>
+                                                    </div>
+                                                    <div class="row">
+                                                            <div class="input-field col s12">
+                                                                <button class="btn btn-flat blue darken-2 white-text" id="btnLogin">Login</button>   
+                                                            </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col s6">
+                                                                <a href="#signup" class="modal-trigger">Create Account</a>
+                                                        </div>
+                                                    </div>
+                                            </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+        </div>
+        <div id="signup" class="modal">
+                <div class="modal-content">
+                    <div class="container">
+                            <div class="row">
+                                    <div class="col s12">
+                                        <span class="card-title"><strong>Sign Up</strong></span>
+                                    </div>
+                                </div>
+                            <div class="row">
+                                    <div class=" input-field col s12">
+                                        <input type="number" id="aadhaar_no" maxlength="12" onkeyup="limitText(this,12)">                                          
+                                        <label for="aadhaar_no">Aadhaar Number</label>
+                                    </div>
+                                    <div class="input-field col s12">
+                                        <button class="btn blue darken-2" id="btnCheckAadhaar">Check Aadhaar Number</button>
+                                    </div>
+                                    <div style="display: none" id="fields">
+                                        <div class="input-field col s12">
+                                            <input type="text" id="email_signup" >
+                                            <label for="email">Email</label>                                            
+                                        </div>
+                                        <div class="input-field col s12">
+                                            <input type="text" id="password_signup" >
+                                            <label for="password">Password</label>                                            
+                                        </div>
+                                        <div class="input-field col s12">
+                                            <input type="text" id="name" >
+                                            <label for="name">Full Name</label>                                            
+                                        </div>
+                                        <div class="input-field col s12">
+                                                <input type="text" id="address">
+                                                <label for="address">Address</label>                                            
+                                        </div>
+                                        <div class="input-field col s12">
+                                                <input type="text" id="city">
+                                                <label for="city">City</label>                                            
+                                        </div>
+                                        <div class="input-field col s12">
+                                                <input type="text" id="state">
+                                                <label for="state">State</label>
+                                        </div>
+                                        <div class="input-field col s12">
+                                                <input type="text" id="pincode">
+                                                <label for="pincode">PIN Code</label>
+                                        </div>
+                                        <div class="input-field col s12">
+                                            <input type="number" id="phone_number">
+                                            <label for="phone_number">Phone Number</label>
+                                        </div>
+                                        <div class="input-field col s12">
+                                                <select id="gender" >
+                                                        <option value="0" disabled selected>Select Gender</option>
+                                                        <option value="male">Male</option>
+                                                        <option value="female">Female</option>
+                                                        <option value="mail">Mail</option>
+                                                </select>
+                                        </div>
+                                        <div class="input-field col s12">
+                                                <input type="text" class="datepicker" id="dob">
+                                                <label for="dob">Birth Date</label>
+                                        </div>
+                                        <div class="input-field col s12">
+                                            <div class = "file-field input-field">
+                                               <div class = "btn">
+                                                  <span>Browse</span>
+                                                  <input type = "file" id="aadhaar_file" />
+                                               </div>
+                                               
+                                               <div class = "file-path-wrapper">
+                                                  <input class = "file-path validate" type = "text"
+                                                     placeholder = "Upload Aadhaar Photo" />
+                                               </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- <div class="input-field col s12">
+                                            <div class = "file-field input-field">
+                                               <div class = "btn">
+                                                  <span>Browse</span>
+                                                  <input type = "file" id="qualification_file" />
+                                               </div>
+                                               
+                                                <div class = "file-path-wrapper">
+                                                  <input class = "file-path validate" type = "text"
+                                                     placeholder = "Upload Qualification Proof" />
+                                               </div> 
+                                            </div>
+                                        </div> -->
+                                        <div class="input-field col s12">
+                                            <button class="btn modal-close blue darken-2" id="btnSubmitDetails">Submit Details</button>
+                                        </div>
+                                    </div>
+                               </div>
+                    </div>
+                </div>
+        </div>
+        
+        <footer class="page-footer blue darken-2 footer">
+            <div class="footer-copyright center">
+                <div class="container">
+                &copy;PatCall-India
+                </div>
+            </div>
+        </footer>
+    </body>
+</html>
+
+<script src="https://www.gstatic.com/firebasejs/5.5.0/firebase.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="../../js/functions/lib/general.js"></script>
+<script>
+
+var config = {
+    apiKey: "AIzaSyB0ga6ikjDvGADhhd80r2Xeiaep3K22H-M",
+    authDomain: "smarthealthcare-160f0.firebaseapp.com",
+    databaseURL: "https://smarthealthcare-160f0.firebaseio.com",
+    projectId: "smarthealthcare-160f0",
+    storageBucket: "smarthealthcare-160f0.appspot.com",
+    messagingSenderId: "488465131798"
+  };
+firebase.initializeApp(config);
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('select');
+    var instances = M.FormSelect.init(elems);
+  });
+
+var minDate=new Date(1950,1,1);
+var maxDate=new Date(2000,12,31);
+
+document.addEventListener('DOMContentLoaded', function() {
+    option={format:"dd/mm/yyyy"}
+    var elems = document.querySelectorAll('.datepicker');
+    var instances = M.Datepicker.init(elems,option);
+  });
+document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.collapsible');
+    var instances = M.Collapsible.init(elems);
+  });
+  document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.modal');
+    var instances = M.Modal.init(elems);
+  });
+
+  document.getElementById("btnCheckAadhaar").addEventListener("click",function(event){
+    event.preventDefault();
+    if(document.getElementById("aadhaar_no").value.length==12)
+    {
+        var params=new URLSearchParams()
+        params.append("action","checkAadhaar")
+        params.append("aadhaar_no",document.getElementById("aadhaar_no").value)
+        axios({
+            method:'get',
+            url:`${globalpath}controllers/ctrl-aadhaar/`,
+            params:params
+        }).then(function(response){
+            if(response.data.status=="false")
+            {
+                document.getElementById("fields").style.display="inline";
+            }
+            else{
+                Materialize.toast("Aadhaar Number Exists",3000)
+            }
+        }).catch(function(error){
+            console.log(error)
+        })
+    }
+
+  })
+
+  document.getElementById("btnLogin").addEventListener("click",function(event){
+      event.preventDefault()
+      var email=document.getElementById("email").value;
+      var password=document.getElementById("password").value;
+
+    var params=new URLSearchParams()
+    params.append("action","loginPatient")
+    params.append("email",email)
+    params.append("password",password)
+
+                axios({
+                        method:'get',
+                        url:`${globalpath}controllers/ctrl-patient/`,
+                        params:params
+                    }).then(function(response){
+                        console.log(response)
+                        if(response.data.status=="true")
+                        {
+                            localStorage.setItem("user_id",response.data.data[0].user_id)
+                            localStorage.setItem("name",response.data.data[0].name)
+                            localStorage.setItem("address",response.data.data[0].address)
+                            localStorage.setItem("state",response.data.data[0].state)
+                            localStorage.setItem("city",response.data.data[0].city)
+
+                            window.location=`http://localhost:8080/doctorui-/pages/html/patient/homepage.html`
+                        }
+                        else{
+                            M.toast({html:"Please register to login"})
+                        }
+                    }).catch(function(error){
+                        console.log(error)
+                    
+                    })
+  })
+
+  var aadhaarUrl=""
+  var qualification_url=""
+  document.getElementById("btnSubmitDetails").addEventListener("click",function(event){
+      event.preventDefault()
+      const aadhaar_file = document.getElementById("aadhaar_file").files[0];
+      storageRef = firebase.storage().ref("aadhaar_photos/" + aadhaar_file.name.trim().toLowerCase());
+            uploadTask = storageRef.put(aadhaar_file);
+            uploadTask.on('state_changed', function(snapshot){
+                var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                console.log('Upload is ' + progress + '% done');
+        switch (snapshot.state) {
+            case firebase.storage.TaskState.PAUSED: // or 'paused'
+                console.log('Upload is paused');
+                break;
+            case firebase.storage.TaskState.RUNNING: // or 'running'
+                console.log('Upload is running');
+                break;
+            }
+    uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+        aadhaarUrl=downloadURL
+            })
+        })
+             
+                    var params=new URLSearchParams()
+                    params.append("action","registerPatient")
+                    params.append("email",document.getElementById("email_signup").value)
+                    params.append("password",document.getElementById("password_signup").value)
+                    params.append("name",document.getElementById("name").value)
+                    params.append("address",document.getElementById("address").value)
+                    params.append("city",document.getElementById("city").value)
+                    params.append("state",document.getElementById("state").value)
+                    params.append("pincode",document.getElementById("pincode").value)
+                    params.append("phone_number",document.getElementById("phone_number").value)
+                    params.append("gender",document.getElementById("gender").value)
+                    params.append("dob",document.getElementById("dob").value)
+                    params.append("aadhaar_link",aadhaarUrl);
+                    params.append("aadhaarNumber",document.getElementById("aadhaar_no").value)
+
+                    axios({
+                        method:'get',
+                        url:`${globalpath}controllers/ctrl-patient/`,
+                        params:params
+                    }).then(function(response){
+                        console.log(response)
+                        if(response.data.status=="true")
+                        {
+                           M.toast({html:"Registered successfully"})
+                        }
+                        else{
+                            M.toast({html:"Email is in use"})
+                        }
+                    }).catch(function(error){
+                        console.log(error)
+                    
+                    })          
+                })  
+    
+</script>
+
+<!-- <div id="formbody">
+            <div id="title">DocCall Login</div><p>
+            <div id="alert_msg"></div>
+            <form id="form">
+                <span id="username1_error"></span>
+                <input type="text" id="username1" name="username" placeholder="Username"><p>
+                <span id="password_error"></span>
+                <input type="password" id="password" name="password" placeholder="Password"><p>
+                <button id="submit" class="btn btn-info">Login</button>
+            </form>
+            <div id="signUptext">Don't have an account? <a href="registration1.html">Sign Up here</a></div><p>
+            <div id="forgotPassword"><a href="forgotPassword.html">Forgot Password?</a></div>
+        </div>-->
+<!-- 
+<script src="./functions/lib/authenticate/login.js"></script>
+<script>
+document.getElementById("submit").addEventListener("click",function(event){
+    event.preventDefault();
+    var param=getLoginDetails()
+    if(param!=null)
+    {
+        axios({
+            method:'get',
+            url:`${globalpath}controllers/ctrl-generalized/`,
+            params:param
+        }).then(function(response){
+            console.log(response)
+            if(response.data.status=="true")
+            {
+                localStorage.setItem("uid",response.data.data.uid)
+                localStorage.setItem("user_id",response.data.data.user_id)
+                window.location="homepage.html"
+            }else{
+                document.getElementById("alert_msg").innerHTML=response.data.message
+            }
+        }).catch(function(error){
+            console.log(error)
+        })
+    }
+})
+</script> -->
