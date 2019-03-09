@@ -57,7 +57,7 @@
                                                     </div>
                                                     <div class="row">
                                                             <div class="input-field col s12">
-                                                                <button class="btn btn-flat teal white-text">Login</button>   
+                                                                <button class="btn btn-flat teal white-text" id="btnLogin">Login</button>   
                                                             </div>
                                                     </div>
                                                     <div class="row">
@@ -193,6 +193,36 @@ var config = {
   };
 firebase.initializeApp(config);
 
+
+document.getElementById("btnLogin").addEventListener("click",function(event){
+event.preventDefault()
+var email=document.getElementById("email").value
+var password=document.getElementById("password").value
+var params=new URLSearchParams()
+params.append("action","loginDoctor");
+params.append("email",email);
+params.append("password",password);
+
+    axios({
+            method:'get',
+            url:`${globalpath}controllers/ctrl-doctor/`,
+            params:params
+}).then(function(response){
+    console.log(response)
+    if(response.data.status=="true"){
+        localStorage.setItem("user_id",response.data.data[0].user_id)
+        localStorage.setItem("name",response.data.data[0].name)
+        localStorage.setItem("address",response.data.data[0].address)
+        localStorage.setItem("city",response.data.data[0].city)
+        localStorage.setItem("state",response.data.data[0].state)
+        window.location=`http://localhost:8080/doctorui-/pages/html/doctor/homepage.html`
+    }else{
+        M.toast({html:"Please register to login"})
+    }
+}).catch(function(error){
+    console.log(error)
+})
+})
 
 document.addEventListener('DOMContentLoaded', function() {
     var elems = document.querySelectorAll('select');

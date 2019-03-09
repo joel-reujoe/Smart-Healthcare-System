@@ -146,7 +146,7 @@ class model_patient{
         return new Promise(async(resolve,reject)=>{
             try{
                 var data={}
-                var sql1=`INSERT INTO appointment VALUES(0,${doctor_id},${patient_id},'${date}',${time_id})`
+                var sql1=`INSERT INTO appointment VALUES(0,${doctor_id},${patient_id},'${date}',${time_id},'pending')`
                 var result1=await MasterFunctions.sqlProcess(sql1,this.connection,"bookAppointment",next)
                 if(result1.insertId>0){
                     data=MasterFunctions.formatResponse("","true","")

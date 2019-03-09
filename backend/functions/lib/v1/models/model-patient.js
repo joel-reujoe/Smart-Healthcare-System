@@ -139,7 +139,7 @@ class model_patient {
             return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
                 try {
                     var data = {};
-                    var sql1 = `INSERT INTO appointment VALUES(0,${doctor_id},${patient_id},'${date}',${time_id})`;
+                    var sql1 = `INSERT INTO appointment VALUES(0,${doctor_id},${patient_id},'${date}',${time_id},'pending')`;
                     var result1 = yield MasterFunctions.sqlProcess(sql1, this.connection, "bookAppointment", next);
                     if (result1.insertId > 0) {
                         data = MasterFunctions.formatResponse("", "true", "");

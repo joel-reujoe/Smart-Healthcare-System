@@ -7,59 +7,13 @@
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- Compiled and minified JavaScript -->
-        <script src="../../js/image-compressor/dist/image-compressor.min.js"></script>
-        <script src="../../js/image-compressor/dist/image-compressor.js"></script>
+        <script src="../js/image-compressor/dist/image-compressor.min.js"></script>
+        <script src="../js/image-compressor/dist/image-compressor.js"></script>
 
         <link href="https://cdnjs.cloudflare.com/ajax/libs/cropper/4.0.0/cropper.min.css" rel="stylesheet"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/cropper/4.0.0/cropper.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
         <style>
-            .autocomplete {
-  /*the container must be positioned relative:*/
-  position: relative;
-  display: inline-block;
-}
-input {
-  border: 1px solid transparent;
-  background-color: #f1f1f1;
-  padding: 10px;
-  font-size: 16px;
-}
-input[type=text] {
-  background-color: #f1f1f1;
-  width: 100%;
-}
-input[type=submit] {
-  background-color: DodgerBlue;
-  color: #fff;
-}
-.autocomplete-items {
-  position: absolute;
-  border: 1px solid #d4d4d4;
-  border-bottom: none;
-  border-top: none;
-  z-index: 99;
-  /*position the autocomplete items to be the same width as the container:*/
-  top: 100%;
-  left: 0;
-  right: 0;
-}
-.autocomplete-items div {
-  padding: 10px;
-  cursor: pointer;
-  background-color: #fff; 
-  border-bottom: 1px solid #d4d4d4; 
-}
-.autocomplete-items div:hover {
-  /*when hovering an item:*/
-  background-color: #e9e9e9; 
-}
-.autocomplete-active {
-  /*when navigating through the items using the arrow keys:*/
-  background-color: DodgerBlue !important; 
-  color: #ffffff; 
-}
-
         .col.s12 > .btn {
                 width: 100%;
             }
@@ -76,13 +30,10 @@ input[type=submit] {
                
                     
                     <ul id="nav-mobile" class="left hide-on-med-and-down">
-                      <li class="grey">HOME</li>
-                      <li><a href="report.html">Add Report</a></li>
-                      <li><a href="appointment.html">View Appointment</a></li>
+                      <li><a href="homepage.html"> HOME</a></li>
+                      <li class="grey"><a href="report.html">Add Report</a></li>
+                      <li><a href="appoinment.html">View Appointment</a></li>
                       <li><a href="Notification.html">Notifications</a></li>
-                    </ul>
-                    <ul class="right hide-on-med-and-down">
-                            <li><a href="#!" id="welcome"></a>Welcome</li>
                     </ul>
                 </div>
             
@@ -104,60 +55,55 @@ input[type=submit] {
         
         
         </nav>
-        <div class="section">
-            <div class="container">
-                    <div class="row">
-                            <div class=" input-field col s12 autocomplete">
-                                <input type="text" id="search">
-                                <label>Search...</label>
-                            </div>
-                        </div>
-            </div>
-        </div>
-            <div class="section">
-                <div class="card">
-                    <div class="card-content">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col s12 m6">
-                                    <div class="input-field col s12">
-                                            <textarea id="txtareaPost" rows="10" cols="50" class="materialize-textarea" placeholder="Write Something..."></textarea>
-                                    </div>
-                                    <div class="input-field col s12">
-                                            <div class = "file-field input-field">
-                                                    <div class = "btn">
-                                                            <span>Browse</span>
-                                                            <input type = "file" id="txtFile"/>
-                                                    </div>
-                                                    <div class = "file-path-wrapper">
-                                                        <input class = "file-path validate" type = "text"
-                                                            placeholder = "Upload Photo" />
-                                                    </div>
-                                            </div>
-                                    </div>
-                                    <div class="input-field col s12">
-                                        <button class="btn" id="btnPost">Post</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+           
+        <div >
+                <div class="container">
+                        <table class="striped z-depth-3">
+                                <thead>
+                                  <tr>
+                                      <th>Report ID</th>
+                                      <th>Report Description</th>
+                                      <th>Downloadable Link</th>
+                                      <th>Issued By</th>
+                                      <th>Date</th>
+                                  </tr>
+                                </thead>
+                        
+                                <tbody>
+                                  <tr>
+                                    <td>13848</td>
+                                    <td>Piles</td>
+                                    <td><a href="#"> 1do3chaar5che</a></td>
+                                    <td>Asaram bapu</td>
+                                    <td>30th feb</td>
+                                  </tr>
+                                  <tr>
+                                    <td>6666</td>
+                                    <td>BP</td>
+                                    <td><a href="#"> petsafaa,har rog dafaa :)</a> </td>
+                                    <td>Baba Ramdev</td>
+                                    <td>31st feb</td>
+                                  </tr>
+                                  <tr>
+                                    <td>69696969</td>
+                                    <td>idk</td>
+                                    <td><a href="#"> www.getyourreport.com </a></td>
+                                    <td>Shanta bai</td>
+                                    <td>31st june</td>
+                                  </tr>
+                                </tbody>
+                              </table>
                     </div>
-                </div>
-            </div>
-            <div class="container" id="divPostContents">
-                
-            </div>
+        </div>
         
         </body>
 </html>
 <script src="https://www.gstatic.com/firebasejs/5.5.0/firebase.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-<script src="../../js/functions/lib/general.js"></script> 
-<!-- <script src="./js/functions/lib/post/post.js"></script>  -->
+<!-- <script src="./js/functions/lib/general.js"></script>
+<script src="./js/functions/lib/post/post.js"></script> -->
 <script>
     
-    document.getElementById("welcome").innerHTML="Welcome "+localStorage.getItem("name")
-
     document.addEventListener('DOMContentLoaded', function() {
     var elems = document.querySelectorAll('.sidenav');
     var instances = M.Sidenav.init(elems);
@@ -170,88 +116,7 @@ var config = {
     storageBucket: "smarthealthcare-160f0.appspot.com",
     messagingSenderId: "488465131798"
   };
-  function addActive(x) {
-    if (!x) return false;
-    removeActive(x);
-    if (currentFocus >= x.length) currentFocus = 0;
-    if (currentFocus < 0) currentFocus = (x.length - 1);
-    x[currentFocus].classList.add("autocomplete-active");
-  }
 
-  function removeActive(x) {
-    for (var i = 0; i < x.length; i++) {
-      x[i].classList.remove("autocomplete-active");
-    }
-  }
-function closeAllLists(elmnt) {
-    
-    var x = document.getElementsByClassName("autocomplete-items");
-    for (var i = 0; i < x.length; i++) {
-      if (elmnt != x[i] && elmnt != document.getElementById("search")) {
-      x[i].parentNode.removeChild(x[i]);
-    }
-  }
-}
-
-
-document.getElementById("search").addEventListener("click",function(event){
-    event.preventDefault()
-    var params=new URLSearchParams()
-    params.append("action","getDoctorsList")
-    params.append("doctor_id",localStorage.getItem("user_id"))
-    axios({
-            method:'get',
-            url:`${globalpath}controllers/ctrl-doctor/`,
-            params:params
-    }).then(function(response){
-        console.log(response)
-        document.getElementById("search").addEventListener("input",function(e){
-            var a, b, i, val = this.value;
-            closeAllLists();
-            if (!val) { return false;}
-            currentFocus = -1;
-            a = document.createElement("DIV");
-            a.setAttribute("id", this.id + "autocomplete-list");
-            a.setAttribute("class", "autocomplete-items");
-            this.parentNode.appendChild(a);
-            var self=this
-            for (i = 0; i < response.data.data.length; i++) {
-                if (response.data.data[i].name.substr(0, val.length).toUpperCase() == val.toUpperCase()) {
-                    b = document.createElement("div");
-                    b.innerHTML = "<strong>" + response.data.data[i].name.substr(0, val.length) + "</strong>";
-                    b.innerHTML += response.data.data[i].name.substr(val.length);
-                    b.innerHTML += "<input type='hidden' value='" + response.data.data[i].name + "'>"
-                    b.addEventListener("click", function(e) {
-                        self.value = this.getElementsByTagName("input")[0].value;
-                        closeAllLists();
-                    })
-                    a.appendChild(b);
-                }
-            }
-        })
-        document.getElementById("search").addEventListener("keydown",function(e){
-            var x = document.getElementById(this.id + "autocomplete-list");
-            if (x) x = x.getElementsByTagName("div");
-            if (e.keyCode == 40) {
-                currentFocus++;
-                addActive(x);
-            }   
-            else if (e.keyCode == 38) {
-                currentFocus--;
-                addActive(x);
-            }else if (e.keyCode == 13) {
-                e.preventDefault();
-                if (currentFocus > -1) {
-                if (x) x[currentFocus].click();
-                }
-            }
-
-        })
-        
-    }).catch(function(error){
-        console.log(error)
-    })
-})
 
 
 firebase.initializeApp(config);

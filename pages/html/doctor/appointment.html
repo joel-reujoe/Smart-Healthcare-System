@@ -1,0 +1,181 @@
+<html>
+    <head>
+        <title>Home</title>
+        <!-- <link rel="stylesheet" type="text/css" href="style.css"> -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Compiled and minified JavaScript -->
+        <script src="../..//js/image-compressor/dist/image-compressor.min.js"></script>
+        <script src="../../js/image-compressor/dist/image-compressor.js"></script>
+
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/cropper/4.0.0/cropper.min.css" rel="stylesheet"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/cropper/4.0.0/cropper.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <style>
+        .col.s12 > .btn {
+                width: 100%;
+            }
+            i.icon-teal {
+            color:teal;
+        }
+        </style>
+    </head>
+    <body class="body" id="body">
+        <nav>
+                <div class="nav-wrapper teal">
+                        <a href="#" class="brand-logo center">DocCall</a> 
+                
+               
+                    
+                    <ul id="nav-mobile" class="left hide-on-med-and-down">
+                      <li><a href="homepage.html"> HOME</a></li>
+                      <li ><a href="report.html">Add Report</a></li>
+                      <li class="grey">View Appointment</li>
+                      <li><a href="Notification.html">Notifications</a></li>
+                    </ul>
+                </div>
+            
+                <ul id="slide-out" class="sidenav">
+                <li><div class="user-view">
+                        <div class="background">
+                          <!-- <img src="images/img.jpg"> -->
+                        </div>
+                        <!-- <a href="#user"><img class="circle" src="images/img-1.jpeg"></a> -->
+                        <a href="#name"><span class="white-text name">John Doe</span></a>
+                        <a href="#email"><span class="white-text email">jdandturk@gmail.com</span></a>
+                      </div></li>
+            <li><a href="#!">Something</a></li>
+            <li><a href="#!">Something</a></li>
+          </ul>
+          
+          <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>               
+        </div>
+        
+        
+        </nav>
+        <div >
+                <div class="container">
+                        <table class="striped z-depth-3 centered" >
+                                <thead>
+                                  <tr>
+                                      
+                                      <th>Patient ID</th>
+                                      <th>Patient Name</th>
+                                      <th>Date-Time</th>
+                                      <th>Visited/Canceled</th>
+                                  </tr>
+                                </thead>
+                        
+                                <tbody id="tblApponintment">
+                                </tbody>
+                              </table>
+                    </div>
+        </div>
+            
+        
+        </body>
+</html>
+<script src="https://www.gstatic.com/firebasejs/5.5.0/firebase.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="../../js/functions/lib/general.js"></script>
+<script>
+    
+    document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.sidenav');
+    var instances = M.Sidenav.init(elems);
+  });
+  var params=new URLSearchParams()
+  params.append("doctor_id",localStorage.getItem("user_id"))
+  params.append("action","getAppointment")
+    axios({
+            method:'get',
+            url:`${globalpath}controllers/ctrl-doctor/`,
+            params:params
+  }).then(function(response){
+      console.log(response)
+      if(response.data.status=="true"){
+          for(var i=0;i<response.data.data.length;i++){
+              var tr=document.createElement("tr")
+              tr.innerHTML=` <td>${response.data.data[i].patient_id}</td>
+                            <td>${response.data.data[i].name}</td>
+                            <td>${response.data.data[i].date} ${response.data.data[i].time_slot}</td>
+                            <td>
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col s5">
+                                            <button data-appointmentid=${response.data.data[i].appointment_id} data-patientid=${response.data.data[i].patient_id} class="btn teal white-text visited">Visited</button>
+                                        </div>
+                                        <div class="col s5">
+                                            <button data-appointmentid=${response.data.data[i].appointment_id}  data-patientid=${response.data.data[i].patient_id} class="btn white-text red cancelled">Cancelled</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>`
+            document.getElementById("tblApponintment").appendChild(tr)
+
+            var visitedButton=document.getElementsByClassName("visited");
+            for(var i=0;i<visitedButton.length;i++){
+                visitedButton[i].addEventListener("click",function(event){
+                    event.preventDefault()
+                    console.log(this)
+                    var params=new URLSearchParams()
+                    params.append("action","setVisited")
+                    params.append("appointment_id",this.dataset.appointmentid)
+                    params.append("patient_id",this.dataset.patientid)
+                    axios({
+                        method:'get',
+                        url:`${globalpath}controllers/ctrl-doctor/`,
+                        params:params
+                    }).then(function(response){
+                        if(response.data.status=="true"){
+                            M.toast({html:'Set Visited Successfully'})
+                            window.location=`http://localhost:8080/doctorui-/pages/html/doctor/appointment.html`
+                        }
+                        else{
+                            M.toast({html:'Could Not Set Successfully'})
+                            window.location=`http://localhost:8080/doctorui-/pages/html/doctor/appointment.html`
+                        }
+                    }).catch(function(error){
+                        console.log(error)
+                    })
+        
+                })
+            }
+            var cancelledButton=document.getElementsByClassName("cancelled");
+            for(var i=0;i<visitedButton.length;i++){
+                cancelledButton[i].addEventListener("click",function(event){
+                    event.preventDefault()
+                    console.log(this)
+                    var params=new URLSearchParams()
+                    params.append("action","setCancelled")
+                    params.append("appointment_id",this.dataset.appointmentid)
+                    params.append("patient_id",this.dataset.patientid)
+                    axios({
+                        method:'get',
+                        url:`${globalpath}controllers/ctrl-doctor/`,
+                        params:params
+                    }).then(function(response){
+                        if(response.data.status=="true"){
+                            M.toast({html:'Set Cancelled Successfully'})
+                            window.location=`http://localhost:8080/doctorui-/pages/html/doctor/appointment.html`
+                        }
+                        else{
+                            M.toast({html:'Could Not Set Successfully'})
+                            window.location=`http://localhost:8080/doctorui-/pages/html/doctor/appointment.html`
+                        }
+                    }).catch(function(error){
+                        console.log(error)
+                    })
+        
+                })
+
+        }
+    }
+    }
+}).catch(function(error){
+    console.log(error)
+})
+  
+</script>

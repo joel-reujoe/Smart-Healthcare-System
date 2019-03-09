@@ -22,6 +22,21 @@ class doctor_switch {
                 case "postAPost":
                     ctrl_doc_object.postAPost(req, res, next);
                     break;
+                case "getAppointment":
+                    ctrl_doc_object.getAppointment(req, res, next);
+                    break;
+                case "loginDoctor":
+                    ctrl_doc_object.loginDoctor(req, res, next);
+                    break;
+                case "setVisited":
+                    ctrl_doc_object.setVisited(req, res, next);
+                    break;
+                case "setCancelled":
+                    ctrl_doc_object.setCancelled(req, res, next);
+                    break;
+                case "getDoctorsList":
+                    ctrl_doc_object.getDoctorList(req, res, next);
+                    break;
             }
         });
     }

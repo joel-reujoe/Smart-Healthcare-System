@@ -1,4 +1,4 @@
-var globalpath = "http://localhost:8000/";
+var globalpath = "http://192.168.1.106:4567/";
 var limitCount;
 function limitText(limitField, limitNum) {
     if (limitField.value.length > limitNum) {
