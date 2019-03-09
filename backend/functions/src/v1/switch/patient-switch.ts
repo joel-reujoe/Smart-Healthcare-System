@@ -17,6 +17,14 @@ class patient_switch{
             case "getDoctors":
             ctrl_patient_object.getDoctors(req,res,next)
             break;
+
+            case "getAvaibableTimeSlots":
+            ctrl_patient_object.getAvailableTimeSlots(req,res,next);
+            break;
+
+            case "bookAppointment":
+            ctrl_patient_object.bookAppointment(req,res,next)
+            break;
         }
     }
 }

@@ -47,7 +47,7 @@ class model_admin {
                                 var result4 = yield MasterFunctions.sqlProcess(sql3, this.connection, "approveDoctor", next);
                                 if (result4.insertId > 0) {
                                     var sql4 = `SELECT email FROM registration_request WHERE request_id=${requestid}`;
-                                    var result5 = yield MasterFunctions.sqlProcess(sql, this.connection, "approveDoctor", next);
+                                    var result5 = yield MasterFunctions.sqlProcess(sql4, this.connection, "approveDoctor", next);
                                     if (result5.length > 0) {
                                         data = MasterFunctions.formatResponse(result5[0].email, "true", "");
                                         resolve(data);

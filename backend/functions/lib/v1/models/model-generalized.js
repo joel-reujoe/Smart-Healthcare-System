@@ -132,7 +132,7 @@ class model_generalized {
                             var result = yield MasterFunctions.sqlProcess(sql1, this.connection, "setNotifcation", next);
                             if (result.length > 0) {
                                 var sql2 = `INSERT INTO notification VALUES(0,${1},'admin',${result[0].user_id},'doctor','Welcome Dear User','${moment().format('DD/MM/YYYY')}','${moment().format('hh:mm a')}','unread')`;
-                                var result = yield MasterFunctions.sqlProcess(sql, this.connection, "setNotification", next);
+                                var result = yield MasterFunctions.sqlProcess(sql2, this.connection, "setNotification", next);
                                 if (result.insertId > 0) {
                                     data = MasterFunctions.formatResponse("", "true", "");
                                     resolve(data);

@@ -43,5 +43,25 @@ class ctrl_pat{
         var data=await model_patient_object.getDoctors(req,res,next)
         MasterFunctions.logacesstoFbase(req,res,next,200,data,this.hrtime,0,0)
     }
+
+    public getAvailableTimeSlots=async(req,res,next)=>{
+        var doctor_id=req.query.doctor_id;
+        var date=req.query.date
+        var model_patient_object=new model_patient_class(req.connection)
+
+        var data=await model_patient_object.getAvailableTimeSlots(req,res,next,doctor_id,date)
+        MasterFunctions.logacesstoFbase(req,res,next,200,data,this.hrtime,0,0)
+    }
+
+    public bookAppointment=async(req,res,next,doctor_id,patient_id,date,time_id)=>{
+        var doctor_id=req.query.doctor_id;
+        var patient_id=req.query.patient_id
+        var date=req.query.date;
+        var time_id=req.query.time_id
+        var model_patient_object=new model_patient_class(req.connection)
+        var data=await model_patient_object.bookAppointment(req,res,next,doctor_id,patient_id,date,time_id)
+        MasterFunctions.logacesstoFbase(req,res,next,200,data,this.hrtime,0,0)
+    }    
+
 }
 module.exports=ctrl_pat;
