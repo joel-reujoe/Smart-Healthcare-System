@@ -1,0 +1,179 @@
+<html>
+    <head>
+        <title>Home</title>
+        <!-- <link rel="stylesheet" type="text/css" href="style.css"> -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Compiled and minified JavaScript -->
+
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/cropper/4.0.0/cropper.min.css" rel="stylesheet"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/cropper/4.0.0/cropper.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <style>
+        .col.s12 > .btn {
+                width: 100%;
+            }
+            i.icon-teal {
+            color:teal;
+        }
+        </style>
+    </head>
+    <body class="body" id="body">
+        <nav class="nav-extended">
+            <div class="nav-wrapper teal">
+                    <a href="#" class="brand-logo center">DocCall</a> 
+                    <ul class="right">
+                        <li ><a href="#!" id="logout">Logout</a></li>
+                    </ul>
+            </div>
+            <div class="nav-content teal">
+                <ul id="nav-mobile" class="tabs tabs-transparent">
+                    <li class="tab"><a href="homepage.html" >Home</a></li>
+                    <li class="tab"><a href="addreport.html" class="active">Add Report</a></li>
+                    <li class="tab"><a href="appointment.html">View Appointment</a></li>
+                    <li class="tab"><a href="Notification.html">Notifications</a></li>
+                  </ul>
+            </div>
+    </nav>
+        <div class="section">
+                <div class="container">
+                        <table class="striped z-depth-3">
+                                <thead>
+                                  <tr>
+                                      <th>Patient ID</th>
+                                      <th>Patient Name</th>
+                                      <th>First Visited</th>
+                                  </tr>
+                                </thead>
+                        
+                                <tbody id="tblPatientList">
+
+                                </tbody>
+                              </table>
+                    </div>
+        </div>
+            
+        
+        </body>
+</html>
+<script src="https://www.gstatic.com/firebasejs/5.5.0/firebase.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="../../js/functions/lib/general.js"></script>
+<script>
+    document.getElementById("logout").addEventListener("click",function(event){
+      event.preventDefault()
+      localStorage.removeItem("user_id")
+      window.location=`http://localhost:8080/doctorui-/pages/html/doctor/login.html`
+  })
+    document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.sidenav');
+    var instances = M.Sidenav.init(elems);
+  });
+ 
+                    
+        var params=new URLSearchParams()
+        params.append("action","getVisitedPatients")
+        params.append("doctor_id",localStorage.getItem("user_id"))
+        axios({
+            method:'get',
+            url:`${globalpath}controllers/ctrl-doctor`,
+            params:params
+        }).then(function(response){
+
+          for(var i=0;i<response.data.data.length;i++){
+            var tr=document.createElement("tr");
+            tr.innerHTML=`<td>${response.data.data[i].aadhaarNumber}</td>
+                          <td><a href="#!" class="ancName" data-patientname="${response.data.data[i].name}" data-patientid=${response.data.data[i].patient_id}>${response.data.data[i].name}</a></td>
+                          <td>${response.data.data[i].first_visit}</td>`
+            document.getElementById("tblPatientList").appendChild(tr)
+          }
+          var namelink = document.getElementsByClassName("ancName")
+          for(var i=0;i<namelink.length;i++)
+          {
+              namelink[i].addEventListener("click",function(){
+              var id=this.dataset.patientid;
+              var name=this.dataset.patientname;
+              localStorage.setItem("patient_id",id)
+              localStorage.setItem("patient_name",name)
+              window.location=`http://localhost:8080/doctorui-/pages/html/doctor/reportform.html`
+            })
+          }
+        }).catch(function(error){
+            console.log(error)
+        })
+</script>
+<script>
+// $('document').ready(function()
+// {
+//     $('textarea').each(function(){
+//             $(this).val($(this).val().trim());
+//         }
+//     );
+// });
+// document.getElementById("postButton").style.backgroundColor="grey"
+// document.getElementById("postButton").disabled=true
+// document.getElementById("postArea").addEventListener("change",function(event){
+//     if(document.getElementById("postArea").value!="")
+//     {
+//         document.getElementById("postButton").disabled=false
+//         document.getElementById("postButton").style.backgroundColor="#6666ff"
+//     }
+//     else{
+//         document.getElementById("postButton").style.backgroundColor="grey"
+//         document.getElementById("postButton").disabled=true
+//     }
+// })
+// document.getElementById("postButton").addEventListener("click",function(event){
+//     var param=getPost()
+//     if(param!=null)
+//     {
+//         axios({
+//             method:'post',
+//             url:`${globalpath}controllers/ctrl-doctor`,
+//             params:param
+//         }).then(function(response){
+//             console.log(response)
+//         }).catch(function(error){
+//             console.log(error)
+//         })
+//     }
+// })
+// </script>
+<script>
+// $(document).ready(function(){
+//     $('[data-toggle="popover"]').popover({
+//         html:true,
+//         content:function(){
+//             var content=$(this).attr("data-popover-content")
+//             return $(content).children(".popover-content").html();
+//         }
+//     });
+// })
+// document.getElementById("ass").addEventListener("click",function(event){
+//     event.preventDefault();
+//     window.location="AP.html"
+// })
+// document.getElementById("sm").addEventListener("click",function(event){
+//     event.preventDefault();
+//     window.location="sm.html";
+// })
+// document.getElementById("gpr").addEventListener("click",function(event){
+//     event.preventDefault();
+//     window.location="gpr.html";
+// })
+// document.getElementById("postButton").addEventListener("click",function(event){
+//     event.preventDefault();
+    
+// })
+// document.getElementById("uploadimage").addEventListener("click",function(event){
+//     event.preventDefault();
+//     document.getElementById("imageFile").click();
+// })
+
+// function logout()
+// {
+//     window.location="login.html";
+// }
+</script>

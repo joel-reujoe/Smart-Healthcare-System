@@ -27,6 +27,7 @@
         </style>
     </head>
     <body class="body">
+<<<<<<< HEAD
         <nav>
             <div class="nav-wrapper blue darken-2">
                     <a href="#" class="brand-logo center">PatCall</a>
@@ -169,6 +170,25 @@
                 </div>
             </div>
         </footer>
+=======
+        <nav class="nav-extended">
+            <div class="nav-wrapper blue darken-2">
+                    <a href="#" class="brand-logo center">PatCall</a>
+            </div>
+            <div class="nav-content blue darken-2">
+                <ul id="nav-mobile" class="tabs tabs-transparent">
+                    <li class="tab"><a href="homepage.html" >Home</a></li>
+                    <li class="tab"><a href="book.html" class="active">Book an Appointment</a></li>
+                    <li class="tab"><a href="report.html">View Reports</a></li>
+                    <li class="tab"><a href="!#">Notifications</a></li>
+                </ul>
+            </div>
+        </nav>
+      <div id="doctorList">
+        </div>
+        
+
+>>>>>>> shs-joelbranch
     </body>
 </html>
 
@@ -184,7 +204,138 @@ axios({
     url:`${globalpath}controllers/ctrl-patient/`,
     params:params
 }).then(function(response){
+<<<<<<< HEAD
     console.log(response)
+=======
+    if(response.data.status=="true"){
+        for(var i=0;i<response.data.data.length;i++){
+        var div=document.createElement('div')
+        div.setAttribute("class","row")
+        div.innerHTML=`<div class="col s12 m9">
+                          <div class="card blue-grey darken-4">
+                            <div class="card-content yellow-text">
+                              <span class="card-title">Dr. ${response.data.data[i].name}</span>
+                                <div class="row">
+                                    <div class="col s12">
+                                        Address: ${response.data.data[i].address}, ${response.data.data[i].city}, ${response.data.data[i].state}
+                                    </div>    
+                                </div>
+                                <div class="row">
+                                    <div class="col s6">
+                                        Contact Number: ${response.data.data[i].phone_number} Email: ${response.data.data[i].email}
+                                    </div> 
+                                    <div class="col s6">
+                                        <button data-doctorid=${response.data.data[i].user_id} class="btn waves-effect waves-dark white blue-text btnBook" style="float:right" type="submit" name="action">BOOK AN APPOINMENT
+                                        </button>
+                                    </div>  
+                                </div>
+                            </div>
+                            <div class="card-action white">
+                            </div>
+                          </div>
+                        </div>
+                    </div>`
+        document.getElementById("doctorList").appendChild(div)
+    }
+
+    var bookButtons=document.getElementsByClassName("btnBook")
+
+    for(var i=0;i<bookButtons.length;i++){
+        bookButtons[i].addEventListener("click",function(event){
+            event.preventDefault();
+            var div=this.parentNode.parentNode.parentNode.parentNode
+            var cardAction=div.getElementsByClassName("card-action")
+            var divOption=document.createElement("div")
+            divOption.innerHTML=`<div class="row">
+                        <div class="input-field col s12">
+                            <input type="text" class="datepicker" id="selectedDate${this.dataset.doctorid}">
+                            <label for="dob">Pick A Date</label>
+                        </div>
+                        <div class="input-field col s12">
+                            <span>Available Time Slot</span>
+                            <select id="selectedTimeSlot${this.dataset.doctorid}">
+                                <option selected disabled>Select A Time Slot</option>
+                            </select>
+                        </div>
+                        <div class="input-field col s12">
+                            <button class="btn" id="book${this.dataset.doctorid}">Book</button>
+                        </div>
+                    </div>`
+            cardAction[0].appendChild(divOption)
+            var elems = document.querySelectorAll('select');
+            var instances = M.FormSelect.init(elems);
+            option={format:"dd/mm/yyyy"}
+            var elems = document.querySelectorAll('.datepicker');
+            var instances = M.Datepicker.init(elems,option);
+            var btn=this
+            console.log(this.parentNode.parentNode.parentNode.parentNode)
+            document.getElementById("selectedDate"+this.dataset.doctorid).addEventListener("change",function(event){
+                event.preventDefault()
+                var params=new URLSearchParams();
+                params.append("action","getAvaibableTimeSlots")
+                params.append("doctor_id",btn.dataset.doctorid)
+                params.append("date",this.value)
+                axios({
+                    method:"get",
+                    url:`${globalpath}controllers/ctrl-patient/`,
+                    params:params
+                }).then(function(response){
+                    console.log(response.data)
+                    var elem=document.getElementById("selectedTimeSlot"+btn.dataset.doctorid)
+                    elem.innerHTML=""
+                    var optionSelect=document.createElement("option")
+                    optionSelect.setAttribute("selected",true)
+                    optionSelect.setAttribute("disabled",true)
+                    optionSelect.innerHTML="Select A time slot"
+                    optionSelect.value="0"
+                    elem.appendChild(optionSelect)
+                    for(var i=0;i<response.data.data.length;i++){
+                        var option=document.createElement("option")
+                        option.innerHTML=response.data.data[i].time_slot;
+                        option.value=response.data.data[i].time_id
+                        elem.appendChild(option)
+                    }
+                    
+                    var instances = M.FormSelect.init(elem)
+
+                }).catch(function(error){
+
+                })
+            })
+
+            document.getElementById("book"+this.dataset.doctorid).addEventListener("click",function(event){
+            var params=new URLSearchParams();
+            params.append("action","bookAppointment")
+            params.append("doctor_id",btn.dataset.doctorid)
+            params.append("patient_id",localStorage.getItem("user_id"))
+            params.append("date",document.getElementById("selectedDate"+btn.dataset.doctorid).value)
+            params.append("time_id",document.getElementById("selectedTimeSlot"+btn.dataset.doctorid).value)
+                axios({
+                    method:"get",
+                    url:`${globalpath}controllers/ctrl-patient/`,
+                    params:params
+                }).then(function(response){
+                    if(response.data.status=="true"){
+                        console.log(btn)
+                        document.getElementById("selectedTimeSlot"+btn.dataset.doctorid).value="0"
+                        document.getElementById("selectedDate"+btn.dataset.doctorid).value=""
+                        M.toast({html:"Appointment Booked Successfully"})
+                    }
+                    else{
+                        M.toast({html:"Could not book appointment"})
+                    }
+                }).catch(function(error){
+                    console.log(error)
+                })
+            })
+        })
+    }
+}
+    else{
+        document.getElementById("listDoctor").innerHTML="No doctors available here"
+    }
+    
+>>>>>>> shs-joelbranch
 }).catch(function(error){
     console.log(error)
 })

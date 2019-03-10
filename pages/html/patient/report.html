@@ -1,5 +1,9 @@
 <html>
+<<<<<<< HEAD
     <head>
+=======
+<head>
+>>>>>>> shs-joelbranch
         <title>Login Page</title>
         <!-- <link  rel="stylesheet" type="text/css"  href="/pages/css/materialize-v1.0.0/materialize/css/materialize.min.css"> -->
         <!-- <script type="javascript" src="/pages/css/materialize-v1.0.0/materialize/js/materialize.min.js"></script> -->
@@ -18,6 +22,7 @@
                 top:10px;
                 left: 250px;
             }
+<<<<<<< HEAD
             .col.s12 > .btn {
                 width: 100%;
             }
@@ -191,3 +196,72 @@
 <script src="https://www.gstatic.com/firebasejs/5.5.0/firebase.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="../../js/functions/lib/general.js"></script>
+=======
+           
+        
+        </style>
+    </head>
+    <body>
+            <nav class="nav-extended">
+                    <div class="nav-wrapper blue darken-2">
+                            <a href="#" class="brand-logo center">PatCall</a>
+                    </div>
+                    <div class="nav-content blue darken-2">
+                        <ul id="nav-mobile" class="tabs tabs-transparent">
+                            <li class="tab"><a href="homepage.html">Home</a></li>
+                            <li class="tab"><a href="book.html" >Book an Appointment</a></li>
+                            <li class="tab"><a href="report.html" class="active">View Reports</a></li>
+                            <li class="tab"><a href="!#">Notifications</a></li>
+                        </ul>
+                    </div>
+                </nav>
+                <div class="section">
+                        <div class="row">
+                                <div class="col s12 m12">
+                                    <table class="z-depth-3 striped centered">
+                                        <thead>
+                                            <th>Report ID</th>
+                                            <th>Report Description</th>
+                                            <th>Downloadable Link</th>
+                                            <th>Uploaded By</th>
+                                            <th>Date</th>
+                                            <th>Time</th>
+                                        </thead>
+                                        <tbody id="tblReportList">
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
+                        </div>  
+                </div>
+    </body>
+    </html>
+    <script src="https://www.gstatic.com/firebasejs/5.5.0/firebase.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="../../js/functions/lib/general.js"></script>
+    <script>
+     document.addEventListener("DOMContentLoaded",function(event){
+            var params=new URLSearchParams()
+            params.append("action","getReportList")
+            params.append("patient_id",localStorage.getItem("user_id"))
+            axios({
+                method:'get',
+                url:`${globalpath}controllers/ctrl-patient/`,
+                params:params
+            }).then(function(response){
+                for(var i=0;i<response.data.data.length;i++){
+                var tr=document.createElement("tr")
+                tr.innerHTML=`<th>${response.data.data[i].report_id}</th>
+                            <th>${response.data.data[i].report_description}</th>
+                            <th><a href="${response.data.data[i].report_link}">Download Link</a></th>
+                            <th>${response.data.data[i].name}</th>
+                            <th>${response.data.data[i].date}</th>
+                            <th>${response.data.data[i].time}</th>`
+                document.getElementById("tblReportList").appendChild(tr)
+            }
+            }).catch(function(error){
+                console.log(error)
+            })
+     })
+    </script>
+>>>>>>> shs-joelbranch

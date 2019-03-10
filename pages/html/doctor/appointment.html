@@ -1,0 +1,169 @@
+<html>
+    <head>
+        <title>Home</title>
+        <!-- <link rel="stylesheet" type="text/css" href="style.css"> -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Compiled and minified JavaScript -->
+        <script src="../..//js/image-compressor/dist/image-compressor.min.js"></script>
+        <script src="../../js/image-compressor/dist/image-compressor.js"></script>
+
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/cropper/4.0.0/cropper.min.css" rel="stylesheet"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/cropper/4.0.0/cropper.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <style>
+        .col.s12 > .btn {
+                width: 100%;
+            }
+            i.icon-teal {
+            color:teal;
+        }
+        </style>
+    </head>
+    <body class="body" id="body">
+        <nav class="nav-extended">
+            <div class="nav-wrapper teal">
+                <a href="#" class="brand-logo center">DocCall</a> 
+                <ul class="right">
+                        <li ><a href="#!" id="logout">Logout</a></li>
+                    </ul>
+        </div>
+        <div class="nav-content teal">
+            <ul id="nav-mobile" class="tabs tabs-transparent">
+                <li class="tab"><a href="homepage.html"  >Home</a></li>
+                <li class="tab"><a href="addreport.html">Add Report</a></li>
+                <li class="tab"><a href="appointment.html" class="active">View Appointment</a></li>
+                <li class="tab"><a href="Notification.html">Notifications</a></li>
+              </ul>
+        </div>
+        </nav>
+        <div class="section">
+                <div class="container">
+                        <table class="striped z-depth-3 centered" >
+                                <thead>
+                                  <tr>
+                                      
+                                      <th>Patient ID</th>
+                                      <th>Patient Name</th>
+                                      <th>Date-Time</th>
+                                      <th>Visited/Canceled</th>
+                                  </tr>
+                                </thead>
+                        
+                                <tbody id="tblApponintment">
+                                </tbody>
+                              </table>
+                    </div>
+        </div>
+            
+        
+        </body>
+</html>
+<script src="https://www.gstatic.com/firebasejs/5.5.0/firebase.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="../../js/functions/lib/general.js"></script>
+<script>
+    document.getElementById("logout").addEventListener("click",function(event){
+      event.preventDefault()
+      localStorage.removeItem("user_id")
+      window.location=`http://localhost:8080/doctorui-/pages/html/doctor/login.html`
+  })
+    document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.sidenav');
+    var instances = M.Sidenav.init(elems);
+  });
+  var params=new URLSearchParams()
+  params.append("doctor_id",localStorage.getItem("user_id"))
+  params.append("action","getAppointment")
+    axios({
+            method:'get',
+            url:`${globalpath}controllers/ctrl-doctor/`,
+            params:params
+  }).then(function(response){
+      console.log(response)
+      if(response.data.status=="true"){
+          for(var i=0;i<response.data.data.length;i++){
+              var tr=document.createElement("tr")
+              tr.innerHTML=` <td>${response.data.data[i].patient_id}</td>
+                            <td>${response.data.data[i].name}</td>
+                            <td>${response.data.data[i].date} ${response.data.data[i].time_slot}</td>
+                            <td>
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col s5">
+                                            <button data-appointmentid=${response.data.data[i].appointment_id} data-patientid=${response.data.data[i].patient_id} class="btn teal white-text visited">Visited</button>
+                                        </div>
+                                        <div class="col s5">
+                                            <button data-appointmentid=${response.data.data[i].appointment_id}  data-patientid=${response.data.data[i].patient_id} class="btn white-text red cancelled">Cancelled</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>`
+            document.getElementById("tblApponintment").appendChild(tr)
+
+            var visitedButton=document.getElementsByClassName("visited");
+            for(var i=0;i<visitedButton.length;i++){
+                visitedButton[i].addEventListener("click",function(event){
+                    event.preventDefault()
+                    console.log(this)
+                    var params=new URLSearchParams()
+                    params.append("action","setVisited")
+                    params.append("appointment_id",this.dataset.appointmentid)
+                    params.append("patient_id",this.dataset.patientid)
+                    axios({
+                        method:'get',
+                        url:`${globalpath}controllers/ctrl-doctor/`,
+                        params:params
+                    }).then(function(response){
+                        if(response.data.status=="true"){
+                            M.toast({html:'Set Visited Successfully'})
+                            window.location=`http://localhost:8080/doctorui-/pages/html/doctor/appointment.html`
+                        }
+                        else{
+                            M.toast({html:'Could Not Set Successfully'})
+                            window.location=`http://localhost:8080/doctorui-/pages/html/doctor/appointment.html`
+                        }
+                    }).catch(function(error){
+                        console.log(error)
+                    })
+        
+                })
+            }
+            var cancelledButton=document.getElementsByClassName("cancelled");
+            for(var i=0;i<visitedButton.length;i++){
+                cancelledButton[i].addEventListener("click",function(event){
+                    event.preventDefault()
+                    console.log(this)
+                    var params=new URLSearchParams()
+                    params.append("action","setCancelled")
+                    params.append("appointment_id",this.dataset.appointmentid)
+                    params.append("patient_id",this.dataset.patientid)
+                    axios({
+                        method:'get',
+                        url:`${globalpath}controllers/ctrl-doctor/`,
+                        params:params
+                    }).then(function(response){
+                        if(response.data.status=="true"){
+                            M.toast({html:'Set Cancelled Successfully'})
+                            window.location=`http://localhost:8080/doctorui-/pages/html/doctor/appointment.html`
+                        }
+                        else{
+                            M.toast({html:'Could Not Set Successfully'})
+                            window.location=`http://localhost:8080/doctorui-/pages/html/doctor/appointment.html`
+                        }
+                    }).catch(function(error){
+                        console.log(error)
+                    })
+        
+                })
+
+        }
+    }
+    }
+}).catch(function(error){
+    console.log(error)
+})
+  
+</script>

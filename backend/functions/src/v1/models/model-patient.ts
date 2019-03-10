@@ -1,7 +1,16 @@
+<<<<<<< HEAD
+=======
+import { request } from "http";
+
+>>>>>>> shs-joelbranch
 var MasterFunctions=require('../dependencies/masterfunctions')
 var firebase=require('firebase')
 var admin=require('firebase-admin')
 var mailer=require('nodemailer')
+<<<<<<< HEAD
+=======
+var _=require('lodash')
+>>>>>>> shs-joelbranch
 var smtpTransport = require('nodemailer-smtp-transport');
 var config=require('../enviroment/config')
 var moment=require('moment')
@@ -77,7 +86,11 @@ class model_patient{
     public getDoctors=async(req,res,next)=>{
         return new Promise(async(resolve,reject)=>{
             try{
+<<<<<<< HEAD
                 var sql1=`SELECT registration.user_id,name, address, email city, state, email, phone_number FROM registration INNER JOIN doc_details ON registration.user_id=doc_details.user_id`
+=======
+                var sql1=`SELECT registration.user_id,name, address, city, state, email, phone_number FROM registration INNER JOIN doc_details ON registration.user_id=doc_details.user_id`
+>>>>>>> shs-joelbranch
                 var data={}
                 var result1=await MasterFunctions.sqlProcess(sql1,this.connection,"getDoctors",next);
                 if(result1.length>0){
@@ -94,5 +107,95 @@ class model_patient{
         })
     }
 
+<<<<<<< HEAD
+=======
+    public getAvailableTimeSlots=async(req,res,next,doctorid,date)=>{
+        return new Promise(async(resolve,reject)=>{
+            try{
+                console.log(date)
+                var sql1=`SELECT time FROM appointment WHERE doctor_id=${doctorid} AND date='${date}'`
+                var result1=await MasterFunctions.sqlProcess(sql1,this.connection,"getAvailbleTimeSlot",next)
+                console.log(result1)
+                var data={}
+                var result3=[]
+                var result5=[]
+                var result_final=[]
+                if(result1.length>0){
+                    for(var i=0;i<result1.length;i++){
+                        var sql2=`SELECT time_id, time_slot FROM timing WHERE time_id!=${result1[i].time}`
+                        var result2=await MasterFunctions.sqlProcess(sql2,this.connection,"getAvailbleTimeSlot",next)
+                        for(var j=0;j<result2.length;j++){
+                            result3.push({time_id:result2[j].time_id,time_slot:result2[j].time_slot})
+                        }
+                    }
+                    
+                    for(var j=0;j<result1.length;j++){
+                        for(var i=0;i<result3.length;i++){
+                            if(result3[i].time_id==result1[j].time){
+                                result3.splice(i,1)
+                            }
+                        }
+                    }
+                    result5=_.uniqBy(result3, 'time_id');
+
+                    console.log(result5)
+                    
+                    data=MasterFunctions.formatResponse(result5,"true","")
+                    resolve(data)
+                }else{
+                    var sql4=`SELECT time_id, time_slot FROM timing`
+                    var result4=await MasterFunctions.sqlProcess(sql4,this.connection,"getAvailableTimeSlots",next)
+                    data=MasterFunctions.formatResponse(result4,"true","")
+                    resolve(data)
+                }
+
+            }catch(e){
+                next(e)
+            }
+        })
+    }
+    
+    
+    public bookAppointment=async(req,res,next,doctor_id,patient_id,date,time_id)=>{
+        return new Promise(async(resolve,reject)=>{
+            try{
+                var data={}
+                var sql1=`INSERT INTO appointment VALUES(0,${doctor_id},${patient_id},'${date}',${time_id},'pending')`
+                var result1=await MasterFunctions.sqlProcess(sql1,this.connection,"bookAppointment",next)
+                if(result1.insertId>0){
+                    data=MasterFunctions.formatResponse("","true","")
+                    resolve(data)
+                }
+                else{
+                    data=MasterFunctions.formatResponse("","false","")
+                    resolve(data)
+                }
+
+            }catch(e)
+            {
+                next(e)
+            }
+        })
+    }
+
+    public getReportList=async(req,res,next,patient_id)=>{
+        return new Promise(async(resolve,reject)=>{
+            try{
+                var data={}
+                var sql1=`SELECT report_id, report_link, report_description,name,date,time FROM report_table INNER JOIN doc_details ON report_table.doctor_id=doc_details.user_id WHERE patient_id=${patient_id}`
+                var result1=await MasterFunctions.sqlProcess(sql1,this.connection,"getReportList",next)
+                if(result1.length>0){
+                    data=MasterFunctions.formatResponse(result1,"true","")
+                }else{
+                    data=MasterFunctions.formatResponse("","false","")
+                }
+                resolve(data)
+            }catch(e){
+                next(e)
+            }
+        })
+    }
+
+>>>>>>> shs-joelbranch
 }
 module.exports=model_patient;

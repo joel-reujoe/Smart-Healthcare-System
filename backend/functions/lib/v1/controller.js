@@ -48,12 +48,16 @@ app.use('/controllers/ctrl-doctor/', doctor_router);
 app.use('/controllers/ctrl-generalized/', generalized_router);
 app.use('/controllers/ctrl-aadhaar/', aadhaar_router);
 app.use('/controllers/ctrl-admin/', admin_router);
+<<<<<<< HEAD
 app.use('/controllers/ctrl-patient/', patient_router);
+=======
+app.use('/controllers/ctrl-patient', patient_router);
+>>>>>>> shs-joelbranch
 app.get('*', (req, res, next) => {
     // console.log("We couldn't find anything you are looking for")
     res.send("We couldn't find anything you are looking for");
 });
-app.listen(8000, () => {
+app.listen(4567, () => {
     console.log("Server Active At 8000");
 });
 //# sourceMappingURL=controller.js.map

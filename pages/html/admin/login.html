@@ -76,11 +76,35 @@
                 </footer>
     </body>
 </html>
+<script src="https://www.gstatic.com/firebasejs/5.5.0/firebase.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="../../js/functions/lib/general.js"></script>
 <script>
     document.getElementById("btnLogin").addEventListener("click",function(event){
-        window.location=`${globalpath}doctorui-/pages/html/admin/homepage.html`
-    })
+            event.preventDefault()
+            var email=document.getElementById("email").value
+            var password=document.getElementById("password").value
+            var params=new URLSearchParams()
+            params.append("action","loginAdmin");
+            params.append("email",email);
+            params.append("password",password);
+
+            axios({
+                    method:'get',
+                    url:`${globalpath}controllers/ctrl-admin/`,
+                    params:params
+            }).then(function(response){
+                if(response.data.status=="true"){
+                    localStorage.setItem("user_id",response.data.data[0].user_id)
+                    window.location=`http://localhost:8080/doctorui-/pages/html/admin/homepage.html`
+                }
+                else{
+                    M.toast({html:"You are not an admin. Sorry!"})
+                }
+            }).catch(function(error){
+                console.log(error)
+            })
+        })
 
 
 </script>

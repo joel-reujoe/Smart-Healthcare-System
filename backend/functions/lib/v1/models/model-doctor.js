@@ -8,6 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 var MasterFunctions = require('../dependencies/masterfunctions');
 var admin = require('firebase-admin');
+var moment = require('moment');
 var ref = admin.database().ref('posts');
 class model_doc {
     constructor(connection) {
@@ -55,6 +56,179 @@ class model_doc {
                 }
                 catch (e) {
                     reject(e);
+                }
+            }));
+        });
+        // updatePostId=async(req,res,snapshotkey,user_id,next)=>{
+        //     return new Promise(async(resolve,reject)=>{
+        //         try{
+        //         var sql=`UPDATE posts SET fbase_post_id='${snapshotkey}' WHERE user_id='${user_id}'`
+        //         var result=MasterFunctions.sqlProcess(sql,this.connection,"updatePostId",next);
+        //         if(result.affectedRows>0)
+        //         {
+        //             resolve({status:"true"})
+        //         }
+        //         else{
+        //             resolve({status:"false"})
+        //         }
+        //     }catch(e)
+        //     {
+        //         reject(e)
+        //     }
+        //     })
+        // }
+        this.loginDoctor = (req, res, next, email, password) => __awaiter(this, void 0, void 0, function* () {
+            return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
+                try {
+                    var sql1 = `SELECT registration.user_id,name,address,city,state FROM registration,doc_details WHERE email='${email}' AND password='${password}' AND registration.user_id=doc_details.user_id AND type='doctor'`;
+                    var data = {};
+                    var result1 = yield MasterFunctions.sqlProcess(sql1, this.connection, "loginDoctor", next);
+                    if (result1.length > 0) {
+                        data = MasterFunctions.formatResponse(result1, "true", "");
+                    }
+                    else {
+                        data = MasterFunctions.formatResponse("", "false", "");
+                    }
+                    resolve(data);
+                }
+                catch (e) {
+                    next(e);
+                }
+            }));
+        });
+        this.getAppointment = (req, res, next, doctor_id) => __awaiter(this, void 0, void 0, function* () {
+            return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
+                try {
+                    var sql1 = `SELECT appointment_id,patient_id, name,date, time_slot FROM ((appointment INNER JOIN pat_details ON appointment.patient_id=pat_details.user_id) INNER JOIN timing ON appointment.time=timing.time_id) WHERE doctor_id=${doctor_id} AND status='pending'`;
+                    var result1 = yield MasterFunctions.sqlProcess(sql1, this.connection, "getAppointment", next);
+                    var data = {};
+                    if (result1.length > 0) {
+                        data = MasterFunctions.formatResponse(result1, "true", "");
+                        resolve(data);
+                    }
+                    else {
+                        data = MasterFunctions.formatResponse("", "false", "");
+                        resolve(data);
+                    }
+                }
+                catch (e) {
+                    next(e);
+                }
+            }));
+        });
+        this.setVisited = (req, res, next, patient_id, appointment_id) => __awaiter(this, void 0, void 0, function* () {
+            return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
+                try {
+                    var sql1 = `UPDATE appointment SET status='visited' WHERE patient_id=${patient_id} AND appointment_id=${appointment_id}`;
+                    var data = {};
+                    var result11 = yield MasterFunctions.sqlProcess(sql1, this.connection, "setVisited", next);
+                    console.log(result11);
+                    if (result11.affectedRows > 0) {
+                        data = MasterFunctions.formatResponse("", "true", "");
+                    }
+                    else {
+                        data = MasterFunctions.formatResponse("", "false", "");
+                    }
+                    resolve(data);
+                }
+                catch (e) {
+                    next(e);
+                }
+            }));
+        });
+        this.setCancelled = (req, res, next, patient_id, appointment_id) => __awaiter(this, void 0, void 0, function* () {
+            return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
+                try {
+                    var sql1 = `UPDATE appointment SET status='cancelled' WHERE patient_id=${patient_id} AND appointment_id=${appointment_id}`;
+                    var data = {};
+                    var result11 = yield MasterFunctions.sqlProcess(sql1, this.connection, "setVisited", next);
+                    console.log(result11);
+                    if (result11.affectedRows > 0) {
+                        data = MasterFunctions.formatResponse("", "true", "");
+                    }
+                    else {
+                        data = MasterFunctions.formatResponse("", "false", "");
+                    }
+                    resolve(data);
+                }
+                catch (e) {
+                    next(e);
+                }
+            }));
+        });
+        this.getDoctorList = (req, res, next, doctor_id) => __awaiter(this, void 0, void 0, function* () {
+            return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
+                try {
+                    var sql1 = `SELECT name,user_id FROM doc_details WHERE user_id!=${doctor_id}`;
+                    var result1 = yield MasterFunctions.sqlProcess(sql1, this.connection, "getDoctorList", next);
+                    var data = {};
+                    if (result1.length > 0) {
+                        data = MasterFunctions.formatResponse(result1, "true", "");
+                    }
+                    else {
+                        data = MasterFunctions.formatResponse("", "false", "");
+                    }
+                    resolve(data);
+                }
+                catch (e) {
+                    next(e);
+                }
+            }));
+        });
+        this.getVisitedPatients = (req, res, next, doctor_id) => __awaiter(this, void 0, void 0, function* () {
+            return new Promise((resolve, request) => __awaiter(this, void 0, void 0, function* () {
+                try {
+                    var data = {};
+                    var sql1 = `SELECT  DISTINCT appointment.patient_id, MIN(date) as first_visit, aadhaarNumber, name FROM ((pat_details INNER JOIN appointment ON appointment.patient_id=pat_details.user_id)) WHERE doctor_id=${doctor_id} AND status='visited'`;
+                    var result1 = yield MasterFunctions.sqlProcess(sql1, this.connection, "getVisitedPatients", next);
+                    if (result1.length > 0) {
+                        data = MasterFunctions.formatResponse(result1, "true", "");
+                    }
+                    else {
+                        data = MasterFunctions.formatResponse("", "false", "");
+                    }
+                    resolve(data);
+                }
+                catch (e) {
+                    next(express);
+                }
+            }));
+        });
+        this.getReportByPatientId = (req, res, next, patient_id) => __awaiter(this, void 0, void 0, function* () {
+            return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
+                try {
+                    var data = {};
+                    var sql1 = `SELECT report_id, report_link, report_description,name,date,time FROM report_table INNER JOIN doc_details ON doc_details.user_id=report_table.doctor_id WHERE patient_id=${patient_id}`;
+                    var result1 = yield MasterFunctions.sqlProcess(sql1, this.connection, "getReportByPatientId", next);
+                    if (result1.length > 0) {
+                        data = MasterFunctions.formatResponse(result1, "true", "");
+                    }
+                    else {
+                        data = MasterFunctions.formatResponse("", "false", "");
+                    }
+                    resolve(data);
+                }
+                catch (e) {
+                    next(e);
+                }
+            }));
+        });
+        this.insertIntoReports = (req, res, next, report_link, report_description, doctor_id, patient_id) => __awaiter(this, void 0, void 0, function* () {
+            return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
+                try {
+                    var data = {};
+                    var sql1 = `INSERT INTO report_table VALUES(0,${patient_id},'${report_link}','${report_description}',${doctor_id},'${moment().format('DD/MM/YYYY')}','${moment().format('hh:mm a')}')`;
+                    var result1 = yield MasterFunctions.sqlProcess(sql1, this.connection, "getReportByPatientId", next);
+                    if (result1.insertId > 0) {
+                        data = MasterFunctions.formatResponse("", "true", "");
+                    }
+                    else {
+                        data = MasterFunctions.formatResponse("", "false", "");
+                    }
+                    resolve(data);
+                }
+                catch (e) {
+                    next(e);
                 }
             }));
         });

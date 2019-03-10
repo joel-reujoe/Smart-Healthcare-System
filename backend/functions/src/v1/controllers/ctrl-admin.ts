@@ -41,6 +41,14 @@ class ctrl_admin{
         }
         MasterFunctions6.logacesstoFbase(req,res,next,200,data,this.hrtime,0,0)
     }
+
+    public loginAdmin=async(req,res,next)=>{
+        var email=req.query.email
+        var password=req.query.password
+        var model_admin_object=new model_admin_class(req.connection)
+        var data=await model_admin_object.loginAdmin(req,res,next,email,password)
+        MasterFunctions6.logacesstoFbase(req,res,next,200,data,this.hrtime,0,0)
+    }
 } 
 
 module.exports=ctrl_admin

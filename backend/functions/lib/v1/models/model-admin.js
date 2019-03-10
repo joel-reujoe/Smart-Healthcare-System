@@ -47,7 +47,7 @@ class model_admin {
                                 var result4 = yield MasterFunctions.sqlProcess(sql3, this.connection, "approveDoctor", next);
                                 if (result4.insertId > 0) {
                                     var sql4 = `SELECT email FROM registration_request WHERE request_id=${requestid}`;
-                                    var result5 = yield MasterFunctions.sqlProcess(sql, this.connection, "approveDoctor", next);
+                                    var result5 = yield MasterFunctions.sqlProcess(sql4, this.connection, "approveDoctor", next);
                                     if (result5.length > 0) {
                                         data = MasterFunctions.formatResponse(result5[0].email, "true", "");
                                         resolve(data);
@@ -108,6 +108,25 @@ class model_admin {
                 }
             }));
         });
+        this.loginAdmin = (req, res, next, email, password) => {
+            return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
+                try {
+                    var data = {};
+                    var sql1 = `SELECT user_id FROM registration WHERE email='${email}' AND password='${password}'`;
+                    var result1 = yield MasterFunctions.sqlProcess(sql1, this.connection, "loginAdmin", next);
+                    if (result1.length > 0) {
+                        data = MasterFunctions.formatResponse(result1, "true", "");
+                    }
+                    else {
+                        data = MasterFunctions.formatResponse("", "false", "");
+                    }
+                    resolve(data);
+                }
+                catch (e) {
+                    next(e);
+                }
+            }));
+        };
         this.connection = connection;
     }
 }
