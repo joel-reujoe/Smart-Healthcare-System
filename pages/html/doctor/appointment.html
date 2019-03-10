@@ -23,39 +23,23 @@
         </style>
     </head>
     <body class="body" id="body">
-        <nav>
-                <div class="nav-wrapper teal">
-                        <a href="#" class="brand-logo center">DocCall</a> 
-                
-               
-                    
-                    <ul id="nav-mobile" class="left hide-on-med-and-down">
-                      <li><a href="homepage.html"> HOME</a></li>
-                      <li ><a href="report.html">Add Report</a></li>
-                      <li class="grey">View Appointment</li>
-                      <li><a href="Notification.html">Notifications</a></li>
+        <nav class="nav-extended">
+            <div class="nav-wrapper teal">
+                <a href="#" class="brand-logo center">DocCall</a> 
+                <ul class="right">
+                        <li ><a href="#!" id="logout">Logout</a></li>
                     </ul>
-                </div>
-            
-                <ul id="slide-out" class="sidenav">
-                <li><div class="user-view">
-                        <div class="background">
-                          <!-- <img src="images/img.jpg"> -->
-                        </div>
-                        <!-- <a href="#user"><img class="circle" src="images/img-1.jpeg"></a> -->
-                        <a href="#name"><span class="white-text name">John Doe</span></a>
-                        <a href="#email"><span class="white-text email">jdandturk@gmail.com</span></a>
-                      </div></li>
-            <li><a href="#!">Something</a></li>
-            <li><a href="#!">Something</a></li>
-          </ul>
-          
-          <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>               
         </div>
-        
-        
+        <div class="nav-content teal">
+            <ul id="nav-mobile" class="tabs tabs-transparent">
+                <li class="tab"><a href="homepage.html"  >Home</a></li>
+                <li class="tab"><a href="addreport.html">Add Report</a></li>
+                <li class="tab"><a href="appointment.html" class="active">View Appointment</a></li>
+                <li class="tab"><a href="Notification.html">Notifications</a></li>
+              </ul>
+        </div>
         </nav>
-        <div >
+        <div class="section">
                 <div class="container">
                         <table class="striped z-depth-3 centered" >
                                 <thead>
@@ -81,7 +65,11 @@
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="../../js/functions/lib/general.js"></script>
 <script>
-    
+    document.getElementById("logout").addEventListener("click",function(event){
+      event.preventDefault()
+      localStorage.removeItem("user_id")
+      window.location=`http://localhost:8080/doctorui-/pages/html/doctor/login.html`
+  })
     document.addEventListener('DOMContentLoaded', function() {
     var elems = document.querySelectorAll('.sidenav');
     var instances = M.Sidenav.init(elems);

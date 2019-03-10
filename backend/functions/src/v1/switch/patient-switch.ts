@@ -25,6 +25,10 @@ class patient_switch{
             case "bookAppointment":
             ctrl_patient_object.bookAppointment(req,res,next)
             break;
+
+            case "getReportList":
+            ctrl_patient_object.getReportList(req,res,next);
+            break;
         }
     }
 }

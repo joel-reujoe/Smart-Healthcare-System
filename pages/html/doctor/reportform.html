@@ -1,0 +1,199 @@
+<html>
+    <head>
+        <title>Home</title>
+        <!-- <link rel="stylesheet" type="text/css" href="style.css"> -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Compiled and minified JavaScript -->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/cropper/4.0.0/cropper.min.css" rel="stylesheet"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/cropper/4.0.0/cropper.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <style>
+            i.icon-teal {
+            color:teal;
+        }
+        .col.s12 > #btnSubmit {
+                width: 100%;
+            }
+        #uploadCollapsible{
+            width:30%;
+            height: 50px;
+            position: fixed;
+            right: 30px;
+        }
+        </style>
+    </head>
+    <body class="body" id="body">
+        <nav>
+                <div class="nav-wrapper teal">
+                        <a href="#" class="brand-logo center">DocCall</a> 
+            
+                    <ul id="nav-mobile" class="left hide-on-med-and-down">
+                      <li><a href="addreport.html"> Back</a></li>
+                      
+                    </ul>
+                    <ul class="right">
+                            <li ><a href="#!" id="logout">Logout</a></li>
+                        </ul>
+                </div>               
+        </div>
+        </nav>
+            <div class="row">
+                <div class="col s12 m6">
+                    <table class="z-depth-3 striped centered">
+                        <thead>
+                            <th>Report ID</th>
+                            <th>Report Description</th>
+                            <th>Downloadable Link</th>
+                            <th>Uploaded By</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                        </thead>
+                        <tbody id="tblReportList">
+                            
+                        </tbody>
+                    </table>
+                </div>
+                    <div id="uploadCollapsible">
+                        <ul class="collapsible">
+                            <li>
+                                <div class="collapsible-header"><strong id="name_patient">Upload Report of </strong></div>
+                                <div class="collapsible-body">
+                                    
+                                            <div class="row">
+                                                    <div class="input-field col s12">
+                                                            <input type="text" id="reportdetails">
+                                                            <label for="email">Report details(50 words)</label>    
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                        <div class="file-field input-field col s12">
+                                                            <div class="btn">
+                                                              <span>File</span>
+                                                              <input type="file" multiple id="reportfile">
+                                                            </div>
+                                                            <div class="file-path-wrapper">
+                                                              <input class="file-path validate" type="text" placeholder="Upload Report file">
+                                                            </div>
+                                                          </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="input-field col s12">
+                                                            <button class="btn btn-flat teal white-text" id="btnSubmit">SUBMIT</button>   
+                                                        </div>
+                                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+        
+        </body>
+</html>
+<script src="https://www.gstatic.com/firebasejs/5.5.0/firebase.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="../../js/functions/lib/general.js"></script>
+<script>
+document.getElementById("logout").addEventListener("click",function(event){
+      event.preventDefault()
+      localStorage.removeItem("user_id")
+      window.location=`http://localhost:8080/doctorui-/pages/html/doctor/login.html`
+  })
+    document.getElementById("name_patient").innerHTML="Upload Report for "+localStorage.getItem("patient_name")
+    document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.collapsible');
+    var instances = M.Collapsible.init(elems);
+  });
+  document.addEventListener("DOMContentLoaded",function(){
+      var params=new URLSearchParams();
+      params.append("action","getReportByPatientId")
+      params.append("patient_id",localStorage.getItem("patient_id"))
+      axios({
+        method:'get',
+            url:`${globalpath}controllers/ctrl-doctor`,
+            params:params
+      }).then(function(response){
+            for(var i=0;i<response.data.data.length;i++){
+                var tr=document.createElement("tr")
+                tr.innerHTML=`<th>${response.data.data[i].report_id}</th>
+                            <th>${response.data.data[i].report_description}</th>
+                            <th><a href="${response.data.data[i].report_link}">Download Link</a></th>
+                            <th>${response.data.data[i].name}</th>
+                            <th>${response.data.data[i].date}</th>
+                            <th>${response.data.data[i].time}</th>`
+                document.getElementById("tblReportList").appendChild(tr)
+            }
+      }).catch(function(error){
+          console.log(error)
+      })
+
+  })
+
+
+
+var config = {
+    apiKey: "AIzaSyB0ga6ikjDvGADhhd80r2Xeiaep3K22H-M",
+    authDomain: "smarthealthcare-160f0.firebaseapp.com",
+    databaseURL: "https://smarthealthcare-160f0.firebaseio.com",
+    projectId: "smarthealthcare-160f0",
+    storageBucket: "smarthealthcare-160f0.appspot.com",
+    messagingSenderId: "488465131798"
+  };
+
+
+
+firebase.initializeApp(config);
+document.getElementById("btnSubmit").addEventListener("click",function(){
+    const reportfile = document.getElementById("reportfile").files[0];
+    var reportfile_url=""
+        storageRef = firebase.storage().ref("reports/" + reportfile.name.trim().toLowerCase());
+            uploadTask = storageRef.put(reportfile);
+            uploadTask.on('state_changed', function(snapshot){
+                var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                console.log('Upload is ' + progress + '% done');
+                switch (snapshot.state) {
+                    case firebase.storage.TaskState.PAUSED: // or 'paused'
+                        console.log('Upload is paused');
+                        break;
+                    case firebase.storage.TaskState.RUNNING: // or 'running'
+                        console.log('Upload is running');
+                        break;
+                    }
+                    uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+                        reportfile_url=downloadURL 
+                        
+                        
+
+                    })
+                    if(reportfile_url!=""){
+                        var params=new URLSearchParams()
+                        params.append("action","insertIntoReport")
+                        params.append("report_link",reportfile_url)
+                        params.append("patient_id",localStorage.getItem("patient_id"))
+                        params.append("report_description",document.getElementById("reportdetails").value)
+                        params.append("doctor_id",localStorage.getItem("user_id"))
+                        axios({
+                            method:'post',
+                            url:`${globalpath}controllers/ctrl-doctor`,
+                            params:params
+                        }).then(function(response){
+                            if(response.data.status=="true"){
+                                M.toast({html:"Report added succesfully"})
+                            }else{
+                                M.toast({html:"Could not add report"})
+                            }
+                        }).catch(function(error){
+                            console.log(error)
+                        })
+                    }
+                       
+                })
+    
+    })
+
+                   
+
+
+</script>

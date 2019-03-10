@@ -55,6 +55,12 @@ class ctrl_pat {
             var data = yield model_patient_object.bookAppointment(req, res, next, doctor_id, patient_id, date, time_id);
             MasterFunctions.logacesstoFbase(req, res, next, 200, data, this.hrtime, 0, 0);
         }); };
+        this.getReportList = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+            var patient_id = req.query.patient_id;
+            var model_patient_object = new model_patient_class(req.connection);
+            var data = yield model_patient_object.getReportList(req, res, next, patient_id);
+            MasterFunctions.logacesstoFbase(req, res, next, 200, data, this.hrtime, 0, 0);
+        });
         this.hrtime = process.hrtime();
     }
 }

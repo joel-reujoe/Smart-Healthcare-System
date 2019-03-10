@@ -69,40 +69,26 @@ input[type=submit] {
         </style>
     </head>
     <body class="body" id="body">
-        <nav>
+        <nav class="nav-extended">
                 <div class="nav-wrapper teal">
                         <a href="#" class="brand-logo center">DocCall</a> 
-                
-               
-                    
-                    <ul id="nav-mobile" class="left hide-on-med-and-down">
-                      <li class="grey">HOME</li>
-                      <li><a href="report.html">Add Report</a></li>
-                      <li><a href="appointment.html">View Appointment</a></li>
-                      <li><a href="Notification.html">Notifications</a></li>
-                    </ul>
-                    <ul class="right hide-on-med-and-down">
-                            <li><a href="#!" id="welcome"></a>Welcome</li>
-                    </ul>
+                        <ul>
+                            <li id="welcome">
+
+                            </li>
+                        </ul>
+                        <ul class="right">
+                            <li ><a href="#!" id="logout">Logout</a></li>
+                        </ul>
                 </div>
-            
-                <ul id="slide-out" class="sidenav">
-                <li><div class="user-view">
-                        <div class="background">
-                          <img src="images/img.jpg">
-                        </div>
-                        <a href="#user"><img class="circle" src="images/img-1.jpeg"></a>
-                        <a href="#name"><span class="white-text name">John Doe</span></a>
-                        <a href="#email"><span class="white-text email">jdandturk@gmail.com</span></a>
-                      </div></li>
-            <li><a href="#!">Something</a></li>
-            <li><a href="#!">Something</a></li>
-          </ul>
-          
-          <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>               
-        </div>
-        
-        
+                <div class="nav-content teal">
+                    <ul id="nav-mobile" class="tabs tabs-transparent">
+                        <li class="tab"><a href="homepage.html"  class="active">Home</a></li>
+                        <li class="tab"><a href="addreport.html">Add Report</a></li>
+                        <li class="tab"><a href="appointment.html">View Appointment</a></li>
+                        <li class="tab"><a href="Notification.html">Notifications</a></li>
+                      </ul>
+                </div>
         </nav>
         <div class="section">
             <div class="container">
@@ -162,6 +148,13 @@ input[type=submit] {
     var elems = document.querySelectorAll('.sidenav');
     var instances = M.Sidenav.init(elems);
   });
+
+  document.getElementById("logout").addEventListener("click",function(event){
+      event.preventDefault()
+      localStorage.removeItem("user_id")
+      window.location=`http://localhost:8080/doctorui-/pages/html/doctor/login.html`
+  })
+
 var config = {
     apiKey: "AIzaSyB0ga6ikjDvGADhhd80r2Xeiaep3K22H-M",
     authDomain: "smarthealthcare-160f0.firebaseapp.com",

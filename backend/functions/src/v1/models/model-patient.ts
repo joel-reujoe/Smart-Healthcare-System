@@ -1,3 +1,5 @@
+import { request } from "http";
+
 var MasterFunctions=require('../dependencies/masterfunctions')
 var firebase=require('firebase')
 var admin=require('firebase-admin')
@@ -159,6 +161,24 @@ class model_patient{
 
             }catch(e)
             {
+                next(e)
+            }
+        })
+    }
+
+    public getReportList=async(req,res,next,patient_id)=>{
+        return new Promise(async(resolve,reject)=>{
+            try{
+                var data={}
+                var sql1=`SELECT report_id, report_link, report_description,name,date,time FROM report_table INNER JOIN doc_details ON report_table.doctor_id=doc_details.user_id WHERE patient_id=${patient_id}`
+                var result1=await MasterFunctions.sqlProcess(sql1,this.connection,"getReportList",next)
+                if(result1.length>0){
+                    data=MasterFunctions.formatResponse(result1,"true","")
+                }else{
+                    data=MasterFunctions.formatResponse("","false","")
+                }
+                resolve(data)
+            }catch(e){
                 next(e)
             }
         })

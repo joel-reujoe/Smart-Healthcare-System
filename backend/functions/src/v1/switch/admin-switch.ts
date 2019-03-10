@@ -20,6 +20,10 @@ class admin_switch{
             ctrl_admin_object.disapproveDoctor(req,res,next);
             break;
 
+            case "loginAdmin":
+                ctrl_admin_object.loginAdmin(req,res,next)
+                break;
+
             default:
             res.send("nothing found")
             break;

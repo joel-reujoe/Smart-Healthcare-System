@@ -39,6 +39,13 @@ class ctrl_admin {
             }
             MasterFunctions6.logacesstoFbase(req, res, next, 200, data, this.hrtime, 0, 0);
         });
+        this.loginAdmin = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+            var email = req.query.email;
+            var password = req.query.password;
+            var model_admin_object = new model_admin_class(req.connection);
+            var data = yield model_admin_object.loginAdmin(req, res, next, email, password);
+            MasterFunctions6.logacesstoFbase(req, res, next, 200, data, this.hrtime, 0, 0);
+        });
         this.hrtime = process.hrtime();
     }
 }

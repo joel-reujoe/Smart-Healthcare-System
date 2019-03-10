@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -6,6 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 var MasterFunctions = require('../dependencies/masterfunctions');
 var firebase = require('firebase');
 var admin = require('firebase-admin');
@@ -149,6 +151,25 @@ class model_patient {
                         data = MasterFunctions.formatResponse("", "false", "");
                         resolve(data);
                     }
+                }
+                catch (e) {
+                    next(e);
+                }
+            }));
+        });
+        this.getReportList = (req, res, next, patient_id) => __awaiter(this, void 0, void 0, function* () {
+            return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
+                try {
+                    var data = {};
+                    var sql1 = `SELECT report_id, report_link, report_description,name,date,time FROM report_table INNER JOIN doc_details ON report_table.doctor_id=doc_details.user_id WHERE patient_id=${patient_id}`;
+                    var result1 = yield MasterFunctions.sqlProcess(sql1, this.connection, "getReportList", next);
+                    if (result1.length > 0) {
+                        data = MasterFunctions.formatResponse(result1, "true", "");
+                    }
+                    else {
+                        data = MasterFunctions.formatResponse("", "false", "");
+                    }
+                    resolve(data);
                 }
                 catch (e) {
                     next(e);

@@ -37,6 +37,15 @@ class doctor_switch {
                 case "getDoctorsList":
                     ctrl_doc_object.getDoctorList(req, res, next);
                     break;
+                case "getVisitedPatients":
+                    ctrl_doc_object.getVisitedPatients(req, res, next);
+                    break;
+                case "getReportByPatientId":
+                    ctrl_doc_object.getReportByPatientId(req, res, next);
+                    break;
+                case "insertIntoReport":
+                    ctrl_doc_object.insertIntoReports(req, res, next);
+                    break;
             }
         });
     }

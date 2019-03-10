@@ -112,5 +112,24 @@ class model_admin{
             }
         })
     }
+
+    public loginAdmin=(req,res,next,email,password)=>{
+        return new Promise(async(resolve,reject)=>{
+            try{
+                var data={}
+                var sql1=`SELECT user_id FROM registration WHERE email='${email}' AND password='${password}'`
+                var result1=await MasterFunctions.sqlProcess(sql1,this.connection,"loginAdmin",next)
+                if(result1.length>0){
+                    data=MasterFunctions.formatResponse(result1,"true","")
+                    
+                }else{
+                    data=MasterFunctions.formatResponse("","false","")
+                }
+                resolve(data)
+            }catch(e){  
+                next(e)
+            }
+        })
+    }
 }
 module.exports=model_admin

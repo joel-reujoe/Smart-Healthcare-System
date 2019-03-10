@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>HomePage</title>
+        <title>Home</title>
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
             <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -14,208 +14,27 @@
     
     </head>
     <body>
-            <nav>
+            <nav class="nav-extended">
                     <div class="nav-wrapper pink lighten-2">
                             <a href="#" class="brand-logo center">AdminCall</a>
+                            <ul>
+                                <li id="welcome">
+                                    <a href="#!">Welcome Admin</a>
+                                </li>
+                            </ul>
+                            <ul class="right">
+                                <li ><a href="#!" id="logout">Logout</a></li>
+                            </ul>
+                    </div>
+                    <div class="nav-content pink lighten-2">
+                        <ul id="nav-mobile" class="tabs tabs-transparent">
+                            <li class="tab"><a href="homepage.html"  class="active">Home</a></li>
+                            <li class="tab"><a href="request.html">Requests</a></li>
+                          </ul>
                     </div>
                 </nav>
-
-        <div class="section">
-            <div class="container">
-                <div class="row">
-                    <div class="col s12 grey lighten-2 z-depth-4">
-                        <h5>Requests Notification</h5>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col s12">
-                        <table class="highlight z-depth-3 centered">
-                            <thead>
-                                    <tr>
-                                        <th>
-                                            Request by
-                                        </th>
-                                        <th>
-                                            Request Time
-                                        </th>
-                                        <th>
-                                            Description
-                                        </th>
-                                        <th>
-                                            Details
-                                        </th>
-                                        <th>
-                                            Approve/Disapprove
-                                        </th>
-                                    </tr>
-                            </thead>
-                            <tbody id="tblNotification">
-
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal modal-fixed-footer" id="detailsModal">
-            <div class="modal-content">
-                <div class="row">
-                    <div class="col s12" id="name">
-                    </div>
-                </div>
-                <div class="row">
-                        <div class="col s12" id="aadhaarNumber">
-                        </div>
-                </div>
-                <div class="row">
-                        <div class="col s12" id="address">
-                        </div>
-                </div>
-                <div class="row">
-                        <div class="col s12" id="city">
-                        </div>
-                </div>
-                <div class="row">
-                        <div class="col s12" id="state">
-                        </div>
-                </div>
-                <div class="row">
-                        <div class="col s12" id="email">
-                        </div>
-                </div>
-                <div class="row">
-                        <div class="col s12" id="dob">
-                        </div>
-                </div>
-                <div class="row">
-                        <div class="col s12" id="gender">
-                        </div>
-                </div>
-                <div class="row">
-                        <div class="col s12" >
-                            <div><strong>Aadhaar Image</strong></div>
-                            <img width="300" height="400" id="aadhaar_link">
-                        </div>
-                </div>
-                <div class="row">
-                        <div class="col s12" >
-                                <div><strong>Qualification Proof</strong></div>
-                                <img width="300" height="400" id="qualification_link">
-                        </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                    <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
-            </div>
-        </div>
     </body>
 </html>
 
 <script src="https://www.gstatic.com/firebasejs/5.5.0/firebase.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-<script src="http://192.168.1.106:8080/doctorui-/pages/js/functions/lib/general.js"></script>
-<script>
-
-var params=new URLSearchParams()
-params.append("action","getNotification")
-axios({
-            method:'get',
-            url:`${globalpath}controllers/ctrl-admin/`,
-            params:params
-}).then(function(response){
-    if(response.data.status=="true"){
-        console.log(response.data.data)
-        for(var i=0;i<response.data.data.length;i++){
-            var tr=document.createElement("tr");
-            tr.dataset.name=response.data.data[i].name
-            tr.dataset.aadhaarNumber=response.data.data[i].aadhaarNumber
-            tr.dataset.address=response.data.data[i].address
-            tr.dataset.city=response.data.data[i].city
-            tr.dataset.state=response.data.data[i].state
-            tr.dataset.email=response.data.data[i].email
-            tr.dataset.dob=response.data.data[i].dob
-            tr.dataset.gender=response.data.data[i].gender
-            tr.dataset.aadhaar_link=response.data.data[i].aadhaar_link
-            tr.dataset.qualification_link=response.data.data[i].qualification_link
-            tr.innerHTML=`<td>${response.data.data[i].name}</td>
-                <td>${response.data.data[i].time} ${response.data.data[i].date}</td>
-                <td>${response.data.data[i].notification_description}</td>
-                <td><a href="#detailsModal" class="modal-trigger" onclick=setData(this)><i class="material-icons icon-green">add</i></a></td>
-                <td>
-                <div class="container">
-                    <div class="row">
-                        <div class="col s6">
-                                <button data-requestid=${response.data.data[i].request_id} class="btn teal white-text approve">approve</button>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col s6">
-                                <button data-requestid=${response.data.data[i].request_id} class="btn white-text red disapprove">dispprove</button>
-                        </div>
-                    </div>
-                </div>
-                </td>`
-            document.getElementById("tblNotification").appendChild(tr)
-            }
-            var approveButtons=document.getElementsByClassName("approve")
-            for(var i=0;i<approveButtons.length;i++)
-            {
-                approveButtons[i].addEventListener("click",function(event){
-                    var params1=new URLSearchParams()
-                    params1.append("action","approveDoctor")
-                    params1.append("request_id",this.dataset.requestid)
-                    axios({
-                        method:'get',
-                        url:`${globalpath}controllers/ctrl-admin/`,
-                        params:params1
-                    }).then(function(response){
-                        console.log(response)
-                    }).catch(function(error){
-                        console.log(error)
-                    })
-                })
-            }
-            var disapproveButtons=document.getElementsByClassName("disapprove")
-            for(var i=0;i<disapproveButtons.length;i++){
-                disapproveButtons[i].addEventListener("click",function(event){
-                    var params2=new URLSearchParams()
-                    params2.append("action","disapproveDoctor")
-                    params2.append("request_id", this.dataset.requestid);
-                    axios({
-                        method:'get',
-                        url:`${globalpath}controllers/ctrl-admin/`,
-                        params:params2
-                    }).then(function(response){
-                        console.log(response)
-                    }).catch(function(error){
-                        console.log(error)
-                    })
-                })
-            }
-    }
-}).catch(function(error){
-    console.log(error)
-})
-
-setData=function(elem){
-    var element=elem.parentNode.parentNode
-    document.getElementById("name").innerHTML="<strong>Name:</strong> "+element.dataset.name
-    document.getElementById("aadhaarNumber").innerHTML="<strong>Aadhaar Number:</strong> "+element.dataset.aadhaarNumber
-    document.getElementById("address").innerHTML="<strong>Address:</strong> "+element.dataset.address
-    document.getElementById("city").innerHTML="<strong>City:</strong> "+element.dataset.city
-    document.getElementById("state").innerHTML="<strong>State:</strong> "+element.dataset.state
-    document.getElementById("email").innerHTML="<strong>Email:</strong> "+element.dataset.email
-    document.getElementById("dob").innerHTML="<strong>Date of Birth:</strong> "+element.dataset.dob
-    document.getElementById("gender").innerHTML="<strong>Gender:</strong> "+element.dataset.gender
-    document.getElementById("aadhaar_link").src=element.dataset.aadhaar_link
-    document.getElementById("qualification_link").src=element.dataset.qualification_link
-}
-
-
-
-document.addEventListener('DOMContentLoaded', function() {
-    var elems = document.querySelectorAll('.modal');
-    var instances = M.Modal.init(elems);
-  });
-
-</script>

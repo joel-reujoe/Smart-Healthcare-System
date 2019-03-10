@@ -324,24 +324,25 @@ document.addEventListener('DOMContentLoaded', function() {
                     params.append("aadhaar_link",aadhaarUrl);
                     params.append("qualification_link",qualification_url);
                     params.append("aadhaarNumber",document.getElementById("aadhaar_no").value)
-
-                    axios({
-                        method:'get',
-                        url:`${globalpath}controllers/ctrl-aadhaar/`,
-                        params:params
-                    }).then(function(response){
-                        console.log(response)
-                        if(response.data.status=="true")
-                        {
-                           M.toast({html:"Request sent successfully"})
-                        }
-                        else{
-                            M.toast({html:"Email is in use"})
-                        }
-                    }).catch(function(error){
-                        console.log(error)
-                    
-                    })          
+                    if(qualification_url!=""){
+                        axios({
+                            method:'get',
+                            url:`${globalpath}controllers/ctrl-aadhaar/`,
+                            params:params
+                        }).then(function(response){
+                            console.log(response)
+                            if(response.data.status=="true")
+                            {
+                            M.toast({html:"Request sent successfully"})
+                            }
+                            else{
+                                M.toast({html:"Email is in use"})
+                            }
+                        }).catch(function(error){
+                            console.log(error)
+                        })
+                    }
+                              
                 })  
     })
 })
