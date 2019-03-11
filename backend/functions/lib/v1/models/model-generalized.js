@@ -91,6 +91,15 @@ class model_generalized {
                         You are recieving this mail to inform you that your application has been rejected by the admin. To know more please contact to 7709776820 or reply back to this mail`
                             };
                             break;
+                        case 4:
+                            console.log(contextObject);
+                            mailOptions = {
+                                from: 'joel.rdsouza28@gmail.com',
+                                to: `${contextObject.data.reciver}`,
+                                subject: 'Appointment Booked',
+                                text: `Dear Doctor
+                        An appointment has been booked by ${contextObject.data.name}`
+                            };
                     }
                     console.log(mailOptions);
                     transporter.sendMail(mailOptions, function (error, info) {

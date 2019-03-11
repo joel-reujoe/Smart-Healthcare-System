@@ -324,7 +324,7 @@ if(snapshot.val().image)
     document.getElementById("commentbutton"+snapshot.key).addEventListener("click",function(event){
         var commentText=document.getElementById("comment"+snapshot.key).value;
         firebase.database().ref('post/'+snapshot.key+'/comments').push({
-                commentBy:"2",
+                commentBy:localStorage.getItem("name"),
                 commentText:commentText
         })  
     })
@@ -399,7 +399,7 @@ else{
     document.getElementById("commentbutton"+snapshot.key).addEventListener("click",function(event){
         var commentText=document.getElementById("comment"+snapshot.key).value;
         firebase.database().ref('post/'+snapshot.key+'/comments').push({
-                commentBy:"2",
+                commentBy:localStorage.getItem("name"),
                 commentText:commentText
         })  
     })
@@ -489,8 +489,8 @@ if(postText!="")
             function() {
                 uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
                 firebase.database().ref('post/').push({
-                    poster_id:"1",
-                    poster: "joel",
+                    poster_id:localStorage.getItem("user_id"),
+                    poster: localStorage.getItem("name"),
                     postText:postText,
                     image:true,
                     imageUrl:downloadURL,
@@ -507,8 +507,8 @@ if(postText!="")
     }
     else{
         firebase.database().ref('post/').push({
-            poster_id:"1",
-            poster: "joel",
+            poster_id:localStorage.getItem("user_id"),
+            poster: localStorage.getItem("name"),
             postText:postText,
             image:false,
             likes:0,

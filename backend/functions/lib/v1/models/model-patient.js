@@ -144,8 +144,16 @@ class model_patient {
                     var sql1 = `INSERT INTO appointment VALUES(0,${doctor_id},${patient_id},'${date}',${time_id},'pending')`;
                     var result1 = yield MasterFunctions.sqlProcess(sql1, this.connection, "bookAppointment", next);
                     if (result1.insertId > 0) {
-                        data = MasterFunctions.formatResponse("", "true", "");
-                        resolve(data);
+                        var sql2 = `SELECT email FROM registration WHERE user_id=${doctor_id}`;
+                        var result2 = yield MasterFunctions.sqlProcess(sql2, this.connection, "bookAppointment", next);
+                        if (result2.length > 0) {
+                            var sql3 = `SELECT email,name FROM registration,pat_details WHERE registration.user_id=${patient_id} AND pat_details.user_id=${patient_id}`;
+                            var result3 = yield MasterFunctions.sqlProcess(sql3, this.connection, "bookAppointment", next);
+                            console.log(result2, result3);
+                            data = { sender: result3[0].email, reciver: result2[0].email, name: result3[0].name };
+                            var dataToSend = MasterFunctions.formatResponse(data, "true", "");
+                            resolve(dataToSend);
+                        }
                     }
                     else {
                         data = MasterFunctions.formatResponse("", "false", "");

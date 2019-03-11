@@ -8,6 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 var model_patient_class = require('../models/model-patient');
 var MasterFunctions = require('../dependencies/masterfunctions');
+var model_generalized_class = require('../models/model-generalized');
 class ctrl_pat {
     constructor() {
         this.registerPatient = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
@@ -53,7 +54,11 @@ class ctrl_pat {
             time_id = req.query.time_id;
             var model_patient_object = new model_patient_class(req.connection);
             var data = yield model_patient_object.bookAppointment(req, res, next, doctor_id, patient_id, date, time_id);
-            MasterFunctions.logacesstoFbase(req, res, next, 200, data, this.hrtime, 0, 0);
+            var model_generalized_object = new model_generalized_class(req.connection);
+            if (data.status == "true") {
+                var data2 = yield model_generalized_object.sendMail(req, res, next, data, 4);
+            }
+            MasterFunctions.logacesstoFbase(req, res, next, 200, data2, this.hrtime, 0, 0);
         }); };
         this.getReportList = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             var patient_id = req.query.patient_id;

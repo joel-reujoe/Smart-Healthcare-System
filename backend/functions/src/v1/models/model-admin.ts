@@ -37,7 +37,7 @@ class model_admin{
                 var sql=`SELECT * FROM registration_request WHERE request_id=${requestid}`
                 var result1=await MasterFunctions.sqlProcess(sql,this.connection,"approveDoctor",next)
                 if(result1.length>0){
-                    var sql1=`INSERT INTO registration VALUES (0,'${result1[0].email}','${result1[0].password}','doctor','')`
+                    var sql1=`INSERT INTO registration VALUES (0,'${result1[0].email}','${result1[0].password}','doctor',${result1[0].phone_number})`
                     var result2=await MasterFunctions.sqlProcess(sql1,this.connection,"approveDoctor",next)
                     if(result2.insertId>0)
                     {

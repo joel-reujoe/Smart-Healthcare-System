@@ -1,5 +1,6 @@
 var model_patient_class=require('../models/model-patient')
 var MasterFunctions=require('../dependencies/masterfunctions')
+var model_generalized_class=require('../models/model-generalized')
 
 class ctrl_pat{
     public hrtime;
@@ -60,7 +61,12 @@ class ctrl_pat{
         var time_id=req.query.time_id
         var model_patient_object=new model_patient_class(req.connection)
         var data=await model_patient_object.bookAppointment(req,res,next,doctor_id,patient_id,date,time_id)
-        MasterFunctions.logacesstoFbase(req,res,next,200,data,this.hrtime,0,0)
+        var model_generalized_object=new model_generalized_class(req.connection)
+
+        if(data.status=="true"){
+            var data2=await model_generalized_object.sendMail(req,res,next,data,4);
+        }
+        MasterFunctions.logacesstoFbase(req,res,next,200,data2,this.hrtime,0,0)
     }
     
     public getReportList=async(req,res,next)=>{

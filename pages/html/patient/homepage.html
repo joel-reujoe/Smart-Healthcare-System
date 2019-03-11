@@ -30,6 +30,9 @@
         <nav class="nav-extended">
             <div class="nav-wrapper blue darken-2">
                     <a href="#" class="brand-logo center">PatCall</a>
+                    <ul class="right">
+                        <li ><a href="#!" id="logout">Logout</a></li>
+                    </ul>
             </div>
             <div class="nav-content blue darken-2">
                 <ul id="nav-mobile" class="tabs tabs-transparent">
@@ -159,6 +162,11 @@
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="http://192.168.1.106:8080/pages/js/functions/lib/general.js"></script>
 <script>
+    document.getElementById("logout").addEventListener("click",function(event){
+      event.preventDefault()
+      localStorage.removeItem("user_id")
+      window.location=`http://localhost:8080/doctorui-/pages/html/patient/login.html`
+  })
 var name=localStorage.getItem("user_id")
 if(name!=null){
     document.getElementById("welcome").innerHTML="Welcome "+localStorage.getItem("name")
