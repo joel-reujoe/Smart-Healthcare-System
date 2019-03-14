@@ -73,11 +73,9 @@ input[type=submit] {
                 <div class="nav-wrapper teal">
                         <a href="#" class="brand-logo center">DocCall</a> 
                         <ul>
-                            <li id="welcome">
-
-                            </li>
                         </ul>
                         <ul class="right">
+                            <li><a id="welcome"></a></li>
                             <li ><a href="#!" id="logout">Logout</a></li>
                         </ul>
                 </div>
@@ -86,7 +84,8 @@ input[type=submit] {
                         <li class="tab"><a href="homepage.html"  class="active">Home</a></li>
                         <li class="tab"><a href="addreport.html">Add Report</a></li>
                         <li class="tab"><a href="appointment.html">View Appointment</a></li>
-                        <li class="tab"><a href="Notification.html">Notifications</a></li>
+                        <li class="tab"><a href="notification.html">Notifications</a></li>
+                        <li class="tab"><a href="messagelist.html">Messages</a></li>
                       </ul>
                 </div>
         </nav>
@@ -142,7 +141,7 @@ input[type=submit] {
 <!-- <script src="./js/functions/lib/post/post.js"></script>  -->
 <script>
     
-    document.getElementById("welcome").innerHTML="Welcome "+localStorage.getItem("name")
+    document.getElementById("welcome").innerHTML=`<img src="../images/default_image.jpg" alt=""  class="circle responsive-img" width="40" height="40" align="middle" > ${localStorage.getItem("name")}`
 
     document.addEventListener('DOMContentLoaded', function() {
     var elems = document.querySelectorAll('.sidenav');
