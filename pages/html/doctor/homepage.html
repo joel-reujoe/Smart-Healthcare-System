@@ -274,7 +274,7 @@ if(snapshot.val().image)
                             </div>
                         </div>
                         <div class="card-action">
-                            <button  class="btn-flat teal-text white likeClass" data-likekey=${snapshot.key}><i class="material-icons icon-white">thumb_up_alt</i>${snapshot.val().likes}</button>
+                            <button  class="btn-flat teal-text white likeClass" data-likekey=${snapshot.key}><i class="material-icons icon-white">thumb_up_alt</i> ${snapshot.val().likes}</button>
                             <button  class="btn-flat teal-text white" id="${snapshot.key}" data-commentkey=${snapshot.key}><i class="material-icons icon-white">text_sms</i></button>
                         </div>
                         <div class="container" id="commentSection${snapshot.key}" style="display:none">
@@ -294,6 +294,7 @@ if(snapshot.val().image)
     document.getElementById(snapshot.key).addEventListener("click",function(event){
         event.preventDefault();
         this.dataset.status=true
+        console.log(this.dataset.status)
         if(this.dataset.status){
                 this.dataset.status=false;
                 document.getElementById("commentSection"+snapshot.key).style.display="block"
@@ -520,77 +521,4 @@ if(postText!="")
 
 
 
-</script>
-<script>
-// $('document').ready(function()
-// {
-//     $('textarea').each(function(){
-//             $(this).val($(this).val().trim());
-//         }
-//     );
-// });
-// document.getElementById("postButton").style.backgroundColor="grey"
-// document.getElementById("postButton").disabled=true
-// document.getElementById("postArea").addEventListener("change",function(event){
-//     if(document.getElementById("postArea").value!="")
-//     {
-//         document.getElementById("postButton").disabled=false
-//         document.getElementById("postButton").style.backgroundColor="#6666ff"
-//     }
-//     else{
-//         document.getElementById("postButton").style.backgroundColor="grey"
-//         document.getElementById("postButton").disabled=true
-//     }
-// })
-// document.getElementById("postButton").addEventListener("click",function(event){
-//     var param=getPost()
-//     if(param!=null)
-//     {
-//         axios({
-//             method:'post',
-//             url:`${globalpath}controllers/ctrl-doctor`,
-//             params:param
-//         }).then(function(response){
-//             console.log(response)
-//         }).catch(function(error){
-//             console.log(error)
-//         })
-//     }
-// })
-// </script>
-<script>
-// $(document).ready(function(){
-//     $('[data-toggle="popover"]').popover({
-//         html:true,
-//         content:function(){
-//             var content=$(this).attr("data-popover-content")
-//             return $(content).children(".popover-content").html();
-//         }
-//     });
-// })
-// document.getElementById("ass").addEventListener("click",function(event){
-//     event.preventDefault();
-//     window.location="AP.html"
-// })
-// document.getElementById("sm").addEventListener("click",function(event){
-//     event.preventDefault();
-//     window.location="sm.html";
-// })
-// document.getElementById("gpr").addEventListener("click",function(event){
-//     event.preventDefault();
-//     window.location="gpr.html";
-// })
-// document.getElementById("postButton").addEventListener("click",function(event){
-//     event.preventDefault();
-    
-// })
-// document.getElementById("uploadimage").addEventListener("click",function(event){
-//     event.preventDefault();
-//     document.getElementById("imageFile").click();
-// })
-
-// function logout()
-// {
-//     window.location="login.html";
-// }
 </script>
