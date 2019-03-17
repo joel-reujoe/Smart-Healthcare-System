@@ -28,15 +28,15 @@
                 </ul>
             </div>
         </nav>
-        <div class="container">
+        <div class="container" id="chatlist">
             
         </div>
         <footer class="page-footer white footer">
                 <div class="footer-copyright center">
                     <div class="container">
                         <div class="row">
-                            <div class="col s10">
-                                    <input type="text" id="message_input" placeholder="Type a message....">
+                            <div class="input-field col s10">
+                                    <textarea class="materialize-textarea" id="message_input" placeholder="Type a message...."></textarea>
                                     <label for="message_input"></label>
                             </div>
                             <div class="col s2">
@@ -52,8 +52,16 @@
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="../../js/functions/lib/general.js"></script>
 <script>
- document.getElementById("reciever").innerHTML=`<img src="../images/default_image.jpg" alt=""  class="circle responsive-img" width="40" height="40" align="middle" > ${localStorage.getItem("name")}`
-
+ document.getElementById("reciever").innerHTML=`<img src="../images/default_image.jpg" alt=""  class="circle responsive-img" width="40" height="40" align="middle" > ${localStorage.getItem("chat_name")}`
+ var config = {
+    apiKey: "AIzaSyB0ga6ikjDvGADhhd80r2Xeiaep3K22H-M",
+    authDomain: "smarthealthcare-160f0.firebaseapp.com",
+    databaseURL: "https://smarthealthcare-160f0.firebaseio.com",
+    projectId: "smarthealthcare-160f0",
+    storageBucket: "smarthealthcare-160f0.appspot.com",
+    messagingSenderId: "488465131798"
+  };
+  firebase.initializeApp(config);
 
 document.getElementById("message_input").addEventListener("keyup",function(event){
     if (event.keyCode === 13) {
@@ -67,7 +75,23 @@ document.getElementById("btnSend").addEventListener("click",function(event){
         event.preventDefault()
     }
     else{
-        alert(document.getElementById("message_input").value)
+        var timestamp=Date.now();
+        var div=document.createElement("div")
+        div.setAttribute("class","card right-align")
+        div.innerHTML=`<div class="card-content black-text yellow lighten-5">
+                        ${document.getElementById("message_input").value.replace(/\r?\n/, '<br />')}
+                        </div>`
+        document.getElementById("chatlist").appendChild(div)
+        $("html, body").animate({ scrollTop: document.getElementById("chatlist").scrollTo(0,-100) }, 1000);
+        firebase.database().ref('messages/').push({
+            by:localStorage.getItem("user_id"),
+            by_name: localStorage.getItem("name"),
+            message:document.getElementById("message_input").value,
+            to:localStorage.getItem("chat_id"),
+            to_name:localStorage.getItem("chat_name"),
+            timestamp:timestamp
+            });
+            document.getElementById("message_input").value=""
     }
 })
 

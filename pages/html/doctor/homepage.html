@@ -75,7 +75,7 @@ input[type=submit] {
                         <ul>
                         </ul>
                         <ul class="right">
-                            <li><a id="welcome"></a></li>
+                            <li><a id="welcome" href="profile.html"></a></li>
                             <li ><a href="#!" id="logout">Logout</a></li>
                         </ul>
                 </div>
@@ -92,10 +92,13 @@ input[type=submit] {
         <div class="section">
             <div class="container">
                     <div class="row">
-                            <div class=" input-field col s12 autocomplete">
+                            <div class=" input-field col s9 autocomplete">
                                 <input type="text" id="search">
                                 <label>Search...</label>
                             </div>
+                            <div class=" input-field col s2">
+                                   <button class="btn">Search</button>
+                                </div>
                         </div>
             </div>
         </div>
@@ -258,7 +261,10 @@ if(snapshot.val().image)
                         <div class="card-content">
                             <div class="row">
                                 <div class="col s6">
-                                    <a href="#!" data-userid=${snapshot.val().poster_id}><strong>${snapshot.val().poster}</strong></a>                                    
+                                    <a href="#!" data-userid=${snapshot.val().poster_id}><strong>${snapshot.val().poster}</strong></a>
+                                    <div class="row">
+                                        ${formatDate(new Date(snapshot.val().timestamp))}
+                                    </div>                                    
                                 </div>
                             </div>
                             <div class="row">
@@ -338,7 +344,10 @@ else{
                         <div class="card-content">
                             <div class="row">
                                 <div class="col s6">
-                                    <a href="#!"><strong>${snapshot.val().poster}</strong></a>                                    
+                                    <a href="#!"><strong>${snapshot.val().poster}</strong></a> 
+                                    <div class="row">
+                                        ${formatDate(new Date(snapshot.val().timestamp))}
+                                    </div>                                   
                                 </div>
                             </div>
                             <div class="row">
@@ -519,6 +528,15 @@ if(postText!="")
   
 });
 
-
+function formatDate(date) {
+  var hours = date.getHours();
+  var minutes = date.getMinutes();
+  var ampm = hours >= 12 ? 'pm' : 'am';
+  hours = hours % 12;
+  hours = hours ? hours : 12; // the hour '0' should be '12'
+  minutes = minutes < 10 ? '0'+minutes : minutes;
+  var strTime = hours + ':' + minutes + ' ' + ampm;
+  return  date.getDate()+ "/" + (date.getMonth()+1) + "/" + date.getFullYear() + "  " + strTime;
+}
 
 </script>

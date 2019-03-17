@@ -90,5 +90,20 @@ class ctrl_doctor{
         var data=await model_doctor_object.insertIntoReports(req,res,next,report_link,report_description,doctor_id,patient_id)
         MasterFunctions1.logacesstoFbase(req,res,next,200,data,this.hrtime,0,0)        
     }
+
+    public getDoctorDetails=async(req,res,next,user_id)=>{
+        var user_id=req.query.user_id;
+        var model_doctor_object=new model_doctor(req.connection)
+        var data=await model_doctor_object.getDoctorDetails(req,res,next,user_id); 
+        MasterFunctions1.logacesstoFbase(req,res,next,200,data,this.hrtime,0,0)        
+
+    }
+
+    public getAllSpecialization=async(req,res,next)=>{
+        var model_doctor_object=new model_doctor(req.connection)
+        var data=await model_doctor_object.getAllSpecialization(req,res,next)
+        MasterFunctions1.logacesstoFbase(req,res,next,200,data,this.hrtime,0,0)        
+
+    }
 }
 module.exports=ctrl_doctor

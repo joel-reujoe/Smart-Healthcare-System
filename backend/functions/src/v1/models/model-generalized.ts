@@ -58,7 +58,7 @@ class model_generalized{
 
                       mailOptions = {
                         from: 'joel.rdsouza28@gmail.com',
-                        to: `${contextObject.data.data[0].email}`,
+                        to: `joel.rdsouza28@gmail.com`,
                         subject: 'Request for Sign Up',
                         text: `Dear admin 
                         This is Dr. ${contextObject.data.data[0].name} Below are my details 

@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -6,6 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 var MasterFunctions = require('../dependencies/masterfunctions');
 var admin = require('firebase-admin');
 var moment = require('moment');
@@ -226,6 +228,44 @@ class model_doc {
                         data = MasterFunctions.formatResponse("", "false", "");
                     }
                     resolve(data);
+                }
+                catch (e) {
+                    next(e);
+                }
+            }));
+        });
+        this.getDoctorDetails = (req, res, next, user_id) => __awaiter(this, void 0, void 0, function* () {
+            return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
+                try {
+                    var data1 = {};
+                    var sql1 = `SELECT * from doc_details WHERE user_id=${user_id}`;
+                    var result1 = yield MasterFunctions.sqlProcess(sql1, this.connection, "getDoctorDetails", next);
+                    if (result1.length > 0) {
+                        data1 = MasterFunctions.formatResponse(result1, "true", "");
+                    }
+                    else {
+                        data1 = MasterFunctions.formatResponse("", "false", "");
+                    }
+                    resolve(data1);
+                }
+                catch (e) {
+                    next(e);
+                }
+            }));
+        });
+        this.getAllSpecialization = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+            return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
+                try {
+                    var data1 = {};
+                    var sql1 = `SELECT * FROM specialization`;
+                    var result1 = yield MasterFunctions.sqlProcess(sql1, this.connection, "getAllSpecialization", next);
+                    if (result1.length > 0) {
+                        data1 = MasterFunctions.formatResponse(result1, "true", "");
+                    }
+                    else {
+                        data1 = MasterFunctions.formatResponse("", "false", "");
+                    }
+                    resolve(data1);
                 }
                 catch (e) {
                     next(e);
