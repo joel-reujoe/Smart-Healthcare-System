@@ -1,0 +1,128 @@
+<html>
+    <head>
+        <title>Home</title>
+        <!-- <link rel="stylesheet" type="text/css" href="style.css"> -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Compiled and minified JavaScript -->
+        <script src="../../js/image-compressor/dist/image-compressor.min.js"></script>
+        <script src="../../js/image-compressor/dist/image-compressor.js"></script>
+
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/cropper/4.0.0/cropper.min.css" rel="stylesheet"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/cropper/4.0.0/cropper.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <style>
+        .col.s6 > .btn {
+                width: 50%;
+            }
+        </style>
+    </head>
+    <body>
+        <nav class="nav-extended">
+            <div class="nav-wrapper teal">
+                    <a href="#" class="brand-logo center">DocCall</a> 
+                    <ul>
+                    </ul>
+                    <ul class="right">
+                        <li><a id="welcome" href="profile.html"></a></li>
+                        <li ><a href="#!" id="logout">Logout</a></li>
+                    </ul>
+            </div>
+            <div class="nav-content teal">
+                <ul id="nav-mobile" class="tabs tabs-transparent">
+                    <li class="tab"><a href="homepage.html"  >Home</a></li>
+                    <li class="tab"><a href="addreport.html">Add Report</a></li>
+                    <li class="tab"><a href="appointment.html">View Appointment</a></li>
+                    <li class="tab"><a href="notification.html">Notifications</a></li>
+                    <li class="tab"><a href="messagelist.html">Messages</a></li>
+                    <li class="tab"><a href="predicter_form.html">Predictor Form</a></li>
+                  </ul>
+            </div>
+    </nav>
+
+    <div class="section">
+        <div class=" container">
+            <div class="row">
+                <div class="input-field col s6">
+                    <input type="number" id="glucose">
+                    <label for="glucose">Glucose</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s6">
+                    <input type="number" id="blood_pressure">
+                    <label for="blood_pressure">Blood Pressure</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s6">
+                    <input type="number" id="skin_thickness">
+                    <label for="skin_thickness">Skin Thickness</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s6">
+                    <input type="number" id="insulin">
+                    <label for="insulin">Insulin</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s6">
+                    <input type="number" id="bmi">
+                    <label for="bmi">BMI</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s6">
+                    <input type="number" id="dpf">
+                    <label for="dpf">Diabetic Pedigree Function</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s6">
+                    <input type="number" id="age">
+                    <label for="age">Diabetic Pedigree Function</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s6" style="width:100%">
+                    <button class="btn teal" id="btnSubmit">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </body>
+</html>
+<script src="https://www.gstatic.com/firebasejs/5.5.0/firebase.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="../../js/functions/lib/general.js"></script>
+<script>
+
+document.getElementById("btnSubmit").addEventListener("click",function(event){
+    var params=new URLSearchParams()
+    params.append("action","getPrediction")
+    params.append("glucose",document.getElementById("glucose").value)
+    params.append("blood_pressure",document.getElementById("blood_pressure").value)
+    params.append("skin_thickness",document.getElementById("skin_thickness").value)
+    params.append("insulin",document.getElementById("insulin").value)
+    params.append("bmi",document.getElementById("bmi").value)
+    params.append("dpf",document.getElementById("dpf").value)
+    params.append("age",document.getElementById("age").value)
+
+    axios({
+            method:'get',
+            url:`${globalpath}controllers/ctrl-pythonmodule`,
+            params:params
+    }).then(function(response){
+        console.log(response)
+    }).catch(function(error){
+        console.log(error)
+    })
+
+})
+
+
+</script>
