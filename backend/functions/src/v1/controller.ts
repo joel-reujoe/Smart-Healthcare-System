@@ -12,6 +12,9 @@ var aadhaar_router=require('./routers/aadhaar-router')
 var admin_router=require('./routers/admin-router')
 var patient_router=require('./routers/patient-router')
 var pythonmodule_router=require('./routers/pythonmodule-router')
+var spawn = require("child_process").spawn;
+var util = require("util");
+var MasterFunctions9=require('./dependencies/masterfunctions')
 
 
 //app config
@@ -42,7 +45,31 @@ app.use('/controllers/ctrl-generalized/',generalized_router)
 app.use('/controllers/ctrl-aadhaar/',aadhaar_router)
 app.use('/controllers/ctrl-admin/',admin_router)
 app.use('/controllers/ctrl-patient',patient_router)
-app.use('/controllers/ctrl-pythonmodule',pythonmodule_router)
+app.get('/controllers/ctrl-pythonmodule',async(req,res,next)=>{
+
+    var action=req.query.action
+    switch(action){
+        case "getPrediction":
+            var glucose=req.query.glucose
+            var blood_pressure=req.query.blood_pressure
+            var skin_thickness=req.query.skin_thickness
+            var insulin=req.query.insulin
+            var bmi=req.query.bmi
+            var dpf=req.query.dpf
+            var age=req.query.age
+            var process = spawn('python',["../../../../pythonmodules/ID3.py",glucose,blood_pressure,skin_thickness,insulin,bmi,dpf,age]);
+            process.stdout.on('data',function(chunk){
+                    var textChunk = chunk.toString();
+                    var data={predict:JSON.parse(textChunk)}
+                    MasterFunctions9.logacesstoFbase(req,res,next,200,data,this.hrtime,0,0)
+                })
+                process.stderr.on('data',function(chunk){
+                    var textChunk = chunk.toString('utf8');
+                    util.log(textChunk);
+                });
+            break;
+    }
+})
 
 
 app.get('*',(req,res,next)=>{

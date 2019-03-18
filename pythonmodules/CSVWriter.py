@@ -4,8 +4,8 @@ import sys
 
 input_file = ID3C.myresult
 
-filename = "out.csv"
-data = pd.read_csv(filename)
+# filename = "out.csv"
+data = pd.DataFrame(input_file,columns=['record_id','glucose','blood_pressure','skin_thickness','insulin','bmi','dpf','age','outcome'])
 
 glucose=[]
 blood_pressure=[]

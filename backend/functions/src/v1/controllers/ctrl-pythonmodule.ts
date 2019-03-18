@@ -1,16 +1,10 @@
-const spawn = require("child_process").spawn;
 
 
 
-function execPythonScript(){
-    const pythonProcess = spawn('python',["../../../../../pythonmodules/parameter.py"]);
-
-    pythonProcess.stdout.on('data', (data) => {
-        console.log(data.toString())
-    });
-    pythonProcess.stderr.on('data', (data) => {
-        console.log(data.toString())
-    });
+class ctrl_python_module{
+    public runID3=async(req,res,next)=>{
+        
+    }
 }
 
-module.exports=execPythonScript
+module.exports=ctrl_python_module
