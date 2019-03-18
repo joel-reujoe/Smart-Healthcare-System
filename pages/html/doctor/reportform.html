@@ -35,6 +35,8 @@
                       
                     </ul>
                     <ul class="right">
+                            <li><a><img class="circle responsive-img" src="../images/default_image.jpg" width="30" height="30"></a></li>
+                            <li id="welcome"></li>
                             <li ><a href="#!" id="logout">Logout</a></li>
                         </ul>
                 </div>               
@@ -193,7 +195,8 @@ document.getElementById("btnSubmit").addEventListener("click",function(){
     
     })
 
-                   
+    document.getElementById("welcome").innerHTML=localStorage.getItem("name")
+                
 
 
 </script>

@@ -73,11 +73,9 @@ input[type=submit] {
                 <div class="nav-wrapper teal">
                         <a href="#" class="brand-logo center">DocCall</a> 
                         <ul>
-                            <li id="welcome">
-
-                            </li>
                         </ul>
                         <ul class="right">
+                            <li><a id="welcome" href="profile.html"></a></li>
                             <li ><a href="#!" id="logout">Logout</a></li>
                         </ul>
                 </div>
@@ -86,17 +84,22 @@ input[type=submit] {
                         <li class="tab"><a href="homepage.html"  class="active">Home</a></li>
                         <li class="tab"><a href="addreport.html">Add Report</a></li>
                         <li class="tab"><a href="appointment.html">View Appointment</a></li>
-                        <li class="tab"><a href="Notification.html">Notifications</a></li>
+                        <li class="tab"><a href="notification.html">Notifications</a></li>
+                        <li class="tab"><a href="messagelist.html">Messages</a></li>
+                        <li class="tab"><a href="predicter_form.html">Predictor Form</a></li>
                       </ul>
                 </div>
         </nav>
         <div class="section">
             <div class="container">
                     <div class="row">
-                            <div class=" input-field col s12 autocomplete">
+                            <div class=" input-field col s9 autocomplete">
                                 <input type="text" id="search">
                                 <label>Search...</label>
                             </div>
+                            <div class=" input-field col s2">
+                                   <button class="btn">Search</button>
+                                </div>
                         </div>
             </div>
         </div>
@@ -142,7 +145,7 @@ input[type=submit] {
 <!-- <script src="./js/functions/lib/post/post.js"></script>  -->
 <script>
     
-    document.getElementById("welcome").innerHTML="Welcome "+localStorage.getItem("name")
+    document.getElementById("welcome").innerHTML=`<img src="../images/default_image.jpg" alt=""  class="circle responsive-img" width="40" height="40" align="middle" > ${localStorage.getItem("name")}`
 
     document.addEventListener('DOMContentLoaded', function() {
     var elems = document.querySelectorAll('.sidenav');
@@ -259,7 +262,10 @@ if(snapshot.val().image)
                         <div class="card-content">
                             <div class="row">
                                 <div class="col s6">
-                                    <a href="#!" data-userid=${snapshot.val().poster_id}><strong>${snapshot.val().poster}</strong></a>                                    
+                                    <a href="#!" data-userid=${snapshot.val().poster_id}><strong>${snapshot.val().poster}</strong></a>
+                                    <div class="row">
+                                        ${formatDate(new Date(snapshot.val().timestamp))}
+                                    </div>                                    
                                 </div>
                             </div>
                             <div class="row">
@@ -275,7 +281,7 @@ if(snapshot.val().image)
                             </div>
                         </div>
                         <div class="card-action">
-                            <button  class="btn-flat teal-text white likeClass" data-likekey=${snapshot.key}><i class="material-icons icon-white">thumb_up_alt</i>${snapshot.val().likes}</button>
+                            <button  class="btn-flat teal-text white likeClass" data-likekey=${snapshot.key}><i class="material-icons icon-white">thumb_up_alt</i> ${snapshot.val().likes}</button>
                             <button  class="btn-flat teal-text white" id="${snapshot.key}" data-commentkey=${snapshot.key}><i class="material-icons icon-white">text_sms</i></button>
                         </div>
                         <div class="container" id="commentSection${snapshot.key}" style="display:none">
@@ -295,6 +301,7 @@ if(snapshot.val().image)
     document.getElementById(snapshot.key).addEventListener("click",function(event){
         event.preventDefault();
         this.dataset.status=true
+        console.log(this.dataset.status)
         if(this.dataset.status){
                 this.dataset.status=false;
                 document.getElementById("commentSection"+snapshot.key).style.display="block"
@@ -324,7 +331,7 @@ if(snapshot.val().image)
     document.getElementById("commentbutton"+snapshot.key).addEventListener("click",function(event){
         var commentText=document.getElementById("comment"+snapshot.key).value;
         firebase.database().ref('post/'+snapshot.key+'/comments').push({
-                commentBy:"2",
+                commentBy:localStorage.getItem("name"),
                 commentText:commentText
         })  
     })
@@ -338,7 +345,10 @@ else{
                         <div class="card-content">
                             <div class="row">
                                 <div class="col s6">
-                                    <a href="#!"><strong>${snapshot.val().poster}</strong></a>                                    
+                                    <a href="#!"><strong>${snapshot.val().poster}</strong></a> 
+                                    <div class="row">
+                                        ${formatDate(new Date(snapshot.val().timestamp))}
+                                    </div>                                   
                                 </div>
                             </div>
                             <div class="row">
@@ -399,7 +409,7 @@ else{
     document.getElementById("commentbutton"+snapshot.key).addEventListener("click",function(event){
         var commentText=document.getElementById("comment"+snapshot.key).value;
         firebase.database().ref('post/'+snapshot.key+'/comments').push({
-                commentBy:"2",
+                commentBy:localStorage.getItem("name"),
                 commentText:commentText
         })  
     })
@@ -489,8 +499,8 @@ if(postText!="")
             function() {
                 uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
                 firebase.database().ref('post/').push({
-                    poster_id:"1",
-                    poster: "joel",
+                    poster_id:localStorage.getItem("user_id"),
+                    poster: localStorage.getItem("name"),
                     postText:postText,
                     image:true,
                     imageUrl:downloadURL,
@@ -507,8 +517,8 @@ if(postText!="")
     }
     else{
         firebase.database().ref('post/').push({
-            poster_id:"1",
-            poster: "joel",
+            poster_id:localStorage.getItem("user_id"),
+            poster: localStorage.getItem("name"),
             postText:postText,
             image:false,
             likes:0,
@@ -519,79 +529,15 @@ if(postText!="")
   
 });
 
+function formatDate(date) {
+  var hours = date.getHours();
+  var minutes = date.getMinutes();
+  var ampm = hours >= 12 ? 'pm' : 'am';
+  hours = hours % 12;
+  hours = hours ? hours : 12; // the hour '0' should be '12'
+  minutes = minutes < 10 ? '0'+minutes : minutes;
+  var strTime = hours + ':' + minutes + ' ' + ampm;
+  return  date.getDate()+ "/" + (date.getMonth()+1) + "/" + date.getFullYear() + "  " + strTime;
+}
 
-
-</script>
-<script>
-// $('document').ready(function()
-// {
-//     $('textarea').each(function(){
-//             $(this).val($(this).val().trim());
-//         }
-//     );
-// });
-// document.getElementById("postButton").style.backgroundColor="grey"
-// document.getElementById("postButton").disabled=true
-// document.getElementById("postArea").addEventListener("change",function(event){
-//     if(document.getElementById("postArea").value!="")
-//     {
-//         document.getElementById("postButton").disabled=false
-//         document.getElementById("postButton").style.backgroundColor="#6666ff"
-//     }
-//     else{
-//         document.getElementById("postButton").style.backgroundColor="grey"
-//         document.getElementById("postButton").disabled=true
-//     }
-// })
-// document.getElementById("postButton").addEventListener("click",function(event){
-//     var param=getPost()
-//     if(param!=null)
-//     {
-//         axios({
-//             method:'post',
-//             url:`${globalpath}controllers/ctrl-doctor`,
-//             params:param
-//         }).then(function(response){
-//             console.log(response)
-//         }).catch(function(error){
-//             console.log(error)
-//         })
-//     }
-// })
-// </script>
-<script>
-// $(document).ready(function(){
-//     $('[data-toggle="popover"]').popover({
-//         html:true,
-//         content:function(){
-//             var content=$(this).attr("data-popover-content")
-//             return $(content).children(".popover-content").html();
-//         }
-//     });
-// })
-// document.getElementById("ass").addEventListener("click",function(event){
-//     event.preventDefault();
-//     window.location="AP.html"
-// })
-// document.getElementById("sm").addEventListener("click",function(event){
-//     event.preventDefault();
-//     window.location="sm.html";
-// })
-// document.getElementById("gpr").addEventListener("click",function(event){
-//     event.preventDefault();
-//     window.location="gpr.html";
-// })
-// document.getElementById("postButton").addEventListener("click",function(event){
-//     event.preventDefault();
-    
-// })
-// document.getElementById("uploadimage").addEventListener("click",function(event){
-//     event.preventDefault();
-//     document.getElementById("imageFile").click();
-// })
-
-// function logout()
-// {
-//     window.location="login.html";
-// }
 </script>

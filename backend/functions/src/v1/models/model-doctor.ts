@@ -1,3 +1,5 @@
+import { resolve } from "dns";
+
 var MasterFunctions=require('../dependencies/masterfunctions')
 var admin=require('firebase-admin')
 var moment=require('moment')
@@ -237,6 +239,43 @@ class model_doc{
                 
             })
         }
+
+        public getDoctorDetails=async(req,res,next,user_id)=>{
+            return new Promise(async(resolve,reject)=>{
+                try{
+                    var data1={}
+                    var sql1=`SELECT * from doc_details WHERE user_id=${user_id}`
+                    var result1=await MasterFunctions.sqlProcess(sql1,this.connection,"getDoctorDetails",next)
+                    if(result1.length>0){
+                        data1=MasterFunctions.formatResponse(result1,"true","")
+                    }else{  
+                        data1=MasterFunctions.formatResponse("","false","")
+                    }
+                    resolve(data1)
+                }catch(e){  
+                    next(e)
+                }
+            })
+        }
+
+        public getAllSpecialization=async(req,res,next)=>{
+            return new Promise(async(resolve,reject)=>{
+                try{
+                    var data1={}
+                    var sql1=`SELECT * FROM specialization`
+                    var result1=await MasterFunctions.sqlProcess(sql1,this.connection,"getAllSpecialization",next)
+                    if(result1.length>0){
+                        data1=MasterFunctions.formatResponse(result1,"true","")
+                    }else{
+                        data1=MasterFunctions.formatResponse("","false","")
+                    }
+                    resolve(data1)
+                }catch(e){
+                    next(e)
+                }
+            })
+        }
+
 }
 
 

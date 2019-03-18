@@ -1,0 +1,412 @@
+    <html>
+        <head>
+            <title>Home</title>
+            <!-- <link rel="stylesheet" type="text/css" href="style.css"> -->
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+            <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <!-- Compiled and minified JavaScript -->
+            <script src="../../js/image-compressor/dist/image-compressor.min.js"></script>
+            <script src="../../js/image-compressor/dist/image-compressor.js"></script>
+
+            <link href="https://cdnjs.cloudflare.com/ajax/libs/cropper/4.0.0/cropper.min.css" rel="stylesheet"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/cropper/4.0.0/cropper.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+            <style>
+            </style>
+        </head>
+        <body class="body" id="body">
+            <nav class="nav-extended">
+                    <div class="nav-wrapper teal">
+                            <a href="#" class="brand-logo center">DocCall</a> 
+                            <ul>
+                                <li id="welcome">
+
+                                </li>
+                            </ul>
+                            <ul class="right">
+                                <li ><a href="#!" id="logout">Logout</a></li>
+                            </ul>
+                    </div>
+                    <div class="nav-content teal">
+                        <ul id="nav-mobile" class="tabs tabs-transparent">
+                            <li class="tab"><a href="homepage.html" >Home</a></li>
+                            <li class="tab"><a href="addreport.html">Add Report</a></li>
+                            <li class="tab"><a href="appointment.html">View Appointment</a></li>
+                            <li class="tab"><a href="Notification.html">Notifications</a></li>
+                            <li class="tab"><a href="predicter_form.html">Predictor Form</a></li>
+                        </ul>
+                    </div>
+            </nav>
+            <div class="section">
+                    <div class="row">
+                        <div class="col s9">
+                                <div class="card">
+                                    <div class="card-content">
+                                        <div class="row">
+                                            <div class="col s3">
+                                                <img class="circle z-depth-3" src="../images/default_image.jpg" width="100" height="100">
+                                            </div>
+                                            <div class="col s5" id="profile_name">
+                                            
+                                            </div>
+                                            <div class="col s4">
+                                                <a href="#editModal" class="btn modal-trigger"><i class="material-icons">add</i>Edit Profile</a>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col s2">
+                                                <button class="btn teal">Follow</button>
+                                            </div>
+                                            <div class="col s2">
+                                                    <button class="btn teal">Message</button>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col s12" id="address">
+
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col s12" id="dob">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+            </div>
+            <div class="modal" id="editModal">
+                <div class="modal-content">
+                    <div class="input-field col s12">
+                            <div class = "file-field input-field">
+                                    <div class = "btn">
+                                       <span>Browse</span>
+                                       <input type = "file" id="profile_photo" />
+                                    </div>
+                                    
+                                    <div class = "file-path-wrapper">
+                                       <input class = "file-path validate" type = "text"
+                                          placeholder = "Add Profile Photo" />
+                                    </div>
+                            </div>
+                            <div class="input-field col s12">
+                                <select id="specialization">
+                                    <option value="0" disabled selected>Select Specialization</option>
+                                </select>
+                            </div>
+                            <div class="input-field col s12">
+                                <select id="hospital">
+                                        <option value="0" disabled selected>Select Hospital</option>
+                                </select>
+                            </div>
+                    </div>
+                </div>
+            </div>
+            <div class="section">
+                <div class="container" id="timeline">
+                    
+                </div>
+            </div>
+        </body>
+    </html>
+    <script src="https://www.gstatic.com/firebasejs/5.5.0/firebase.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="../../js/functions/lib/general.js"></script>
+    <script>
+
+        var params=new URLSearchParams()
+        params.append("action","getAllSpecialization")
+        axios({
+                method:'get',
+                url:`${globalpath}controllers/ctrl-doctor/`,
+                params:params
+        }).then(function(response){
+            console.log(response)
+            document.getElementById("specialization").innerHTML=""
+            var optionDefault=document.createElement("option")
+            optionDefault.value="0"
+            optionDefault.innerHTML="Select specialization"
+            optionDefault.setAttribute("disabled",true)
+            optionDefault.setAttribute("selected",true)
+            document.getElementById("specialization").appendChild(optionDefault)
+            for(var i=0;i<response.data.data.length;i++){
+                var option=document.createElement("option")
+                option.value=response.data.data[0].speciality_id
+                option.innerHTML=response.data.data[0].speciality_name
+                document.getElementById("specialization").appendChild(option)
+            }
+            var elems = document.querySelectorAll('select');
+            console.log(elems)
+            var instances = M.FormSelect.init(elems);
+        }).catch(function(error){
+            console.log(error)
+        })
+    document.addEventListener('DOMContentLoaded', function() {
+        var elems = document.querySelectorAll('.modal');
+        var instances = M.Modal.init(elems);
+    });
+        var params=new URLSearchParams()
+        params.append("action","getDoctorDetails")
+        params.append("user_id",localStorage.getItem("user_id"))
+        axios({
+                method:'get',
+                url:`${globalpath}controllers/ctrl-doctor/`,
+                params:params
+        }).then(function(response){
+            console.log(response)
+            if(response.data.status=="true"){
+                document.getElementById("address").innerHTML=`Lives in ${response.data.data[0].address}, ${response.data.data[0].city}, ${response.data.data[0].state}`
+                document.getElementById("dob").innerHTML=`Born on ${response.data.data[0].dob}`
+            }
+        }).catch(function(error){
+            console.log(error)
+        })
+    var config = {
+        apiKey: "AIzaSyB0ga6ikjDvGADhhd80r2Xeiaep3K22H-M",
+        authDomain: "smarthealthcare-160f0.firebaseapp.com",
+        databaseURL: "https://smarthealthcare-160f0.firebaseio.com",
+        projectId: "smarthealthcare-160f0",
+        storageBucket: "smarthealthcare-160f0.appspot.com",
+        messagingSenderId: "488465131798"
+    };
+
+    document.getElementById("profile_name").innerHTML=` <h3>${localStorage.getItem("name")}</h3>`
+
+    firebase.initializeApp(config);
+    var starCountRef = firebase.database().ref().child('post');
+    starCountRef.orderByChild("timestamp").on('child_added',snapshot=>{
+    if(snapshot.val().poster_id==localStorage.getItem("user_id"))
+    {
+    if(snapshot.val().image)
+    {
+        var div=document.createElement('div')
+            div.innerHTML=`<div class="section" >
+                    <div class="container">
+                        <div class="card" id=card${snapshot.key}>
+                            <div class="card-content">
+                                <div class="card-title">
+                                    <div class="row">
+                                        <div class="col s6">
+                                            <a href="#!" data-userid=${snapshot.val().poster_id}><strong>${snapshot.val().poster}</strong></a>                                    
+                                        </div>
+                                        <div class="row">
+                                        <div class="col s6">
+                                            ${formatDate(new Date(snapshot.val().timestamp))}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col s12">
+                                    ${snapshot.val().postText}       
+                                    </div>
+                                </div>
+                
+                                <div class="row">
+                                    <div class="col s12">
+                                        <img src="${snapshot.val().imageUrl}" width="300" height="300">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-action">
+                                <button  class="btn-flat teal-text white likeClass" data-likekey=${snapshot.key}><i class="material-icons icon-white">thumb_up_alt</i> ${snapshot.val().likes}</button>
+                                <button  class="btn-flat teal-text white" id="${snapshot.key}" data-commentkey=${snapshot.key}><i class="material-icons icon-white">text_sms</i></button>
+                            </div>
+                            <div class="container" id="commentSection${snapshot.key}" style="display:none">
+                                <div class="row">
+                                <div class="input-field col s12">
+                                    <input type="text" class="commentBox" id="comment${snapshot.key}">
+                                    <label for="comment${snapshot.key}">Comment</label>
+                                </div>
+                                <div class="input-field col s12">
+                                    <button class="btn btn-flat teal white-text" id="commentbutton${snapshot.key}">Comment</button>
+                                </div>    
+                            </div>
+                        </div>
+                    </div>
+                </div>`
+                document.getElementById("timeline").insertBefore(div,document.getElementById("timeline").firstChild)
+        document.getElementById(snapshot.key).addEventListener("click",function(event){
+            event.preventDefault();
+            this.dataset.status=true
+            console.log(this.dataset.status)
+            if(this.dataset.status){
+                    this.dataset.status=false;
+                    document.getElementById("commentSection"+snapshot.key).style.display="block"
+                }else{
+                    this.dataset.status=true;
+                    document.getElementById("commentSection"+snapshot.key).style.display="none"
+                }
+        })
+        firebase.database().ref('post/'+snapshot.key+'/comments').on("value",function(snapshotChild){
+            snapshotChild.forEach(function(childSnapshot){
+                var div=document.createElement("div")
+                div.innerHTML=`<div class="container">
+                    <div class="row">
+                        <div class="col s12">
+                            ${childSnapshot.val().commentBy}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12">
+                            ${childSnapshot.val().commentText}
+                        </div>
+                    </div>
+                </div>`
+                document.getElementById("commentSection"+snapshot.key).appendChild(div)            
+            })
+        })
+        document.getElementById("commentbutton"+snapshot.key).addEventListener("click",function(event){
+            var commentText=document.getElementById("comment"+snapshot.key).value;
+            firebase.database().ref('post/'+snapshot.key+'/comments').push({
+                    commentBy:localStorage.getItem("name"),
+                    commentText:commentText
+            })  
+        })
+    }
+    else{
+        var div=document.createElement('div')
+            div.innerHTML=`
+                <div class="section">
+                    <div class="container">
+                        <div class="card" id=card${snapshot.key}>
+                            <div class="card-content">
+                                <div class="card-title">
+                                    <div class="row">
+                                        <div class="col s6">
+                                            <a href="#!" data-userid=${snapshot.val().poster_id}><strong>${snapshot.val().poster}</strong></a>                                    
+                                        </div>
+                                        <div class="row">
+                                        <div class="col s6">
+                                            ${formatDate(new Date(snapshot.val().timestamp))}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col s12">
+                                    ${snapshot.val().postText}       
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-action">
+                                <button  class="btn-flat teal-text white likeClass" data-likekey=${snapshot.key}><i class="material-icons icon-white">thumb_up_alt</i>${snapshot.val().likes}</button>
+                                <button  class="btn-flat teal-text white commentClass" id=${snapshot.key} data-commentkey=${snapshot.key}><i class="material-icons icon-white">text_sms</i></button>
+                            </div>
+                            <div class="container" id="commentSection${snapshot.key}" style="display:none">
+                                <div class="row">
+                                <div class="input-field col s12">
+                                    <input type="text" class="commentBox" id="comment${snapshot.key}">
+                                    <label for="comment${snapshot.key}">Comment</label>
+                                </div>
+                                <div class="input-field col s12">
+                                    <button class="btn btn-flat teal white-text" id="commentbutton${snapshot.key}">Comment</button>
+                                </div>    
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>`
+                document.getElementById("timeline").insertBefore(div,document.getElementById("timeline").firstChild)
+        
+        document.getElementById(snapshot.key).addEventListener("click",function(event){
+            event.preventDefault();
+            this.dataset.status=true
+            if(this.dataset.status){
+                this.dataset.status=false                
+                    document.getElementById("commentSection"+snapshot.key).style.display="block"
+                }else{
+                this.dataset.status=true                
+                    document.getElementById("commentSection"+snapshot.key).style.display="none"
+                }
+        })
+        firebase.database().ref('post/'+snapshot.key+'/comments').on("value",function(snapshotChild){
+            var div=document.createElement("div")
+            snapshotChild.forEach(function(childSnapshot){
+                div.innerHTML=`<div class="container">
+                    <div class="row">
+                        <div class="col s12">
+                            ${childSnapshot.val().commentBy}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12">
+                            ${childSnapshot.val().commentText}
+                        </div>
+                    </div>
+                </div>`
+                document.getElementById("commentSection"+snapshot.key).appendChild(div)
+            })
+        })
+        document.getElementById("commentbutton"+snapshot.key).addEventListener("click",function(event){
+            var commentText=document.getElementById("comment"+snapshot.key).value;
+            firebase.database().ref('post/'+snapshot.key+'/comments').push({
+                    commentBy:localStorage.getItem("name"),
+                    commentText:commentText
+            })  
+        })
+    }
+    }
+
+    var likeButton=document.getElementsByClassName("likeClass")
+
+    for(var i=0;i<likeButton.length;i++)
+    {
+        likeButton[i].addEventListener("click",function(event){
+            event.preventDefault()
+            updateLike(this)
+        })
+    }
+
+    var commentButton=document.getElementsByClassName("commentClass")
+        
+        
+    })
+
+    updateLike=function(elem)
+    {
+        console.log(elem)
+        var starCountRef = firebase.database().ref().child('post').child(elem.dataset.likekey)
+            starCountRef.once("value",snapshot=>{
+                if(elem.childNodes[0].getAttribute("class")=="material-icons icon-white")
+                {
+                    var likeCount=snapshot.val().likes;
+                    likeCount=likeCount+1;
+                    elem.childNodes[1].nodeValue=likeCount
+                    elem.childNodes[0].setAttribute("class","material-icons icon-teal");
+                    firebase.database().ref('post/'+elem.dataset.likekey).update({
+                        likes:likeCount
+                    })
+                    firebase.database().ref('post/'+elem.dataset.likekey+'/likedBy').push({
+                        userId:"2"
+                    })
+                }
+                else{
+                    var likeCount=snapshot.val().likes;
+                    likeCount=likeCount-1;
+                    elem.childNodes[1].nodeValue=likeCount
+                    elem.childNodes[0].setAttribute("class","material-icons icon-white");
+                    firebase.database().ref('post/'+elem.dataset.likekey).update({
+                        likes:likeCount
+                    })
+                    firebase.database().ref('post/'+elem.dataset.likekey+'/likedBy').orderByChild("userId").equalTo("2").once("value").then(function(snapshot){
+                        snapshot.forEach(function(childSnapshot){
+                            firebase.database().ref('post/'+elem.dataset.likekey+'/likedBy').child(childSnapshot.key).remove() 
+                        })
+                    })
+                }
+            })
+    }
+
+    function formatDate(date) {
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
+    var ampm = hours >= 12 ? 'pm' : 'am';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    minutes = minutes < 10 ? '0'+minutes : minutes;
+    var strTime = hours + ':' + minutes + ' ' + ampm;
+    return  date.getDate()+ "/" + (date.getMonth()+1) + "/" + date.getFullYear() + "  " + strTime;
+    }
+    </script>

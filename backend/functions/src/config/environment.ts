@@ -30,8 +30,9 @@ export const DBUsServer={
 }
 
 export const DBIndiaServer = {
-    host: `sd`,
-    user: 'dd',
-    password: 'dd',
-    database: 'dd'
+    host: `localhost`,
+    user: 'id8937355_joel_reujoe',
+    password: '7709776820',
+    database: 'id8937355_beproject',
+    
 }

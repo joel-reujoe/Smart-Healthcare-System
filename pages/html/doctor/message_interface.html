@@ -1,0 +1,98 @@
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Compiled and minified JavaScript -->
+        <script src="../../js/image-compressor/dist/image-compressor.min.js"></script>
+        <script src="../../js/image-compressor/dist/image-compressor.js"></script>
+
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/cropper/4.0.0/cropper.min.css" rel="stylesheet"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/cropper/4.0.0/cropper.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <style>
+        .footer{
+                position: fixed;
+                bottom: 0px;
+                width: 100%;
+            }
+        </style>
+    </head>
+    <body>
+        <nav class="nav-extended">
+            <div class="nav-wrapper teal">
+                <ul>
+                    <li><a href="messagelist.html"><i class="material-icons">keyboard_backspace</i></a></li>
+                    <li id="reciever"></li>
+                </ul>
+            </div>
+        </nav>
+        <div class="container" id="chatlist">
+            
+        </div>
+        <footer class="page-footer white footer">
+                <div class="footer-copyright center">
+                    <div class="container">
+                        <div class="row">
+                            <div class="input-field col s10">
+                                    <textarea class="materialize-textarea" id="message_input" placeholder="Type a message...."></textarea>
+                                    <label for="message_input"></label>
+                            </div>
+                            <div class="col s2">
+                                <a class="btn teal" id="btnSend"><i class="material-icons">send</i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+    </body>
+</html>
+<script src="https://www.gstatic.com/firebasejs/5.5.0/firebase.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="../../js/functions/lib/general.js"></script>
+<script>
+ document.getElementById("reciever").innerHTML=`<img src="../images/default_image.jpg" alt=""  class="circle responsive-img" width="40" height="40" align="middle" > ${localStorage.getItem("chat_name")}`
+ var config = {
+    apiKey: "AIzaSyB0ga6ikjDvGADhhd80r2Xeiaep3K22H-M",
+    authDomain: "smarthealthcare-160f0.firebaseapp.com",
+    databaseURL: "https://smarthealthcare-160f0.firebaseio.com",
+    projectId: "smarthealthcare-160f0",
+    storageBucket: "smarthealthcare-160f0.appspot.com",
+    messagingSenderId: "488465131798"
+  };
+  firebase.initializeApp(config);
+
+document.getElementById("message_input").addEventListener("keyup",function(event){
+    if (event.keyCode === 13) {
+    event.preventDefault();
+    document.getElementById("btnSend").click();
+  }
+})
+
+document.getElementById("btnSend").addEventListener("click",function(event){
+    if(document.getElementById("message_input").value==""){
+        event.preventDefault()
+    }
+    else{
+        var timestamp=Date.now();
+        var div=document.createElement("div")
+        div.setAttribute("class","card right-align")
+        div.innerHTML=`<div class="card-content black-text yellow lighten-5">
+                        ${document.getElementById("message_input").value.replace(/\r?\n/, '<br />')}
+                        </div>`
+        document.getElementById("chatlist").appendChild(div)
+        $("html, body").animate({ scrollTop: document.getElementById("chatlist").scrollTo(0,-100) }, 1000);
+        firebase.database().ref('messages/').push({
+            by:localStorage.getItem("user_id"),
+            by_name: localStorage.getItem("name"),
+            message:document.getElementById("message_input").value,
+            to:localStorage.getItem("chat_id"),
+            to_name:localStorage.getItem("chat_name"),
+            timestamp:timestamp
+            });
+            document.getElementById("message_input").value=""
+    }
+})
+
+</script>

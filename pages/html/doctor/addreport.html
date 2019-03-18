@@ -25,6 +25,7 @@
             <div class="nav-wrapper teal">
                     <a href="#" class="brand-logo center">DocCall</a> 
                     <ul class="right">
+                        <li id="welcome"></li>
                         <li ><a href="#!" id="logout">Logout</a></li>
                     </ul>
             </div>
@@ -34,6 +35,7 @@
                     <li class="tab"><a href="addreport.html" class="active">Add Report</a></li>
                     <li class="tab"><a href="appointment.html">View Appointment</a></li>
                     <li class="tab"><a href="Notification.html">Notifications</a></li>
+                    <li class="tab"><a href="predicter_form.html">Predictor Form</a></li>
                   </ul>
             </div>
     </nav>
@@ -103,6 +105,8 @@
         }).catch(function(error){
             console.log(error)
         })
+        document.getElementById("welcome").innerHTML=`<img src="../images/default_image.jpg" alt=""  class="circle responsive-img" width="40" height="40" align="middle" > ${localStorage.getItem("name")}`
+      
 </script>
 <script>
 // $('document').ready(function()

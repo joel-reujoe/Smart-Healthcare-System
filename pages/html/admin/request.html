@@ -71,6 +71,67 @@
                 </div>
             </div>
         </div>
+        <div class="modal" id="detailsModal">
+            <div class="modal-content">
+                    <div class="container">
+                            <div class="row>">
+                                <div class="col s12">
+                                    <div id="name"></div>
+                                </div>
+                            </div>
+                            <div class="row>">
+                                    <div class="col s12">
+                                        <div id="aadhaarNumber"></div>
+                                    </div>
+                                </div>
+                                <div class="row>">
+                                        <div class="col s12">
+                                            <div id="address"></div>
+                                        </div>
+                                    </div>
+                                    <div class="row>">
+                                            <div class="col s12">
+                                                <div id="city"></div>
+                                            </div>
+                                        </div>
+                                        <div class="row>">
+                                                <div class="col s12">
+                                                    <div id="state"></div>
+                                                </div>
+                                            </div>
+                                            <div class="row>">
+                                                    <div class="col s12">
+                                                        <div id="email"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="row>">
+                                                        <div class="col s12">
+                                                            <div id="dob"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row>">
+                                                            <div class="col s12">
+                                                                <div id="gender"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row>">
+                                                            <span><strong>Aadhaar Proof</strong></span>
+                                                                <div class="col s12">
+                                                                    <img id="aadhaar_link" width="300" height="300">
+                                                                </div>
+                                                            </div>
+                                                            <div class="row>">
+                                                                <span><strong>Qualifcation Proof</strong></span>
+                                                                    <div class="col s12">
+                                                                        <img id="qualification_link" width="300" height="300">
+                                                                    </div>
+                                                                </div>
+                        </div>
+            </div>
+            <div class="modal-footer">
+                    <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+            </div>
+        </div>
     </body>
 </html>
 
@@ -78,6 +139,7 @@
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="../../js/functions/lib/general.js"></script>
 <script>
+
 
 var params=new URLSearchParams()
 params.append("action","getNotification")
@@ -173,8 +235,6 @@ setData=function(elem){
     document.getElementById("aadhaar_link").src=element.dataset.aadhaar_link
     document.getElementById("qualification_link").src=element.dataset.qualification_link
 }
-
-
 
 document.addEventListener('DOMContentLoaded', function() {
     var elems = document.querySelectorAll('.modal');

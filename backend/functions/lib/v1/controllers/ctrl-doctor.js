@@ -83,6 +83,17 @@ class ctrl_doctor {
             var data = yield model_doctor_object.insertIntoReports(req, res, next, report_link, report_description, doctor_id, patient_id);
             MasterFunctions1.logacesstoFbase(req, res, next, 200, data, this.hrtime, 0, 0);
         });
+        this.getDoctorDetails = (req, res, next, user_id) => { var user_id; return __awaiter(this, void 0, void 0, function* () {
+            user_id = req.query.user_id;
+            var model_doctor_object = new model_doctor(req.connection);
+            var data = yield model_doctor_object.getDoctorDetails(req, res, next, user_id);
+            MasterFunctions1.logacesstoFbase(req, res, next, 200, data, this.hrtime, 0, 0);
+        }); };
+        this.getAllSpecialization = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+            var model_doctor_object = new model_doctor(req.connection);
+            var data = yield model_doctor_object.getAllSpecialization(req, res, next);
+            MasterFunctions1.logacesstoFbase(req, res, next, 200, data, this.hrtime, 0, 0);
+        });
         this.hrtime = process.hrtime();
     }
 }

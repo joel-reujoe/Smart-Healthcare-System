@@ -46,6 +46,12 @@ class doctor_switch {
                 case "insertIntoReport":
                     ctrl_doc_object.insertIntoReports(req, res, next);
                     break;
+                case "getDoctorDetails":
+                    ctrl_doc_object.getDoctorDetails(req, res, next);
+                    break;
+                case "getAllSpecialization":
+                    ctrl_doc_object.getAllSpecialization(req, res, next);
+                    break;
             }
         });
     }

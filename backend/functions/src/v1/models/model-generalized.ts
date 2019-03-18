@@ -58,7 +58,7 @@ class model_generalized{
 
                       mailOptions = {
                         from: 'joel.rdsouza28@gmail.com',
-                        to: `${contextObject.data.data[0].email}`,
+                        to: `joel.rdsouza28@gmail.com`,
                         subject: 'Request for Sign Up',
                         text: `Dear admin 
                         This is Dr. ${contextObject.data.data[0].name} Below are my details 
@@ -94,6 +94,17 @@ class model_generalized{
                         You are recieving this mail to inform you that your application has been rejected by the admin. To know more please contact to 7709776820 or reply back to this mail`
                       }
                       break;
+
+                      case 4:
+                      console.log(contextObject)
+                      mailOptions={
+                        from: 'joel.rdsouza28@gmail.com',                   
+                        to: `${contextObject.data.reciver}`,
+                        subject: 'Appointment Booked',
+                        text:`Dear Doctor
+                        An appointment has been booked by ${contextObject.data.name}`
+                      }
+                      
                   }
                   console.log(mailOptions)
                   transporter.sendMail(mailOptions, function(error, info){
@@ -148,7 +159,6 @@ class model_generalized{
                         }
                     }
                     break;
-
                     
                 }
             }catch(e){

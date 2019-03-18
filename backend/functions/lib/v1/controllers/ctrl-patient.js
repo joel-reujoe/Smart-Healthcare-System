@@ -8,6 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 var model_patient_class = require('../models/model-patient');
 var MasterFunctions = require('../dependencies/masterfunctions');
+var model_generalized_class = require('../models/model-generalized');
 class ctrl_pat {
     constructor() {
         this.registerPatient = (req, res, next) => __awaiter(this, void 0, void 0, function* () {

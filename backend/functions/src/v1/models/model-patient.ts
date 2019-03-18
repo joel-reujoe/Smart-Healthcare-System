@@ -1,16 +1,12 @@
-<<<<<<< HEAD
-=======
 import { request } from "http";
+import { resolve4 } from "dns";
 
->>>>>>> shs-joelbranch
 var MasterFunctions=require('../dependencies/masterfunctions')
 var firebase=require('firebase')
 var admin=require('firebase-admin')
 var mailer=require('nodemailer')
-<<<<<<< HEAD
-=======
+
 var _=require('lodash')
->>>>>>> shs-joelbranch
 var smtpTransport = require('nodemailer-smtp-transport');
 var config=require('../enviroment/config')
 var moment=require('moment')
@@ -86,11 +82,7 @@ class model_patient{
     public getDoctors=async(req,res,next)=>{
         return new Promise(async(resolve,reject)=>{
             try{
-<<<<<<< HEAD
-                var sql1=`SELECT registration.user_id,name, address, email city, state, email, phone_number FROM registration INNER JOIN doc_details ON registration.user_id=doc_details.user_id`
-=======
                 var sql1=`SELECT registration.user_id,name, address, city, state, email, phone_number FROM registration INNER JOIN doc_details ON registration.user_id=doc_details.user_id`
->>>>>>> shs-joelbranch
                 var data={}
                 var result1=await MasterFunctions.sqlProcess(sql1,this.connection,"getDoctors",next);
                 if(result1.length>0){
@@ -107,8 +99,6 @@ class model_patient{
         })
     }
 
-<<<<<<< HEAD
-=======
     public getAvailableTimeSlots=async(req,res,next,doctorid,date)=>{
         return new Promise(async(resolve,reject)=>{
             try{
@@ -163,8 +153,17 @@ class model_patient{
                 var sql1=`INSERT INTO appointment VALUES(0,${doctor_id},${patient_id},'${date}',${time_id},'pending')`
                 var result1=await MasterFunctions.sqlProcess(sql1,this.connection,"bookAppointment",next)
                 if(result1.insertId>0){
-                    data=MasterFunctions.formatResponse("","true","")
-                    resolve(data)
+
+                    var sql2=`SELECT email FROM registration WHERE user_id=${doctor_id}`
+                    var result2=await MasterFunctions.sqlProcess(sql2,this.connection,"bookAppointment",next)
+                    if(result2.length>0){
+                        var sql3=`SELECT email,name FROM registration,pat_details WHERE registration.user_id=${patient_id} AND pat_details.user_id=${patient_id}`
+                        var result3=await MasterFunctions.sqlProcess(sql3,this.connection,"bookAppointment",next)
+                        console.log(result2,result3)
+                        data={sender:result3[0].email,reciver:result2[0].email,name:result3[0].name}
+                        var dataToSend=MasterFunctions.formatResponse(data,"true","")
+                        resolve(dataToSend)
+                    }
                 }
                 else{
                     data=MasterFunctions.formatResponse("","false","")
@@ -196,6 +195,5 @@ class model_patient{
         })
     }
 
->>>>>>> shs-joelbranch
 }
 module.exports=model_patient;
