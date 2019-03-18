@@ -11,20 +11,7 @@ class python_module_switch{
         switch(action){
 
             case "getPrediction":
-                var process = spawn('python',["../../../../../pythonmodules/ID3.py",140,85,99,90,23.8,0.999,40]);
-                process.stdout.on('data',function(chunk){
-    
-                var textChunk = chunk.toString('utf8');// buffer to string
-            
-                util.log(textChunk);
-                })
-            process.stderr.on('data',function(chunk){
-    
-                var textChunk = chunk.toString('utf8');// buffer to string
-            
-                util.log(textChunk);
-                });
-                break;
+                                break;
         }
     }
 }
